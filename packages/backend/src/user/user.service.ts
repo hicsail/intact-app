@@ -18,6 +18,11 @@ export class UserService {
     return users;
   }
 
+  async getUserByID(id: string) {
+    const user = await this.userModel.findById(id).exec();
+    return user;
+  }
+
   async updateUser(id: string, input: UserInput) {
     const user = await this.userModel.updateOne({_id: id}, {  username: input.username, password: input.password, birthday: input.birthday, gender: input.gender, phoneNumber: input.phoneNumber, email: input.email, language: input.language, degree: input.degree, assessments: input.assessments }).exec().then(async () => {
       const updateUser: User = await this.userModel.findById(id).exec();
