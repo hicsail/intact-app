@@ -1,12 +1,14 @@
-import { Box, Button, Grid, styled } from "@mui/material";
 import { FC, useEffect, useState } from "react";
+import { Box, Button, Grid, styled } from "@mui/material";
+import { spacialMemoryConfig as testConfig } from "../config/testConfig";
+import { spacialMemoryConfig as uiConfig } from "../config/uiConfig";
 
 const Cell = styled(Box, {
   shouldForwardProp: (prop) => prop !== "topBox" && prop !== "bottomBox" && prop !== "leftBox" && prop !== "rightBox",
 })<{ topBox?: boolean; bottomBox?: boolean; leftBox?: boolean; rightBox?: boolean }>(
   ({ theme, topBox, bottomBox, leftBox, rightBox }) => ({
-    width: 80,
-    height: 80,
+    width: uiConfig.cellSize,
+    height: uiConfig.cellSize,
     backgroundColor: theme.palette.background.paper,
     borderTop: topBox ? "3px solid black" : "1px solid black",
     borderBottom: bottomBox ? "3px solid black" : "1px solid black",
@@ -17,18 +19,21 @@ const Cell = styled(Box, {
 );
 
 interface SpacialMemoryMainProps {
-  enabled: boolean;
+  numNodes: number;
 }
 
-export const SpacialMemoryMain: FC<SpacialMemoryMainProps> = ({ enabled }) => {
-  const [grid, setGrid] = useState(Array(4).fill(Array(4).fill(false)));
+export const SpacialMemoryMain: FC<SpacialMemoryMainProps> = ({ numNodes }) => {
+  const [grid, setGrid] = useState(Array(testConfig.rows).fill(Array(testConfig.cols).fill(false)));
+  const [enabled, setEnabled] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setGrid(Array(4).fill(Array(4).fill(false)));
-    }, 3000);
+      setGrid(Array(testConfig.rows).fill(Array(testConfig.cols).fill(false)));
+      setEnabled(true);
+    }, testConfig.timeToMemorize);
 
-    setGrid(generateRandomTreeOnGrid(4, 4, 5));
+    setGrid(generateRandomTreeOnGrid(testConfig.rows, testConfig.cols, numNodes));
+    setEnabled(false);
 
     return () => clearTimeout(timer);
   }, []);
@@ -50,9 +55,9 @@ export const SpacialMemoryMain: FC<SpacialMemoryMainProps> = ({ enabled }) => {
               <Grid item key={colIndex}>
                 <Cell
                   topBox={rowIndex === 0}
-                  bottomBox={rowIndex === 3}
+                  bottomBox={rowIndex === testConfig.rows - 1}
                   leftBox={colIndex === 0}
-                  rightBox={colIndex === 3}
+                  rightBox={colIndex === testConfig.cols - 1}
                   sx={{ backgroundColor: cell ? "black" : "white" }}
                   onClick={() => enabled && toggleCell(rowIndex, colIndex)}
                 />

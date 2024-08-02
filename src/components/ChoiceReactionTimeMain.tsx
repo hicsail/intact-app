@@ -1,11 +1,7 @@
-import { Box, Typography } from "@mui/material";
 import { FC } from "react";
+import { Box, Typography } from "@mui/material";
 import { shuffleList } from "../utils/generalUtils";
-
-enum ChoiceColor {
-  YELLOW = "#ffff00",
-  AZUR = "#02ffff",
-}
+import { choiceReactionTimeConfig as uiConfig } from "../config/uiConfig";
 
 interface ChoiceReactionTimeMainProps {
   correctIndex: 0 | 1 | 2;
@@ -14,7 +10,7 @@ interface ChoiceReactionTimeMainProps {
 
 export const ChoiceReactionTimeMain: FC<ChoiceReactionTimeMainProps> = ({ correctIndex, correctSymbol }) => {
   const symbols = shuffleList(["<", ">"]);
-  const colors = shuffleList([ChoiceColor.YELLOW, ChoiceColor.AZUR]);
+  const colors = shuffleList([uiConfig.choiceColor.color0, uiConfig.choiceColor.color1]);
 
   return (
     <Box position="relative">
