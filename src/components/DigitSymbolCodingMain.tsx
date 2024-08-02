@@ -1,27 +1,6 @@
 import { FC } from "react";
 import { Box, Divider, Grid, Typography } from "@mui/material";
-
-import symbol1 from "../assets/digit-symbol/1.gif";
-import symbol2 from "../assets/digit-symbol/2.gif";
-import symbol3 from "../assets/digit-symbol/3.gif";
-import symbol4 from "../assets/digit-symbol/4.gif";
-import symbol5 from "../assets/digit-symbol/5.gif";
-import symbol6 from "../assets/digit-symbol/6.gif";
-import symbol7 from "../assets/digit-symbol/7.gif";
-import symbol8 from "../assets/digit-symbol/8.gif";
-import symbol9 from "../assets/digit-symbol/9.gif";
-
-const symbols = [
-  { image: symbol1, num: 1 },
-  { image: symbol2, num: 2 },
-  { image: symbol3, num: 3 },
-  { image: symbol4, num: 1 },
-  { image: symbol5, num: 2 },
-  { image: symbol6, num: 3 },
-  { image: symbol7, num: 1 },
-  { image: symbol8, num: 2 },
-  { image: symbol9, num: 3 },
-];
+import { digitSymbolConfig as testConfig } from "../config/testConfig";
 
 interface DigitSymbolCodingMainProps {
   correctIndex: number;
@@ -30,9 +9,9 @@ interface DigitSymbolCodingMainProps {
 export const DigitSymbolCodingMain: FC<DigitSymbolCodingMainProps> = ({ correctIndex }) => {
   return (
     <Box>
-      <img src={symbols[correctIndex].image} width={80} style={{ marginBottom: 8 }} />
+      <img src={testConfig.symbolPairs[correctIndex].image} width={80} style={{ marginBottom: 8 }} />
       <Grid container spacing={1}>
-        {symbols.map((symbol, index) => (
+        {testConfig.symbolPairs.map((symbol, index) => (
           <Grid item key={index}>
             <Box
               display="flex"

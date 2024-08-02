@@ -1,37 +1,26 @@
-import { Box, Grid, Typography } from "@mui/material";
 import { FC, useEffect, useState } from "react";
+import { Box, Grid, Typography } from "@mui/material";
 import { shuffleList } from "../utils/generalUtils";
-
-const buttonColor = {
-  unselected: "#839d97",
-  correct: "#1bb394",
-  incorect: "#d14b31",
-};
-
-const textColor = {
-  unselected: "#eeeeee",
-  correct: "white",
-  incorect: "white",
-};
+import { memoryRecallConfig as testConfig } from "../config/testConfig";
+import { memoryRecallConfig as uiConfig } from "../config/uiConfig";
 
 interface MemoryRecallMainProps {
-  options: string[];
   selected: string[];
 }
 
-export const MemoryRecallMain: FC<MemoryRecallMainProps> = ({ options, selected }) => {
+export const MemoryRecallMain: FC<MemoryRecallMainProps> = ({ selected }) => {
   const [clickedNum, setClickedNum] = useState(0);
-  const [values, setValues] = useState(Object.fromEntries(options.map((key) => [key, "unselected"])));
+  const [values, setValues] = useState(Object.fromEntries(testConfig.options.map((key) => [key, "unselected"])));
   const [randomList, setRandomList] = useState<string[]>([]);
 
-  const maxtSelection = 5;
+  const maxSelection = testConfig.maxSelection;
 
   useEffect(() => {
-    setRandomList(shuffleList([...options]));
-  }, [options]);
+    setRandomList(shuffleList([...testConfig.options]));
+  }, [testConfig.options]);
 
   const clickHandler = (index: number) => {
-    if (clickedNum >= maxtSelection) {
+    if (clickedNum >= maxSelection) {
       return;
     }
 
@@ -39,7 +28,7 @@ export const MemoryRecallMain: FC<MemoryRecallMainProps> = ({ options, selected 
     setValues((prev) => {
       const newValues = { ...prev };
       const key = randomList[index];
-      newValues[key] = selected.includes(key) ? "correct" : "incorect";
+      newValues[key] = selected.includes(key) ? "correct" : "incorrect";
       return newValues;
     });
   };
@@ -60,7 +49,8 @@ export const MemoryRecallMain: FC<MemoryRecallMainProps> = ({ options, selected 
                   justifyContent="center"
                   borderRadius={1}
                   sx={{
-                    backgroundColor: buttonColor[values[randomList[index]] as keyof typeof buttonColor],
+                    backgroundColor:
+                      uiConfig.buttonColor[values[randomList[index]] as keyof typeof uiConfig.buttonColor],
                     cursor: "pointer",
                   }}
                   onClick={() => clickHandler(index)}
@@ -68,7 +58,7 @@ export const MemoryRecallMain: FC<MemoryRecallMainProps> = ({ options, selected 
                   <Typography
                     variant="h4"
                     fontWeight="bold"
-                    color={textColor[values[randomList[index]] as keyof typeof textColor]}
+                    color={uiConfig.textColor[values[randomList[index]] as keyof typeof uiConfig.textColor]}
                   >
                     {randomList[index]}
                   </Typography>
