@@ -8,6 +8,10 @@ import symbol7 from "../assets/digit-symbol/7.gif";
 import symbol8 from "../assets/digit-symbol/8.gif";
 import symbol9 from "../assets/digit-symbol/9.gif";
 
+export const generalConfig = {
+  spacialMemory: [4, 5, 6, 7, 8],
+};
+
 /**
  * @property rows - Number of rows in the grid
  * @property cols - Number of columns in the grid
@@ -16,7 +20,7 @@ import symbol9 from "../assets/digit-symbol/9.gif";
 export const spacialMemoryConfig = {
   rows: 4,
   cols: 4,
-  timeToMemorize: 5000,
+  timeToMemorize: 3000,
 };
 
 /**
@@ -60,11 +64,4 @@ export const digitSymbolConfig = {
     { image: symbol8, num: 2 },
     { image: symbol9, num: 3 },
   ],
-};
-
-export const choiceReactionTimeConfig = {
-  choiceColor: {
-    color0: "#ffff00",
-    color1: "#02ffff",
-  },
 };
