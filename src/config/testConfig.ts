@@ -9,7 +9,8 @@ import symbol8 from "../assets/digit-symbol/8.gif";
 import symbol9 from "../assets/digit-symbol/9.gif";
 
 export const generalConfig = {
-  spacialMemory: [4, 5, 6, 7, 8],
+  spacialMemory: [4, 5, 6, 7, 8], // Number of nodes in the grid
+  choiceReactionTime: 10, // Number of questions
 };
 
 /**
@@ -20,7 +21,7 @@ export const generalConfig = {
 export const spacialMemoryConfig = {
   rows: 4,
   cols: 4,
-  timeToMemorize: 3000,
+  timeToMemorize: 5000,
 };
 
 /**

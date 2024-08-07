@@ -30,4 +30,5 @@ export const choiceReactionTimeConfig = {
     color0: "#ffff00",
     color1: "#02ffff",
   },
+  buttonColor: "#e7e7e7",
 };
