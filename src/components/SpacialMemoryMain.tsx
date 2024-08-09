@@ -2,6 +2,7 @@ import { FC, useEffect, useState } from "react";
 import { Box, Button, Grid, styled } from "@mui/material";
 import { spacialMemoryConfig as testConfig } from "../config/testConfig";
 import { spacialMemoryConfig as uiConfig } from "../config/uiConfig";
+import { Fullscreen } from "./Fullscreen";
 
 const Cell = styled(Box, {
   shouldForwardProp: (prop) => prop !== "topBox" && prop !== "bottomBox" && prop !== "leftBox" && prop !== "rightBox",
@@ -47,6 +48,7 @@ export const SpacialMemoryMain: FC<SpacialMemoryMainProps> = ({ numNodes }) => {
   };
 
   return (
+    <Fullscreen>
     <Box>
       <Grid container direction="column">
         {grid.map((row: any[], rowIndex: number) => (
@@ -70,6 +72,7 @@ export const SpacialMemoryMain: FC<SpacialMemoryMainProps> = ({ numNodes }) => {
         </Button>
       </Grid>
     </Box>
+    </Fullscreen>
   );
 };
 
