@@ -74,8 +74,8 @@ export const digitSymbolConfig = {
  * @property waitTimeMax - Maximum time in milliseconds to wait for the user to react
  */
 export const choiceReactionTimeConfig = {
-  waitTimeMin: 500,
-  waitTimeMax: 5000,
+  waitTimeMin: 300,
+  waitTimeMax: 1500,
 };
 
 /**
