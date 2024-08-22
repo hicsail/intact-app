@@ -1,17 +1,11 @@
 import "./App.css";
-import { randomSelectFromList } from "./utils/generalUtils";
-import { DigitSymbolCodingMain } from "./components/DigitSymbolCodingMain";
-import { MemoryRecallMain } from "./components/MemoryRecallMain";
-import { TestBattery } from "./components/TestBattery";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { TestPage } from "./pages/TestPage";
 
 function App() {
-  return (
-    <>
-      <TestBattery />
-      {/* <MemoryRecallMain selected={["Octopus", "Elephant", "Cat", "Lion", "Squirrel"]} /> */}
-      {/* <DigitSymbolCodingMain correctIndex={Math.floor(Math.random() * 10) + 1} /> */}
-    </>
-  );
+  const router = createBrowserRouter([{ path: "assessments", element: <TestPage /> }]);
+
+  return <RouterProvider router={router} />;
 }
 
 export default App;
