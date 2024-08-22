@@ -1,35 +1,54 @@
-import { FC, ReactElement, useEffect, useState } from "react";
-import { Box, Button, TypographyProps } from "@mui/material";
+import { FC, ReactElement, useEffect, useState, ReactNode } from "react";
+import { Box, Button, Typography, TypographyProps } from "@mui/material";
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import { SxProps, SystemProps } from '@mui/system';
 
-interface TextToSpeechProps extends TypographyProps {
-    children: ReactElement;
-}
 
-export const TextToSpeech: FC<TextToSpeechProps> = ({ children }) => {
+
+export const TextToSpeech: FC<TypographyProps> = (props) => {
+
+    const [audioAvailable, setAudioAvailable] = useState(false);
+    const [iconSize, setIconSize] = useState(16);
+    const [message, setMessage] = useState("");
+
+    useEffect(()=> {
+        // Checking if browser supports text-to-speech
+        // Most browsers supoprt it https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis
+        if (('speechSynthesis' in window)) {
+            setAudioAvailable(true);
+        }
+
+        if (props.fontSize) {
+            setIconSize(Number(props.fontSize))
+        }
+
+        if(props.children){
+            setMessage(String(props.children))
+        }
+
+    }, [])
 
     const handleClick = () => {
         var msg = new SpeechSynthesisUtterance();
-        msg.text = children.props.children
-        window.speechSynthesis.speak(msg)
+        msg.text = message;
+        window.speechSynthesis.speak(msg);
     }
     
-    // Checking if browser supports text-to-speech
-    // Most browsers supoprt it https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis
-    if (!('speechSynthesis' in window)) {
-        alert("Text-to-Speech not supoprted")
-    }
+    
+    
 
     return (
         <Box
             display="flex"
             flexDirection={"row"}
         >
-            {children}
-            <Button
-                onClick={handleClick}
-                endIcon={<PlayArrowIcon/>}
-            />
+            <Typography {...props}/>
+            {audioAvailable &&
+                <Button
+                    onClick={handleClick}
+                    endIcon={<PlayArrowIcon style={{fontSize : iconSize}}/>}
+                />
+            }
         </Box>
     )
 }
