@@ -76,7 +76,7 @@ export const SpacialMemoryMain: FC<SpacialMemoryMainProps> = ({ numNodes, handle
             ))}
           </Grid>
         ))}
-        <Button variant="contained" sx={{ width: 400, marginTop: 2 }} onClick={submitHandler}>
+        <Button variant="contained" disabled={!enabled} sx={{ width: 400, marginTop: 2 }} onClick={submitHandler}>
           Submit
         </Button>
       </Grid>
