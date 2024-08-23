@@ -21,13 +21,16 @@ jobs:
         uses: google-github-actions/auth@v2
         #if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         with:
-          project_id: sail-intact
           workload_identity_provider: projects/695814629538/locations/global/workloadIdentityPools/github/providers/github
           service_account: github@sail-intact.iam.gserviceaccount.com
 
       - name: Set up GCloud SDK
         #if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: google-github-actions/setup-gcloud@v2
+
+
+      - name: 'Use gcloud CLI'
+        run: gcloud info
 
       - name: Use Node.js 22.x
         uses: actions/setup-node@v4
