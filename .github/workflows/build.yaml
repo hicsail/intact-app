@@ -25,6 +25,10 @@ jobs:
           workload_identity_provider: projects/695814629538/locations/global/workloadIdentityPools/github/providers/github
           service_account: github@sail-intact.iam.gserviceaccount.com
 
+      - name: Set up GCloud SDK
+        #if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: google-github-actions/setup-gcloud@v2
+
       - name: Use Node.js 22.x
         uses: actions/setup-node@v4
         with:
@@ -50,7 +54,6 @@ jobs:
         run: npm run build
 
       - name: Backup existing bucket contents
-        #if: success() && github.ref == 'refs/heads/main'
         run: |
           gsutil mv gs://intact-frontend/** gs://intact-frontend/backup/
           echo "backup_done=true" >> $GITHUB_ENV
