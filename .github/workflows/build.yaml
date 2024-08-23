@@ -28,10 +28,6 @@ jobs:
         #if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: google-github-actions/setup-gcloud@v2
 
-
-      - name: 'Use gcloud CLI'
-        run: gcloud info
-
       - name: Use Node.js 22.x
         uses: actions/setup-node@v4
         with:
@@ -57,6 +53,8 @@ jobs:
         run: npm run build
 
       - name: Backup existing bucket contents
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ steps.auth.outputs.credentials_file_path }}
         run: |
           gsutil mv gs://intact-frontend/** gs://intact-frontend/backup/
           echo "backup_done=true" >> $GITHUB_ENV
