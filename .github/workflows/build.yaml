@@ -10,8 +10,6 @@ on:
 
 jobs:
   build:
-    environment:
-      name: github-pages
     permissions:
       pages: write
       id-token: write
@@ -53,6 +51,7 @@ jobs:
         uses: actions/upload-artifact@v3
         if: github.ref == 'refs/heads/main'
         with:
+          name: github-pages
           path: dist.tar.gz
 
       - name: Deploy to GitHub Pages
