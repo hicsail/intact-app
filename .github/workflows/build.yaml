@@ -42,8 +42,19 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Compress dist
+        if: github.ref == 'refs/heads/main'
+        run: tar -czvf dist.tar.gz dist
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        if: github.ref == 'refs/heads/main'
+        with:
+          name: dist
+          path: dist.tar.gz
+
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
         if: github.ref == 'refs/heads/main'
         with:
-          publish_dir: ./dist
+          artifact_name: dist
