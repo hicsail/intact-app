@@ -1,5 +1,6 @@
 name: Build & Deploy
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
@@ -9,6 +10,8 @@ on:
 
 jobs:
   build:
+    environment:
+      name: github-pages
     permissions:
       pages: write
       id-token: write
@@ -50,11 +53,8 @@ jobs:
         uses: actions/upload-artifact@v3
         if: github.ref == 'refs/heads/main'
         with:
-          name: dist
           path: dist.tar.gz
 
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
         if: github.ref == 'refs/heads/main'
-        with:
-          artifact_name: dist
