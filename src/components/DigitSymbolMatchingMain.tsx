@@ -3,12 +3,12 @@ import { Box, Button, Divider, Grid, Typography } from "@mui/material";
 import { digitSymbolConfig as testConfig } from "../config/testConfig";
 import { digitSymbolConfig as uiConfig } from "../config/uiConfig";
 
-interface DigitSymbolCodingMainProps {
+interface DigitSymbolMatchingMainProps {
   correctIndex: number;
   handleSubmit: (result: boolean) => void;
 }
 
-export const DigitSymbolCodingMain: FC<DigitSymbolCodingMainProps> = ({ correctIndex, handleSubmit }) => {
+export const DigitSymbolMatchingMain: FC<DigitSymbolMatchingMainProps> = ({ correctIndex, handleSubmit }) => {
   const submitHandler = (input: number) => {
     const result = testConfig.symbolPairs[correctIndex].num === input;
     handleSubmit(result);
@@ -16,7 +16,11 @@ export const DigitSymbolCodingMain: FC<DigitSymbolCodingMainProps> = ({ correctI
 
   return (
     <Box>
-      <img src={testConfig.symbolPairs[correctIndex].image} width={80} style={{ marginBottom: 8 }} />
+      <img
+        src={testConfig.symbolPairs[correctIndex].image}
+        width={uiConfig.topSymbolHeight}
+        style={{ marginBottom: 8 }}
+      />
       <Grid container spacing={1} marginBottom={8}>
         {testConfig.symbolPairs.map((symbol, index) => (
           <Grid item key={index}>
@@ -27,7 +31,7 @@ export const DigitSymbolCodingMain: FC<DigitSymbolCodingMainProps> = ({ correctI
               alignItems="center"
               border="2px solid black"
             >
-              <img src={symbol.image} width={50} style={{ margin: 5 }} />
+              <img src={symbol.image} height={uiConfig.listSymbolHeight} style={{ margin: 5 }} />
               <Divider sx={{ width: "100%", borderBottom: "2px solid black" }} />
               <Typography variant="h3" margin="5px">
                 {symbol.num}
