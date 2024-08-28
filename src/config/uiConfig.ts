@@ -7,7 +7,9 @@
  * @property textColor - Text color of the button
  */
 export const digitSymbolConfig = {
-  buttonHeight: 64,
+  topSymbolHeight: "70vh",
+  listSymbolHeight: "50vh",
+  buttonHeight: 58,
   fontSize: 32,
   numpadBg: "#f0f0f0",
   buttonBg: "#d3d3d3",
@@ -19,7 +21,7 @@ export const digitSymbolConfig = {
  * @property cellSize - Size of each cell in pixels
  */
 export const spacialMemoryConfig = {
-  cellSize: 80,
+  cellSize: "15vh",
 };
 
 /**
@@ -27,6 +29,9 @@ export const spacialMemoryConfig = {
  * @property textColor - Text color configuration
  */
 export const memoryRecallConfig = {
+  buttonWidth: 140,
+  buttonHeight: "18vh",
+  fontSize: 25,
   buttonColor: {
     unselected: "#839d97",
     correct: "#1bb394",
@@ -55,5 +60,5 @@ export const choiceReactionTimeConfig = {
  * @property imageHeight - Height of the image in pixels
  */
 export const visualPairsConfig = {
-  imageHeight: 170,
+  imageHeight: 150,
 };

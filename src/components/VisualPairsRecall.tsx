@@ -24,33 +24,35 @@ export const VisualPairsRecall: FC<VisualPairsRecallProps> = ({ imageTheme, refe
     <Box>
       <Grid container direction="column" gap={1}>
         <Grid container spacing={1}>
-          <Grid
-            item
-            component="img"
-            height={uiConfig.imageHeight}
-            src={`../src/assets/visual-pair/${imageTheme}${reference}.jpg`}
-          />
-          {options.slice(0, 2).map((option, idx) => (
-            <Grid
-              key={idx}
-              item
+          <Grid item>
+            <Box
               component="img"
-              height={uiConfig.imageHeight}
-              src={`../src/assets/visual-pair/${imageTheme}${option}.jpg`}
-              onClick={() => submitHandler(option)}
+              height={uiConfig.imageHeight - 2 * 3}
+              src={`../src/assets/visual-pair/${imageTheme}${reference}.jpg`}
+              border="3px solid red"
             />
+          </Grid>
+          {options.slice(0, 2).map((option, idx) => (
+            <Grid key={idx} item>
+              <Box
+                component="img"
+                height={uiConfig.imageHeight}
+                src={`../src/assets/visual-pair/${imageTheme}${option}.jpg`}
+                onClick={() => submitHandler(option)}
+              />
+            </Grid>
           ))}
         </Grid>
         <Grid container spacing={1}>
           {options.slice(2).map((option, idx) => (
-            <Grid
-              key={idx}
-              item
-              component="img"
-              height={uiConfig.imageHeight}
-              src={`../src/assets/visual-pair/${imageTheme}${option}.jpg`}
-              onClick={() => submitHandler(option)}
-            />
+            <Grid key={idx} item>
+              <Box
+                component="img"
+                height={uiConfig.imageHeight}
+                src={`../src/assets/visual-pair/${imageTheme}${option}.jpg`}
+                onClick={() => submitHandler(option)}
+              />
+            </Grid>
           ))}
         </Grid>
       </Grid>

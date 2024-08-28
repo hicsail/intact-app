@@ -37,7 +37,7 @@ export const ChoiceReactionTimeMain: FC<ChoiceReactionTimeMainProps> = ({
   }, [handleSubmit]);
 
   return (
-    <Box display="flex" alignItems="center" gap={20}>
+    <Box display="flex" alignItems="center" gap={15}>
       <Button
         variant="contained"
         onClick={() => submitHandler("<")}
