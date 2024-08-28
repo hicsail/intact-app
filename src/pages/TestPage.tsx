@@ -3,19 +3,11 @@ import { SpacialMemoryMain } from "../components/SpacialMemoryMain";
 import { ChoiceReactionTimeMain } from "../components/ChoiceReactionTimeMain";
 import { randomSelectFromList } from "../utils/generalUtils";
 import { DigitSymbolCodingMain } from "../components/DigitSymbolCodingMain";
-import { GeneralContext } from "../contexts/general.context";
+import { GeneralContext, TestPhase } from "../contexts/general.context";
 import { VisualPairsMemorize } from "../components/VisualPairsMemorize";
 import { TestContext } from "../contexts/test.context";
 import { VisualPairsRecall } from "../components/VisualPairsRecall";
-
-enum TestPhase {
-  CHOICE_REACTION_TIME = "choice-reaction-time",
-  SPACIAL_MEMORY = "spacial-memory",
-  MEMORY_RECALL = "memory-recall",
-  DIGIT_SYMBOL_CODING = "digit-symbol-coding",
-  VISUAL_PAIRS_MEMORIZE = "visual-pairs-memorize",
-  VISUAL_PAIRS_RECALL = "visual-pairs-recall",
-}
+import { useNavigate } from "react-router-dom";
 
 export const TestPage: FC = () => {
   // Routing hooks
@@ -23,6 +15,8 @@ export const TestPage: FC = () => {
 
   // Test setup
   const testCxt = useContext(TestContext);
+
+  const navigate = useNavigate();
 
   const [digitSymbolCodingIdx, setDigitSymbolCodingIdx] = useState(0);
   const [choiceReactionTimeIdx, setChoiceReactionTimeIdx] = useState(0);
@@ -32,6 +26,7 @@ export const TestPage: FC = () => {
   useEffect(() => {
     if (!cxt!.testPhase) {
       cxt!.setTestPhase(TestPhase.VISUAL_PAIRS_MEMORIZE);
+      navigate("/transition");
     }
   }, []);
 
@@ -43,6 +38,7 @@ export const TestPage: FC = () => {
 
     if (digitSymbolCodingIdx + 1 >= testCxt!.digitSymbolCodingSetup.length) {
       cxt!.setTestPhase(TestPhase.CHOICE_REACTION_TIME);
+      navigate("/transition");
     } else {
       setDigitSymbolCodingIdx((idx) => idx + 1);
     }
@@ -55,6 +51,7 @@ export const TestPage: FC = () => {
 
     if (choiceReactionTimeIdx + 1 >= testCxt!.choiceReactionTimeSetup.length) {
       cxt!.setTestPhase(TestPhase.SPACIAL_MEMORY);
+      navigate("/transition");
     } else {
       setChoiceReactionTimeIdx((idx) => idx + 1);
     }
@@ -68,6 +65,7 @@ export const TestPage: FC = () => {
 
     if (spacialMemoryIdx + 1 >= testCxt!.spacialMemorySetup.length) {
       cxt!.setTestPhase(TestPhase.MEMORY_RECALL);
+      navigate("/transition");
     } else {
       setSpacialMemoryIdx((idx) => idx + 1);
     }
@@ -75,7 +73,7 @@ export const TestPage: FC = () => {
 
   const visualPairsTransitionHandler = () => {
     cxt!.setTestPhase(TestPhase.VISUAL_PAIRS_RECALL);
-    console.log("Transitioning to recall phase");
+    navigate("/transition");
   };
 
   const visualPairsSubmitHandler = (result: boolean) => {
@@ -86,6 +84,7 @@ export const TestPage: FC = () => {
 
     if (visualPairsIdx + 1 >= testCxt!.visualPairSetupImageList.length) {
       cxt!.setTestPhase(TestPhase.DIGIT_SYMBOL_CODING);
+      navigate("/transition");
     } else {
       setVisualPairsIdx((idx) => idx + 1);
     }
