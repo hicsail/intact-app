@@ -6,9 +6,10 @@ import { memoryRecallConfig as uiConfig } from "../config/uiConfig";
 
 interface MemoryRecallMainProps {
   selected: string[];
+  handleSubmit: (result: boolean) => void;
 }
 
-export const MemoryRecallMain: FC<MemoryRecallMainProps> = ({ selected }) => {
+export const MemoryRecallMain: FC<MemoryRecallMainProps> = ({ selected, handleSubmit }) => {
   const [clickedNum, setClickedNum] = useState(0);
   const [values, setValues] = useState(Object.fromEntries(testConfig.options.map((key) => [key, "unselected"])));
   const [randomList, setRandomList] = useState<string[]>([]);
@@ -21,6 +22,7 @@ export const MemoryRecallMain: FC<MemoryRecallMainProps> = ({ selected }) => {
 
   const clickHandler = (index: number) => {
     if (clickedNum >= maxSelection) {
+      handleSubmit(Object.entries(values).filter(([, value]) => value === "correct").length === maxSelection);
       return;
     }
 
@@ -42,8 +44,8 @@ export const MemoryRecallMain: FC<MemoryRecallMainProps> = ({ selected }) => {
             return (
               <Grid item key={colIndex}>
                 <Box
-                  width={180}
-                  height={80}
+                  width={uiConfig.buttonWidth}
+                  height={uiConfig.buttonHeight}
                   display="flex"
                   alignItems="center"
                   justifyContent="center"
@@ -56,7 +58,7 @@ export const MemoryRecallMain: FC<MemoryRecallMainProps> = ({ selected }) => {
                   onClick={() => clickHandler(index)}
                 >
                   <Typography
-                    variant="h4"
+                    fontSize={uiConfig.fontSize}
                     fontWeight="bold"
                     color={uiConfig.textColor[values[randomList[index]] as keyof typeof uiConfig.textColor]}
                   >

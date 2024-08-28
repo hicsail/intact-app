@@ -3,8 +3,9 @@ import { createContext, FC, ReactNode, useState } from "react";
 export enum TestPhase {
   CHOICE_REACTION_TIME = "choice-reaction-time",
   SPACIAL_MEMORY = "spacial-memory",
-  MEMORY_RECALL = "memory-recall",
-  DIGIT_SYMBOL_CODING = "digit-symbol-coding",
+  MEMORY_RECALL_IMMEDIATE = "memory-recall-immediate",
+  MEMORY_RECALL_DELAYED = "memory-recall-delayed",
+  DIGIT_SYMBOL_MATCHING = "digit-symbol-matching",
   VISUAL_PAIRS_MEMORIZE = "visual-pairs-memorize",
   VISUAL_PAIRS_RECALL = "visual-pairs-recall",
 }

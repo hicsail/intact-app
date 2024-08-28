@@ -1,9 +1,10 @@
 import { createContext, useEffect, useMemo, useState } from "react";
-import { generalConfig, visualPairsConfig } from "../config/testConfig";
+import { generalConfig, memoryRecallConfig, visualPairsConfig } from "../config/testConfig";
 import { randomSelectFromList, randomSelectFromNumberRange } from "../utils/generalUtils";
 
 interface TestContextType {
-  digitSymbolCodingSetup: number[];
+  memoryRecallSetup: string[];
+  digitSymbolMatchingSetup: number[];
   choiceReactionTimeSetup: (0 | 1 | 2)[];
   spacialMemorySetup: number[];
   visualPairSetupImageList: string[];
@@ -25,7 +26,13 @@ export const TestProvider: React.FC<TestProviderProps> = ({ children }) => {
     }, {} as Record<string, number[]>)
   );
 
-  const digitSymbolCodingSetup: number[] = useMemo(
+  const memoryRecallSetup: string[] = useMemo(
+    () =>
+      Array.from({ length: memoryRecallConfig.options.length }, () => randomSelectFromList(memoryRecallConfig.options)),
+    []
+  );
+
+  const digitSymbolMatchingSetup: number[] = useMemo(
     () => Array.from({ length: generalConfig.digitSymbolConfig }, () => Math.floor(Math.random() * 9)),
     []
   );
@@ -72,7 +79,8 @@ export const TestProvider: React.FC<TestProviderProps> = ({ children }) => {
   return (
     <TestContext.Provider
       value={{
-        digitSymbolCodingSetup,
+        memoryRecallSetup,
+        digitSymbolMatchingSetup,
         choiceReactionTimeSetup,
         spacialMemorySetup,
         visualPairSetupImageList,
