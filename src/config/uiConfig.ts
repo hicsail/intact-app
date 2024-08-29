@@ -1,4 +1,27 @@
 /**
+ * @property buttonWidth - Width of the button in pixels
+ * @property buttonHeight - Height of the button in pixels
+ * @property fontSize - Font size of the button text in pixels
+ * @property buttonColor - Button color configuration
+ * @property textColor - Text color configuration
+ */
+export const soundCheckConfig = {
+  buttonWidth: 100,
+  buttonHeight: 60,
+  fontSize: 30,
+  buttonColor: {
+    unselected: "#839d97",
+    correct: "#1bb394",
+    incorrect: "#d14b31",
+  },
+  textColor: {
+    unselected: "#eeeeee",
+    correct: "#ffffff",
+    incorrect: "#ffffff",
+  },
+};
+
+/**
  * @property buttonHeight - Height of the button in pixels
  * @property fontSize - Font size of the button text in pixels
  * @property numpadBg - Background color of the numpad
