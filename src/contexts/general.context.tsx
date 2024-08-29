@@ -2,6 +2,7 @@ import { createContext, FC, ReactNode, useState } from "react";
 
 export enum Stage {
   NULL,
+  GENERAL_DIRECTION,
   SOUND_CHECK,
   TRANSITION,
   TEST,

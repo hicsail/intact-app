@@ -10,6 +10,7 @@ import { VisualPairsRecall } from "../components/VisualPairsRecall";
 import { MemoryRecallMain } from "../components/MemoryRecallMain";
 import { Transition } from "../components/Transition";
 import { SoundCheck } from "../components/SoundCheck";
+import { GeneralDirection } from "../components/GeneralDirection";
 
 export const TestPage: FC = () => {
   // Routing hooks
@@ -26,7 +27,7 @@ export const TestPage: FC = () => {
   useEffect(() => {
     if (!cxt!.testPhase) {
       cxt!.setTestPhase(TestPhase.MEMORY_RECALL_IMMEDIATE);
-      cxt!.setStage(Stage.SOUND_CHECK);
+      cxt!.setStage(Stage.GENERAL_DIRECTION);
     }
   }, []);
 
@@ -154,6 +155,9 @@ export const TestPage: FC = () => {
 
   return (
     <>
+      {cxt?.stage === Stage.GENERAL_DIRECTION && (
+        <GeneralDirection handleDirection={() => cxt!.setStage(Stage.SOUND_CHECK)} />
+      )}
       {cxt?.stage === Stage.SOUND_CHECK && <SoundCheck />}
       {cxt?.stage === Stage.TRANSITION && <Transition handleTransition={() => cxt!.setStage(Stage.TEST)} />}
       {cxt?.stage === Stage.TEST && <TestComponent />}
