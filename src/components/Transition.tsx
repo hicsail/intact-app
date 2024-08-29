@@ -1,11 +1,13 @@
 import { FC, useContext } from "react";
 import { GeneralContext, TestPhase } from "../contexts/general.context";
 import { Button } from "@mui/material";
-import { useNavigate } from "react-router-dom";
 
-export const TransitionPage: FC = () => {
+interface TransitionProps {
+  handleTransition: () => void;
+}
+
+export const Transition: FC<TransitionProps> = ({ handleTransition }) => {
   const cxt = useContext(GeneralContext);
-  const navigate = useNavigate();
 
   return (
     <>
@@ -15,7 +17,7 @@ export const TransitionPage: FC = () => {
       {cxt?.testPhase === TestPhase.DIGIT_SYMBOL_MATCHING && <h2>Digit Symbol Coding Placeholder</h2>}
       {cxt?.testPhase === TestPhase.CHOICE_REACTION_TIME && <h2>Choice Reaction Time Placeholder</h2>}
       {cxt?.testPhase === TestPhase.SPACIAL_MEMORY && <h2>Spacial Memory Placeholder</h2>}
-      <Button variant="contained" onClick={() => navigate("/assessments")}>
+      <Button variant="contained" onClick={handleTransition}>
         Continue
       </Button>
     </>

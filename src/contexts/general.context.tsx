@@ -1,18 +1,28 @@
 import { createContext, FC, ReactNode, useState } from "react";
 
+export enum Stage {
+  NULL,
+  SOUND_CHECK,
+  TRANSITION,
+  TEST,
+}
+
 export enum TestPhase {
-  CHOICE_REACTION_TIME = "choice-reaction-time",
-  SPACIAL_MEMORY = "spacial-memory",
-  MEMORY_RECALL_IMMEDIATE = "memory-recall-immediate",
-  MEMORY_RECALL_DELAYED = "memory-recall-delayed",
-  DIGIT_SYMBOL_MATCHING = "digit-symbol-matching",
-  VISUAL_PAIRS_MEMORIZE = "visual-pairs-memorize",
-  VISUAL_PAIRS_RECALL = "visual-pairs-recall",
+  NULL,
+  CHOICE_REACTION_TIME,
+  SPACIAL_MEMORY,
+  MEMORY_RECALL_IMMEDIATE,
+  MEMORY_RECALL_DELAYED,
+  DIGIT_SYMBOL_MATCHING,
+  VISUAL_PAIRS_MEMORIZE,
+  VISUAL_PAIRS_RECALL,
 }
 
 interface GeneralContextType {
-  testPhase: string;
-  setTestPhase: (phase: string) => void;
+  testPhase: TestPhase;
+  stage: Stage;
+  setTestPhase: (phase: TestPhase) => void;
+  setStage: (stage: Stage) => void;
 }
 
 export const GeneralContext = createContext<GeneralContextType | undefined>(undefined);
@@ -22,7 +32,10 @@ export interface GeneralProviderProps {
 }
 
 export const GeneralProvider: FC<GeneralProviderProps> = ({ children }) => {
-  const [testPhase, setTestPhase] = useState<string>("");
+  const [testPhase, setTestPhase] = useState<TestPhase>(TestPhase.NULL);
+  const [stage, setStage] = useState<Stage>(Stage.NULL);
 
-  return <GeneralContext.Provider value={{ testPhase, setTestPhase }}>{children}</GeneralContext.Provider>;
+  return (
+    <GeneralContext.Provider value={{ testPhase, setTestPhase, stage, setStage }}>{children}</GeneralContext.Provider>
+  );
 };

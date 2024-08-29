@@ -3,12 +3,13 @@ import { SpacialMemoryMain } from "../components/SpacialMemoryMain";
 import { ChoiceReactionTimeMain } from "../components/ChoiceReactionTimeMain";
 import { randomSelectFromList } from "../utils/generalUtils";
 import { DigitSymbolMatchingMain } from "../components/DigitSymbolMatchingMain";
-import { GeneralContext, TestPhase } from "../contexts/general.context";
+import { GeneralContext, Stage, TestPhase } from "../contexts/general.context";
 import { VisualPairsMemorize } from "../components/VisualPairsMemorize";
 import { TestContext } from "../contexts/test.context";
 import { VisualPairsRecall } from "../components/VisualPairsRecall";
-import { useNavigate } from "react-router-dom";
 import { MemoryRecallMain } from "../components/MemoryRecallMain";
+import { Transition } from "../components/Transition";
+import { SoundCheck } from "../components/SoundCheck";
 
 export const TestPage: FC = () => {
   // Routing hooks
@@ -16,8 +17,6 @@ export const TestPage: FC = () => {
 
   // Test setup
   const testCxt = useContext(TestContext);
-
-  const navigate = useNavigate();
 
   const [digitSymbolMatchingIdx, setDigitSymbolMatchingIdx] = useState(0);
   const [choiceReactionTimeIdx, setChoiceReactionTimeIdx] = useState(0);
@@ -27,7 +26,7 @@ export const TestPage: FC = () => {
   useEffect(() => {
     if (!cxt!.testPhase) {
       cxt!.setTestPhase(TestPhase.MEMORY_RECALL_IMMEDIATE);
-      navigate("/transition");
+      cxt!.setStage(Stage.SOUND_CHECK);
     }
   }, []);
 
@@ -39,7 +38,7 @@ export const TestPage: FC = () => {
     }
 
     cxt!.setTestPhase(TestPhase.VISUAL_PAIRS_MEMORIZE);
-    navigate("/transition");
+    cxt!.setStage(Stage.TRANSITION);
   };
 
   // Transition from Digit Symbol Matching Test
@@ -51,7 +50,7 @@ export const TestPage: FC = () => {
 
     if (digitSymbolMatchingIdx + 1 >= testCxt!.digitSymbolMatchingSetup.length) {
       cxt!.setTestPhase(TestPhase.SPACIAL_MEMORY);
-      navigate("/transition");
+      cxt!.setStage(Stage.TRANSITION);
     } else {
       setDigitSymbolMatchingIdx((idx) => idx + 1);
     }
@@ -66,7 +65,7 @@ export const TestPage: FC = () => {
 
     if (choiceReactionTimeIdx + 1 >= testCxt!.choiceReactionTimeSetup.length) {
       cxt!.setTestPhase(TestPhase.VISUAL_PAIRS_RECALL);
-      navigate("/transition");
+      cxt!.setStage(Stage.TRANSITION);
     } else {
       setChoiceReactionTimeIdx((idx) => idx + 1);
     }
@@ -81,7 +80,7 @@ export const TestPage: FC = () => {
 
     if (spacialMemoryIdx + 1 >= testCxt!.spacialMemorySetup.length) {
       cxt!.setTestPhase(TestPhase.MEMORY_RECALL_DELAYED);
-      navigate("/transition");
+      cxt!.setStage(Stage.TRANSITION);
     } else {
       setSpacialMemoryIdx((idx) => idx + 1);
     }
@@ -90,7 +89,7 @@ export const TestPage: FC = () => {
   // Transition from Visual Paired Associates Test - Memorize
   const visualPairsTransitionHandler = () => {
     cxt!.setTestPhase(TestPhase.CHOICE_REACTION_TIME);
-    navigate("/transition");
+    cxt!.setStage(Stage.TRANSITION);
   };
 
   // Transition from Visual Paired Associates Test - Recall
@@ -102,13 +101,13 @@ export const TestPage: FC = () => {
 
     if (visualPairsIdx + 1 >= testCxt!.visualPairSetupImageList.length) {
       cxt!.setTestPhase(TestPhase.DIGIT_SYMBOL_MATCHING);
-      navigate("/transition");
+      cxt!.setStage(Stage.TRANSITION);
     } else {
       setVisualPairsIdx((idx) => idx + 1);
     }
   };
 
-  return (
+  const TestComponent: FC = () => (
     <>
       {cxt?.testPhase === TestPhase.MEMORY_RECALL_IMMEDIATE && (
         <MemoryRecallMain selected={testCxt!.memoryRecallSetup} handleSubmit={memoryRecallSubmitHandler} />
@@ -150,6 +149,14 @@ export const TestPage: FC = () => {
       {cxt?.testPhase === TestPhase.MEMORY_RECALL_DELAYED && (
         <MemoryRecallMain selected={testCxt!.memoryRecallSetup} handleSubmit={memoryRecallSubmitHandler} />
       )}
+    </>
+  );
+
+  return (
+    <>
+      {cxt?.stage === Stage.SOUND_CHECK && <SoundCheck />}
+      {cxt?.stage === Stage.TRANSITION && <Transition handleTransition={() => cxt!.setStage(Stage.TEST)} />}
+      {cxt?.stage === Stage.TEST && <TestComponent />}
     </>
   );
 };
