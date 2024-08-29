@@ -1,10 +1,11 @@
 import "./App.css";
+/*
 import { randomSelectFromList } from "./utils/generalUtils";
 import { ChoiceReactionTimeMain } from "./components/ChoiceReactionTimeMain";
 import { DigitSymbolCodingMain } from "./components/DigitSymbolCodingMain";
 import { MemoryRecallMain } from "./components/MemoryRecallMain";
 import { SpacialMemoryMain } from "./components/SpacialMemoryMain";
-
+*/
 function App() {
   return (
     <>
