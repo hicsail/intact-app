@@ -34,6 +34,15 @@ export const SoundCheck: FC = () => {
   }, []);
 
   useEffect(() => {
+    if (randomNum === -1) {
+      return;
+    }
+
+    console.log(randomNum + 1);
+    // TODO: Add audio here
+  }, [randomNum]);
+
+  useEffect(() => {
     if (hasSelected) {
       setTimeout(() => {
         setValues(Array.from({ length: 10 }).map(() => "unselected"));
