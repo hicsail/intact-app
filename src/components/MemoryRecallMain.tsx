@@ -6,9 +6,10 @@ import { memoryRecallConfig as uiConfig } from "../config/uiConfig";
 
 interface MemoryRecallMainProps {
   selected: string[];
+  handleSubmit: (result: boolean) => void;
 }
 
-export const MemoryRecallMain: FC<MemoryRecallMainProps> = ({ selected }) => {
+export const MemoryRecallMain: FC<MemoryRecallMainProps> = ({ selected, handleSubmit }) => {
   const [clickedNum, setClickedNum] = useState(0);
   const [values, setValues] = useState(Object.fromEntries(testConfig.options.map((key) => [key, "unselected"])));
   const [randomList, setRandomList] = useState<string[]>([]);
@@ -19,11 +20,16 @@ export const MemoryRecallMain: FC<MemoryRecallMainProps> = ({ selected }) => {
     setRandomList(shuffleList([...testConfig.options]));
   }, [testConfig.options]);
 
-  const clickHandler = (index: number) => {
+  useEffect(() => {
     if (clickedNum >= maxSelection) {
-      return;
+      setTimeout(() => {
+        handleSubmit(Object.entries(values).filter(([, value]) => value === "correct").length === maxSelection);
+        return;
+      }, 2000);
     }
+  }, [clickedNum]);
 
+  const clickHandler = (index: number) => {
     setClickedNum((num) => num + 1);
     setValues((prev) => {
       const newValues = { ...prev };
@@ -42,8 +48,8 @@ export const MemoryRecallMain: FC<MemoryRecallMainProps> = ({ selected }) => {
             return (
               <Grid item key={colIndex}>
                 <Box
-                  width={180}
-                  height={80}
+                  width={uiConfig.buttonWidth}
+                  height={uiConfig.buttonHeight}
                   display="flex"
                   alignItems="center"
                   justifyContent="center"
@@ -56,7 +62,7 @@ export const MemoryRecallMain: FC<MemoryRecallMainProps> = ({ selected }) => {
                   onClick={() => clickHandler(index)}
                 >
                   <Typography
-                    variant="h4"
+                    fontSize={uiConfig.fontSize}
                     fontWeight="bold"
                     color={uiConfig.textColor[values[randomList[index]] as keyof typeof uiConfig.textColor]}
                   >

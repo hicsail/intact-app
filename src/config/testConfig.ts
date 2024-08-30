@@ -8,6 +8,13 @@ import symbol7 from "../assets/digit-symbol/7.gif";
 import symbol8 from "../assets/digit-symbol/8.gif";
 import symbol9 from "../assets/digit-symbol/9.gif";
 
+export const generalConfig = {
+  digitSymbolConfig: 5, // Number of questions
+  spacialMemory: [4, 5, 6, 7, 8], // Number of nodes in the grid
+  choiceReactionTime: 10, // Number of questions
+  visualPairs: 3, // Number of questions
+};
+
 /**
  * @property rows - Number of rows in the grid
  * @property cols - Number of columns in the grid
@@ -62,9 +69,38 @@ export const digitSymbolConfig = {
   ],
 };
 
+/**
+ * @property waitTimeMin - Minimum time in milliseconds to wait for the user to react
+ * @property waitTimeMax - Maximum time in milliseconds to wait for the user to react
+ */
 export const choiceReactionTimeConfig = {
-  choiceColor: {
-    color0: "#ffff00",
-    color1: "#02ffff",
-  },
+  waitTimeMin: 300,
+  waitTimeMax: 1500,
+};
+
+/**
+ * @property timeToMemorize - Time in milliseconds to memorize the visual pairs
+ * @property imageThemes - List of image themes to select from
+ */
+export const visualPairsConfig = {
+  timeToMemorize: 5000,
+  imageThemes: [
+    "bar",
+    "barn",
+    "bath",
+    "beach",
+    "bed",
+    "boat",
+    "buffet",
+    "closet",
+    "door",
+    "entry",
+    "example",
+    "field",
+    "kitchen",
+    "lobby",
+    "playground",
+    "temple",
+    "underwater",
+  ],
 };

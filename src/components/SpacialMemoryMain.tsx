@@ -20,10 +20,12 @@ const Cell = styled(Box, {
 
 interface SpacialMemoryMainProps {
   numNodes: number;
+  handleSubmit: (result: boolean) => void;
 }
 
-export const SpacialMemoryMain: FC<SpacialMemoryMainProps> = ({ numNodes }) => {
+export const SpacialMemoryMain: FC<SpacialMemoryMainProps> = ({ numNodes, handleSubmit }) => {
   const [grid, setGrid] = useState(Array(testConfig.rows).fill(Array(testConfig.cols).fill(false)));
+  const [correct, setCorrect] = useState(Array(testConfig.rows).fill(Array(testConfig.cols).fill(false)));
   const [enabled, setEnabled] = useState(false);
 
   useEffect(() => {
@@ -32,11 +34,13 @@ export const SpacialMemoryMain: FC<SpacialMemoryMainProps> = ({ numNodes }) => {
       setEnabled(true);
     }, testConfig.timeToMemorize);
 
-    setGrid(generateRandomTreeOnGrid(testConfig.rows, testConfig.cols, numNodes));
+    const randomGrid = generateRandomTreeOnGrid(testConfig.rows, testConfig.cols, numNodes);
+    setCorrect(randomGrid);
+    setGrid(randomGrid);
     setEnabled(false);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [handleSubmit]);
 
   const toggleCell = (row: number, col: number) => {
     setGrid((grid) => {
@@ -44,6 +48,13 @@ export const SpacialMemoryMain: FC<SpacialMemoryMainProps> = ({ numNodes }) => {
       newGrid[row][col] = !newGrid[row][col];
       return newGrid;
     });
+  };
+
+  const submitHandler = () => {
+    const result = grid.every((row: boolean[], rowIndex: number) =>
+      row.every((cell: boolean, colIndex: number) => cell === correct[rowIndex][colIndex])
+    );
+    handleSubmit(result);
   };
 
   return (
@@ -65,7 +76,7 @@ export const SpacialMemoryMain: FC<SpacialMemoryMainProps> = ({ numNodes }) => {
             ))}
           </Grid>
         ))}
-        <Button variant="contained" sx={{ width: 400, marginTop: 2 }} onClick={() => console.log()}>
+        <Button variant="contained" disabled={!enabled} sx={{ width: 400, marginTop: 2 }} onClick={submitHandler}>
           Submit
         </Button>
       </Grid>
