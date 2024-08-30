@@ -20,12 +20,16 @@ export const MemoryRecallMain: FC<MemoryRecallMainProps> = ({ selected, handleSu
     setRandomList(shuffleList([...testConfig.options]));
   }, [testConfig.options]);
 
-  const clickHandler = (index: number) => {
+  useEffect(() => {
     if (clickedNum >= maxSelection) {
-      handleSubmit(Object.entries(values).filter(([, value]) => value === "correct").length === maxSelection);
-      return;
+      setTimeout(() => {
+        handleSubmit(Object.entries(values).filter(([, value]) => value === "correct").length === maxSelection);
+        return;
+      }, 2000);
     }
+  }, [clickedNum]);
 
+  const clickHandler = (index: number) => {
     setClickedNum((num) => num + 1);
     setValues((prev) => {
       const newValues = { ...prev };
