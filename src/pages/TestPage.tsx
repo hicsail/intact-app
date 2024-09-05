@@ -38,9 +38,6 @@ export const TestPage: FC = () => {
       console.log("No participant ID");
 
       if (!participantId) {
-        navigate("auth");
-        return;
-      } else {
         navigate(`auth/${participantId}`);
         return;
       }
