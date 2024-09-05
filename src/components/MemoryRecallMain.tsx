@@ -34,6 +34,10 @@ export const MemoryRecallMain: FC<MemoryRecallMainProps> = ({ selected, handleSu
       return;
     }
 
+    if (values[randomList[index]] !== "unselected") {
+      return;
+    }
+
     setClickedNum((num) => num + 1);
     setValues((prev) => {
       const newValues = { ...prev };
