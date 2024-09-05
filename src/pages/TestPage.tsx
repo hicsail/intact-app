@@ -11,13 +11,21 @@ import { MemoryRecallMain } from "../components/MemoryRecallMain";
 import { Transition } from "../components/Transition";
 import { SoundCheck } from "../components/SoundCheck";
 import { GeneralDirection } from "../components/GeneralDirection";
+import { useNavigate, useParams } from "react-router-dom";
+import { AuthContext } from "../contexts/auth.context";
 
 export const TestPage: FC = () => {
+  const { participantId } = useParams<{ participantId: string }>();
+
+  const authCxt = useContext(AuthContext);
+
   // Routing hooks
   const cxt = useContext(GeneralContext);
 
   // Test setup
   const testCxt = useContext(TestContext);
+
+  const navigate = useNavigate();
 
   const [digitSymbolMatchingIdx, setDigitSymbolMatchingIdx] = useState(0);
   const [choiceReactionTimeIdx, setChoiceReactionTimeIdx] = useState(0);
@@ -25,6 +33,19 @@ export const TestPage: FC = () => {
   const [visualPairsIdx, setVisualPairsIdx] = useState(0);
 
   useEffect(() => {
+    console.log(authCxt?.participantId);
+    if (!authCxt!.participantId) {
+      console.log("No participant ID");
+
+      if (!participantId) {
+        navigate("auth");
+        return;
+      } else {
+        navigate(`auth/${participantId}`);
+        return;
+      }
+    }
+
     if (!cxt!.testPhase) {
       cxt!.setTestPhase(TestPhase.MEMORY_RECALL_IMMEDIATE);
       cxt!.setStage(Stage.GENERAL_DIRECTION);
