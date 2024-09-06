@@ -12,12 +12,9 @@ import { Transition } from "../components/Transition";
 import { SoundCheck } from "../components/SoundCheck";
 import { GeneralDirection } from "../components/GeneralDirection";
 import { useNavigate, useParams } from "react-router-dom";
-import { AuthContext } from "../contexts/auth.context";
 
 export const TestPage: FC = () => {
   const { participantId } = useParams<{ participantId: string }>();
-
-  const authCxt = useContext(AuthContext);
 
   // Routing hooks
   const cxt = useContext(GeneralContext);
@@ -33,14 +30,12 @@ export const TestPage: FC = () => {
   const [visualPairsIdx, setVisualPairsIdx] = useState(0);
 
   useEffect(() => {
-    console.log(authCxt?.participantId);
-    if (!authCxt!.participantId) {
+    const localParticipantId = sessionStorage.getItem("participantId");
+    if (!localParticipantId || !participantId) {
       console.log("No participant ID");
 
-      if (!participantId) {
-        navigate(`auth/${participantId}`);
-        return;
-      }
+      navigate(`auth/${participantId}`);
+      return;
     }
 
     if (!cxt!.testPhase) {

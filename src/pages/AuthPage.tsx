@@ -1,18 +1,15 @@
 import { Button, Container, TextField, Typography } from "@mui/material";
-import { ChangeEvent, FC, useContext, useEffect, useState } from "react";
+import { ChangeEvent, FC, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { AuthContext } from "../contexts/auth.context";
 
 export const AuthPage: FC = () => {
-  const authCxt = useContext(AuthContext);
-
   const { participantId } = useParams<{ participantId: string }>();
   const [input, setInput] = useState<string>("");
   const navigate = useNavigate();
 
   useEffect(() => {
     if (validateParticipantId(participantId)) {
-      authCxt!.setParticipantId(participantId);
+      sessionStorage.setItem("participantId", participantId!);
       console.log(`Participant ${participantId} is validated`);
       navigate(`/assessments/${participantId}`);
     }
@@ -27,7 +24,7 @@ export const AuthPage: FC = () => {
       return;
     }
 
-    authCxt!.setParticipantId(input);
+    sessionStorage.setItem("participantId", input);
     navigate(`/assessments/${input}`);
   };
 
