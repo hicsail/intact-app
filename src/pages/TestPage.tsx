@@ -38,9 +38,16 @@ export const TestPage: FC = () => {
       return;
     }
 
-    if (!cxt!.testPhase) {
+    console.log(`Participant ID: ${participantId}`);
+
+    if (!sessionStorage.getItem("testPhase") || !sessionStorage.getItem("stage")) {
+      sessionStorage.setItem("testPhase", String(TestPhase.MEMORY_RECALL_IMMEDIATE));
+      sessionStorage.setItem("stage", String(Stage.GENERAL_DIRECTION));
       cxt!.setTestPhase(TestPhase.MEMORY_RECALL_IMMEDIATE);
       cxt!.setStage(Stage.GENERAL_DIRECTION);
+    } else {
+      cxt!.setTestPhase(Number(sessionStorage.getItem("testPhase")) as TestPhase);
+      cxt!.setStage(Number(sessionStorage.getItem("stage")) as Stage);
     }
   }, []);
 
@@ -51,6 +58,8 @@ export const TestPage: FC = () => {
       return;
     }
 
+    sessionStorage.setItem("testPhase", String(TestPhase.VISUAL_PAIRS_MEMORIZE));
+    sessionStorage.setItem("stage", String(Stage.TRANSITION));
     cxt!.setTestPhase(TestPhase.VISUAL_PAIRS_MEMORIZE);
     cxt!.setStage(Stage.TRANSITION);
   };
@@ -63,6 +72,8 @@ export const TestPage: FC = () => {
     }
 
     if (digitSymbolMatchingIdx + 1 >= testCxt!.digitSymbolMatchingSetup.length) {
+      sessionStorage.setItem("testPhase", String(TestPhase.SPACIAL_MEMORY));
+      sessionStorage.setItem("stage", String(Stage.TRANSITION));
       cxt!.setTestPhase(TestPhase.SPACIAL_MEMORY);
       cxt!.setStage(Stage.TRANSITION);
     } else {
@@ -78,6 +89,8 @@ export const TestPage: FC = () => {
     }
 
     if (choiceReactionTimeIdx + 1 >= testCxt!.choiceReactionTimeSetup.length) {
+      sessionStorage.setItem("testPhase", String(TestPhase.VISUAL_PAIRS_RECALL));
+      sessionStorage.setItem("stage", String(Stage.TRANSITION));
       cxt!.setTestPhase(TestPhase.VISUAL_PAIRS_RECALL);
       cxt!.setStage(Stage.TRANSITION);
     } else {
@@ -93,6 +106,8 @@ export const TestPage: FC = () => {
     }
 
     if (spacialMemoryIdx + 1 >= testCxt!.spacialMemorySetup.length) {
+      sessionStorage.setItem("testPhase", String(TestPhase.MEMORY_RECALL_DELAYED));
+      sessionStorage.setItem("stage", String(Stage.TRANSITION));
       cxt!.setTestPhase(TestPhase.MEMORY_RECALL_DELAYED);
       cxt!.setStage(Stage.TRANSITION);
     } else {
@@ -102,6 +117,8 @@ export const TestPage: FC = () => {
 
   // Transition from Visual Paired Associates Test - Memorize
   const visualPairsTransitionHandler = () => {
+    sessionStorage.setItem("testPhase", String(TestPhase.CHOICE_REACTION_TIME));
+    sessionStorage.setItem("stage", String(Stage.TRANSITION));
     cxt!.setTestPhase(TestPhase.CHOICE_REACTION_TIME);
     cxt!.setStage(Stage.TRANSITION);
   };
@@ -114,6 +131,8 @@ export const TestPage: FC = () => {
     }
 
     if (visualPairsIdx + 1 >= testCxt!.visualPairSetupImageList.length) {
+      sessionStorage.setItem("testPhase", String(TestPhase.DIGIT_SYMBOL_MATCHING));
+      sessionStorage.setItem("stage", String(Stage.TRANSITION));
       cxt!.setTestPhase(TestPhase.DIGIT_SYMBOL_MATCHING);
       cxt!.setStage(Stage.TRANSITION);
     } else {
