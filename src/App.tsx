@@ -1,24 +1,11 @@
 import "./App.css";
-import { ProgressPage } from "./components/ProgressPage";
-import { randomSelectFromList } from "./utils/generalUtils";
-import { ChoiceReactionTimeMain } from "./components/ChoiceReactionTimeMain";
-import { DigitSymbolCodingMain } from "./components/DigitSymbolCodingMain";
-import { MemoryRecallMain } from "./components/MemoryRecallMain";
-import { SpacialMemoryMain } from "./components/SpacialMemoryMain";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { TestPage } from "./pages/TestPage";
 
 function App() {
-  return (
-    <>
-      {/* <ProgressPage/> */}
-      {/* <SpacialMemoryMain numNodes={5} /> */}
-      {/* <MemoryRecallMain selected={["Octopus", "Elephant", "Cat", "Lion", "Squirrel"]} /> */}
-      {/* <DigitSymbolCodingMain correctIndex={Math.floor(Math.random() * 10) + 1} /> */}
-      {/* <ChoiceReactionTimeMain
-        correctIndex={randomSelectFromList([0, 1, 2])}
-        correctSymbol={randomSelectFromList(["<", ">"])}
-      /> */}
-    </>
-  );
+  const router = createBrowserRouter([{ path: "assessments", element: <TestPage /> }]);
+
+  return <RouterProvider router={router} />;
 }
 
 export default App;
