@@ -32,22 +32,36 @@ export const TestPage: FC = () => {
   useEffect(() => {
     const localParticipantId = sessionStorage.getItem("participantId");
     if (!localParticipantId || !participantId) {
-      console.log("No participant ID");
-
       navigate(`auth/${participantId}`);
       return;
     }
 
-    console.log(`Participant ID: ${participantId}`);
-
     if (!sessionStorage.getItem("testPhase") || !sessionStorage.getItem("stage")) {
       sessionStorage.setItem("testPhase", String(TestPhase.MEMORY_RECALL_IMMEDIATE));
       sessionStorage.setItem("stage", String(Stage.GENERAL_DIRECTION));
+      sessionStorage.setItem("questionNumber", "0");
       cxt!.setTestPhase(TestPhase.MEMORY_RECALL_IMMEDIATE);
       cxt!.setStage(Stage.GENERAL_DIRECTION);
     } else {
       cxt!.setTestPhase(Number(sessionStorage.getItem("testPhase")) as TestPhase);
       cxt!.setStage(Number(sessionStorage.getItem("stage")) as Stage);
+
+      switch (Number(sessionStorage.getItem("testPhase"))) {
+        case TestPhase.DIGIT_SYMBOL_MATCHING:
+          setDigitSymbolMatchingIdx(Number(sessionStorage.getItem("questionNumber")));
+          break;
+        case TestPhase.CHOICE_REACTION_TIME:
+          setChoiceReactionTimeIdx(Number(sessionStorage.getItem("questionNumber")));
+          break;
+        case TestPhase.SPACIAL_MEMORY:
+          setSpacialMemoryIdx(Number(sessionStorage.getItem("questionNumber")));
+          break;
+        case TestPhase.VISUAL_PAIRS_RECALL:
+          setVisualPairsIdx(Number(sessionStorage.getItem("questionNumber")));
+          break;
+        default:
+          break;
+      }
     }
   }, []);
 
@@ -74,9 +88,11 @@ export const TestPage: FC = () => {
     if (digitSymbolMatchingIdx + 1 >= testCxt!.digitSymbolMatchingSetup.length) {
       sessionStorage.setItem("testPhase", String(TestPhase.SPACIAL_MEMORY));
       sessionStorage.setItem("stage", String(Stage.TRANSITION));
+      sessionStorage.setItem("questionNumber", "0");
       cxt!.setTestPhase(TestPhase.SPACIAL_MEMORY);
       cxt!.setStage(Stage.TRANSITION);
     } else {
+      sessionStorage.setItem("questionNumber", String(digitSymbolMatchingIdx + 1));
       setDigitSymbolMatchingIdx((idx) => idx + 1);
     }
   };
@@ -91,9 +107,11 @@ export const TestPage: FC = () => {
     if (choiceReactionTimeIdx + 1 >= testCxt!.choiceReactionTimeSetup.length) {
       sessionStorage.setItem("testPhase", String(TestPhase.VISUAL_PAIRS_RECALL));
       sessionStorage.setItem("stage", String(Stage.TRANSITION));
+      sessionStorage.setItem("questionNumber", "0");
       cxt!.setTestPhase(TestPhase.VISUAL_PAIRS_RECALL);
       cxt!.setStage(Stage.TRANSITION);
     } else {
+      sessionStorage.setItem("questionNumber", String(choiceReactionTimeIdx + 1));
       setChoiceReactionTimeIdx((idx) => idx + 1);
     }
   };
@@ -108,9 +126,11 @@ export const TestPage: FC = () => {
     if (spacialMemoryIdx + 1 >= testCxt!.spacialMemorySetup.length) {
       sessionStorage.setItem("testPhase", String(TestPhase.MEMORY_RECALL_DELAYED));
       sessionStorage.setItem("stage", String(Stage.TRANSITION));
+      sessionStorage.setItem("questionNumber", "0");
       cxt!.setTestPhase(TestPhase.MEMORY_RECALL_DELAYED);
       cxt!.setStage(Stage.TRANSITION);
     } else {
+      sessionStorage.setItem("questionNumber", String(spacialMemoryIdx + 1));
       setSpacialMemoryIdx((idx) => idx + 1);
     }
   };
@@ -133,9 +153,11 @@ export const TestPage: FC = () => {
     if (visualPairsIdx + 1 >= testCxt!.visualPairSetupImageList.length) {
       sessionStorage.setItem("testPhase", String(TestPhase.DIGIT_SYMBOL_MATCHING));
       sessionStorage.setItem("stage", String(Stage.TRANSITION));
+      sessionStorage.setItem("questionNumber", "0");
       cxt!.setTestPhase(TestPhase.DIGIT_SYMBOL_MATCHING);
       cxt!.setStage(Stage.TRANSITION);
     } else {
+      sessionStorage.setItem("questionNumber", String(visualPairsIdx + 1));
       setVisualPairsIdx((idx) => idx + 1);
     }
   };
