@@ -1,14 +1,15 @@
 import "./App.css";
-/*
+import { ProgressPage } from "./components/ProgressPage";
 import { randomSelectFromList } from "./utils/generalUtils";
 import { ChoiceReactionTimeMain } from "./components/ChoiceReactionTimeMain";
 import { DigitSymbolCodingMain } from "./components/DigitSymbolCodingMain";
 import { MemoryRecallMain } from "./components/MemoryRecallMain";
 import { SpacialMemoryMain } from "./components/SpacialMemoryMain";
-*/
+
 function App() {
   return (
     <>
+      {/* <ProgressPage/> */}
       {/* <SpacialMemoryMain numNodes={5} /> */}
       {/* <MemoryRecallMain selected={["Octopus", "Elephant", "Cat", "Lion", "Squirrel"]} /> */}
       {/* <DigitSymbolCodingMain correctIndex={Math.floor(Math.random() * 10) + 1} /> */}
