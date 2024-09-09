@@ -1,4 +1,4 @@
-import { Button, Container, TextField, Typography } from "@mui/material";
+import { Button, Card, CardContent, CardHeader, TextField } from "@mui/material";
 import { ChangeEvent, FC, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -38,14 +38,14 @@ export const AuthPage: FC = () => {
   };
 
   return (
-    <Container>
-      <Typography variant="h4" gutterBottom>
-        Enter Participant ID
-      </Typography>
-      <TextField label="Participant ID" variant="outlined" fullWidth margin="normal" onChange={inputChangeHandler} />
-      <Button variant="contained" color="primary" onClick={submitHandler}>
-        Submit
-      </Button>
-    </Container>
+    <Card>
+      <CardHeader title="Enter Participant ID" sx={{ paddingBottom: 0 }} />
+      <CardContent sx={{ paddingTop: 0 }}>
+        <TextField label="Participant ID" variant="outlined" fullWidth margin="normal" onChange={inputChangeHandler} />
+        <Button variant="contained" color="primary" onClick={submitHandler}>
+          Submit
+        </Button>
+      </CardContent>
+    </Card>
   );
 };
