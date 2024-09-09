@@ -1,6 +1,5 @@
 import { FC, useContext } from "react";
 import { GeneralContext, TestPhase } from "../contexts/general.context";
-import { Button } from "@mui/material";
 import { ProgressPage } from "./ProgressPage";
 
 interface TransitionProps {
@@ -18,9 +17,6 @@ export const Transition: FC<TransitionProps> = ({ handleTransition }) => {
       {cxt?.testPhase === TestPhase.DIGIT_SYMBOL_MATCHING && <ProgressPage id={4} onClick={handleTransition}/>}
       {cxt?.testPhase === TestPhase.CHOICE_REACTION_TIME && <ProgressPage id={5} onClick={handleTransition}/>}
       {cxt?.testPhase === TestPhase.SPACIAL_MEMORY && <ProgressPage id={6} onClick={handleTransition}/>}
-      <Button variant="contained" onClick={handleTransition}>
-        Continue
-      </Button>
     </>
   );
 };
