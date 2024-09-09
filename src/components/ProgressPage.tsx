@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Box, Button, styled, Stepper, Typography, Step, StepLabel, StepConnector, StepConnectorProps} from "@mui/material";
+import { FC, useEffect, useState } from "react";
+import { Box, Button, styled, Stepper, Typography, Step, StepLabel, StepConnector, StepConnectorProps, createTheme, colors} from "@mui/material";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 
@@ -29,35 +29,38 @@ const MemoryTestsLabels = [
         "desc": "BoCA delayed recall desc"
     }
 ];
+
+
+interface ProgressPageProps  {  
+    id:number
+    onClick: (event: React.MouseEvent<HTMLButtonElement>) => void
+}
+
 interface CustomConnectorProps extends StepConnectorProps {
-    numSteps: number;
+    numsteps: number;
   }
 
-
-
-const CustomConnector = styled(StepConnector)<CustomConnectorProps>(({ numSteps }) => ({
+const CustomConnector = styled(StepConnector)<CustomConnectorProps>(({ numsteps }) => ({
     '& .MuiStepConnector-line': {
-      minHeight: `calc(100vh / ${numSteps} - 20px)`,  // 72px accounts approximately for the height of the step button and label
+      minHeight: `calc(100vh / ${numsteps} - 20px)`,  // 72px accounts approximately for the height of the step button and label
     },
   }));
 
-export const ProgressPage = () => {
+export const ProgressPage: FC<ProgressPageProps> = (props) => {
     const [activeStep, setActiveStep] = useState(0);
 
     useEffect(()=> {
-        const queryParam = new URLSearchParams(window.location.search);
-        const param = queryParam.get('id');
-        setActiveStep(Number(param));
+        setActiveStep(props.id)
     }, [])
 
     return (
         <Box alignContent={'center'} sx={{width: '100%', height: '100vh', overflow:'auto', padding: '5vh', display:'flex', flexDirection:'column', alignItems:'center'}}>
-            <Stepper activeStep={activeStep} orientation="vertical" connector={<CustomConnector numSteps={MemoryTestsLabels.length} sx={{paddingLeft:0.5}} />}>
+            <Stepper activeStep={activeStep} orientation="vertical" connector={<CustomConnector numsteps={MemoryTestsLabels.length} sx={{paddingLeft:0.5}}/>}>
                {
                 MemoryTestsLabels.map((step, index) => (
-                    <Step key={index} color="error">
-                        <StepLabel icon={activeStep > index ? <CheckCircleIcon fontSize="large"/> : <RadioButtonUncheckedIcon fontSize="large"/>} sx={{color:activeStep <= index ? '#ffffff' : '#009933'}}>
-                            <Typography sx={{fontSize: 24}} color={activeStep <= index ? '#ffffff' : '#009933'}>
+                    <Step key={index}>
+                        <StepLabel icon={activeStep > index ? <CheckCircleIcon fontSize="large"/> : <RadioButtonUncheckedIcon fontSize="large" color={activeStep === index? "inherit" : "disabled"}/>} sx={{color:activeStep <= index ? '#ffffff' : '#009933'}}>
+                            <Typography sx={{fontSize: 24}} color={activeStep <= index ? activeStep === index ? "#ffffff" : "#808080" : "#009933"}>
                                 {step.name}
                             </Typography>
                         </StepLabel>
@@ -66,7 +69,7 @@ export const ProgressPage = () => {
                }
             </Stepper>
             <Box sx={{width:'100%', paddingTop: '3vh'}}>
-                <Button variant="contained" sx={{textAlign: 'center', minWidth: '50%', width:'100%'}}>
+                <Button variant="contained" sx={{textAlign: 'center', minWidth: '50%', width:'100%'}} onClick={props.onClick}>
                     <Typography>
                         Continue
                     </Typography>
