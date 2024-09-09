@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Box, Button, styled, Stepper, Typography, Step, StepLabel, StepConnector, StepConnectorProps} from "@mui/material";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 
 const MemoryTestsLabels = [
