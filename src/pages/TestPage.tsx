@@ -32,7 +32,7 @@ export const TestPage: FC = () => {
   useEffect(() => {
     const localParticipantId = sessionStorage.getItem("participantId");
     if (!localParticipantId || !participantId) {
-      navigate(`auth/${participantId}`);
+      navigate(`/${participantId}`);
       return;
     }
 
