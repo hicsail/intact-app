@@ -3,6 +3,7 @@ import { FC, useContext, useEffect, useState } from "react";
 import { soundCheckConfig as uiConfig } from "../config/uiConfig";
 import { GeneralContext, Stage } from "../contexts/general.context";
 import { styled } from "@mui/system";
+import { playAudioFromS3 } from "../utils/awsUtils";
 
 const AnimatedBox = styled(Box)(() => ({
   "&.fadeOut": {
@@ -40,6 +41,12 @@ export const SoundCheck: FC = () => {
 
     console.log(randomNum + 1);
     // TODO: Add audio here
+    setTimeout(() => {
+      playAudioFromS3("soundcheck/instructions");
+    }, 2500);
+    setTimeout(() => {
+      playAudioFromS3(`soundcheck/number-${randomNum + 1}`);
+    }, 9000);
   }, [randomNum]);
 
   useEffect(() => {
