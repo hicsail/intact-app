@@ -30,6 +30,14 @@ export const MemoryRecallMain: FC<MemoryRecallMainProps> = ({ selected, handleSu
   }, [clickedNum]);
 
   const clickHandler = (index: number) => {
+    if (clickedNum >= maxSelection) {
+      return;
+    }
+
+    if (values[randomList[index]] !== "unselected") {
+      return;
+    }
+
     setClickedNum((num) => num + 1);
     setValues((prev) => {
       const newValues = { ...prev };
@@ -41,10 +49,10 @@ export const MemoryRecallMain: FC<MemoryRecallMainProps> = ({ selected, handleSu
 
   return (
     <Grid container direction="column" spacing={1}>
-      {Array.from({ length: 4 }).map((_, rowIndex) => (
+      {Array.from({ length: 8 }).map((_, rowIndex) => (
         <Grid container item spacing={1} key={rowIndex}>
-          {Array.from({ length: 4 }).map((_, colIndex) => {
-            const index = rowIndex * 4 + colIndex;
+          {Array.from({ length: 2 }).map((_, colIndex) => {
+            const index = rowIndex * 2 + colIndex;
             return (
               <Grid item key={colIndex}>
                 <Box

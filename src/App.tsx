@@ -1,9 +1,15 @@
 import "./App.css";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createHashRouter, RouterProvider } from "react-router-dom";
 import { TestPage } from "./pages/TestPage";
+import { AuthPage } from "./pages/AuthPage";
 
 function App() {
-  const router = createBrowserRouter([{ path: "assessments", element: <TestPage /> }]);
+  const router = createHashRouter([
+    { path: "assessments/:participantId", element: <TestPage /> },
+    { path: "assessments", element: <TestPage /> },
+    { path: "/:participantId", element: <AuthPage /> },
+    { path: "/", element: <AuthPage /> },
+  ]);
 
   return <RouterProvider router={router} />;
 }

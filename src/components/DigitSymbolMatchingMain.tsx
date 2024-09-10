@@ -2,6 +2,16 @@ import { FC } from "react";
 import { Box, Button, Divider, Grid, Typography } from "@mui/material";
 import { digitSymbolConfig as testConfig } from "../config/testConfig";
 import { digitSymbolConfig as uiConfig } from "../config/uiConfig";
+import styled from "@emotion/styled";
+
+const Cell = styled(Box, {
+  shouldForwardProp: (prop) => prop !== "leftBox" && prop !== "rightBox" && prop !== "middleBox",
+})<{ leftBox?: boolean; rightBox?: boolean; middleBox?: boolean }>(({ leftBox, rightBox }) => ({
+  borderLeft: leftBox ? "2px solid black" : "1px solid black",
+  borderRight: rightBox ? "2px solid black" : "1px solid black",
+  borderBottom: "2px solid black",
+  borderTop: "2px solid black",
+}));
 
 interface DigitSymbolMatchingMainProps {
   correctIndex: number;
@@ -21,22 +31,23 @@ export const DigitSymbolMatchingMain: FC<DigitSymbolMatchingMainProps> = ({ corr
         width={uiConfig.topSymbolHeight}
         style={{ marginBottom: 8 }}
       />
-      <Grid container spacing={1} marginBottom={8}>
+      <Grid container spacing={0} marginBottom={8}>
         {testConfig.symbolPairs.map((symbol, index) => (
           <Grid item key={index}>
-            <Box
+            <Cell
+              leftBox={index === 0}
+              rightBox={index === testConfig.symbolPairs.length - 1}
               display="flex"
               flexDirection="column"
               justifyContent="center"
               alignItems="center"
-              border="2px solid black"
             >
               <img src={symbol.image} height={uiConfig.listSymbolHeight} style={{ margin: 5 }} />
-              <Divider sx={{ width: "100%", borderBottom: "2px solid black" }} />
-              <Typography variant="h3" margin="5px">
+              <Divider sx={{ width: "100%", borderBottom: "1px solid black" }} />
+              <Typography variant="h3" margin="5px" fontSize={uiConfig.listFontSize}>
                 {symbol.num}
               </Typography>
-            </Box>
+            </Cell>
           </Grid>
         ))}
       </Grid>
@@ -64,7 +75,7 @@ export const DigitSymbolMatchingMain: FC<DigitSymbolMatchingMainProps> = ({ corr
                 height: uiConfig.buttonHeight,
                 backgroundColor: uiConfig.buttonBg,
                 color: uiConfig.textColor,
-                fontSize: uiConfig.fontSize,
+                fontSize: uiConfig.bubttonFontSize,
                 "&:active": {
                   backgroundColor: uiConfig.buttonClickedBg,
                 },
@@ -85,7 +96,7 @@ export const DigitSymbolMatchingMain: FC<DigitSymbolMatchingMainProps> = ({ corr
                 height: uiConfig.buttonHeight,
                 backgroundColor: uiConfig.buttonBg,
                 color: uiConfig.textColor,
-                fontSize: uiConfig.fontSize,
+                fontSize: uiConfig.bubttonFontSize,
                 "&:active": {
                   backgroundColor: uiConfig.buttonClickedBg,
                 },
@@ -106,7 +117,7 @@ export const DigitSymbolMatchingMain: FC<DigitSymbolMatchingMainProps> = ({ corr
                 height: uiConfig.buttonHeight,
                 backgroundColor: uiConfig.buttonBg,
                 color: uiConfig.textColor,
-                fontSize: uiConfig.fontSize,
+                fontSize: uiConfig.bubttonFontSize,
                 "&:active": {
                   backgroundColor: uiConfig.buttonClickedBg,
                 },

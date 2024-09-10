@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Grid, Typography } from "@mui/material";
 import { shuffleList } from "../utils/generalUtils";
 import { choiceReactionTimeConfig as uiConfig } from "../config/uiConfig";
 import { choiceReactionTimeConfig as testConfig } from "../config/testConfig";
@@ -37,24 +37,7 @@ export const ChoiceReactionTimeMain: FC<ChoiceReactionTimeMainProps> = ({
   }, [handleSubmit]);
 
   return (
-    <Box display="flex" alignItems="center" gap={15}>
-      <Button
-        variant="contained"
-        onClick={() => submitHandler("<")}
-        sx={{
-          backgroundColor: uiConfig.buttonColor,
-          "&:hover": {
-            backgroundColor: uiConfig.buttonColor,
-          },
-          width: 160,
-          height: 160,
-          color: "black",
-          fontSize: 80,
-          fontWeight: "bold",
-        }}
-      >
-        {"<"}
-      </Button>
+    <Box display="flex" flexDirection="column" alignItems="center" gap={5}>
       <Box position="relative">
         <Box>
           {hide ? (
@@ -82,23 +65,48 @@ export const ChoiceReactionTimeMain: FC<ChoiceReactionTimeMainProps> = ({
           )}
         </Box>
       </Box>
-      <Button
-        variant="contained"
-        onClick={() => submitHandler(">")}
-        sx={{
-          backgroundColor: uiConfig.buttonColor,
-          "&:hover": {
-            backgroundColor: uiConfig.buttonColor,
-          },
-          width: 160,
-          height: 160,
-          color: "black",
-          fontSize: 80,
-          fontWeight: "bold",
-        }}
-      >
-        {">"}
-      </Button>
+      <Box sx={{ position: "fixed", bottom: 10, left: 0, right: 0, display: "flex", justifyContent: "center", p: 1 }}>
+        <Grid container spacing={3} sx={{ width: "100%" }}>
+          <Grid item xs={6}>
+            <Button
+              fullWidth
+              variant="contained"
+              onClick={() => submitHandler("<")}
+              sx={{
+                backgroundColor: uiConfig.buttonColor,
+                "&:hover": {
+                  backgroundColor: uiConfig.buttonColor,
+                },
+                height: "15vh",
+                color: "black",
+                fontSize: 80,
+                fontWeight: "bold",
+              }}
+            >
+              {"<"}
+            </Button>
+          </Grid>
+          <Grid item xs={6}>
+            <Button
+              fullWidth
+              variant="contained"
+              onClick={() => submitHandler(">")}
+              sx={{
+                backgroundColor: uiConfig.buttonColor,
+                "&:hover": {
+                  backgroundColor: uiConfig.buttonColor,
+                },
+                height: "15vh",
+                color: "black",
+                fontSize: 80,
+                fontWeight: "bold",
+              }}
+            >
+              {">"}
+            </Button>
+          </Grid>
+        </Grid>
+      </Box>
     </Box>
   );
 };

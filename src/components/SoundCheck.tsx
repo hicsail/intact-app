@@ -30,7 +30,7 @@ export const SoundCheck: FC = () => {
   const [animationClass, setAnimationClass] = useState("");
 
   useEffect(() => {
-    setRandomNum(Math.floor(Math.random() * 10));
+    setRandomNum(Math.floor(Math.random() * 9));
   }, []);
 
   useEffect(() => {
@@ -77,21 +77,21 @@ export const SoundCheck: FC = () => {
   };
 
   return (
-    <>
+    <Box marginX="auto">
       <Typography variant="h4" textAlign="initial" fontWeight="bold" marginBottom={1}>
         Sound Check
       </Typography>
-      <Typography variant="body1" fontSize={20} textAlign="initial">
+      <Typography variant="body1" fontSize={20} textAlign="initial" width="80vw">
         If you can hear this message, click the announced number.
       </Typography>
-      <Typography variant="body1" fontSize={20} textAlign="initial">
+      <Typography variant="body1" fontSize={20} textAlign="initial" width="80vw">
         Otherwise, please increase your speaks volume.
       </Typography>
       <Grid container direction="column" spacing={1} marginTop={1}>
-        {Array.from({ length: 2 }).map((_, rowIndex) => (
+        {Array.from({ length: 3 }).map((_, rowIndex) => (
           <Grid container item spacing={1} key={rowIndex}>
-            {Array.from({ length: 5 }).map((_, colIndex) => {
-              const index = rowIndex * 5 + colIndex + 1;
+            {Array.from({ length: 3 }).map((_, colIndex) => {
+              const index = rowIndex * 3 + colIndex + 1;
               return (
                 <Grid item key={colIndex}>
                   <AnimatedBox
@@ -118,6 +118,6 @@ export const SoundCheck: FC = () => {
           </Grid>
         ))}
       </Grid>
-    </>
+    </Box>
   );
 };

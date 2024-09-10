@@ -6,7 +6,7 @@
  * @property textColor - Text color configuration
  */
 export const soundCheckConfig = {
-  buttonWidth: 100,
+  buttonWidth: "25vw",
   buttonHeight: 60,
   fontSize: 30,
   buttonColor: {
@@ -31,9 +31,10 @@ export const soundCheckConfig = {
  */
 export const digitSymbolConfig = {
   topSymbolHeight: "70vh",
-  listSymbolHeight: "50vh",
+  listSymbolHeight: "30vh",
+  listFontSize: 30,
   buttonHeight: 58,
-  fontSize: 32,
+  bubttonFontSize: 32,
   numpadBg: "#f0f0f0",
   buttonBg: "#d3d3d3",
   buttonClickedBg: "#a9a9a9",
@@ -44,7 +45,7 @@ export const digitSymbolConfig = {
  * @property cellSize - Size of each cell in pixels
  */
 export const spacialMemoryConfig = {
-  cellSize: "15vh",
+  cellSize: "20vw",
 };
 
 /**
@@ -52,8 +53,8 @@ export const spacialMemoryConfig = {
  * @property textColor - Text color configuration
  */
 export const memoryRecallConfig = {
-  buttonWidth: 140,
-  buttonHeight: "18vh",
+  buttonWidth: "40vw",
+  buttonHeight: "8vh",
   fontSize: 25,
   buttonColor: {
     unselected: "#839d97",
