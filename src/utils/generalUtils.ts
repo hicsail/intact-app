@@ -12,8 +12,22 @@ export const shuffleList: <T>(array: T[]) => T[] = (array) => {
   return array;
 };
 
-export const randomSelectFromList: <T>(array: T[]) => T = (array) => {
-  return array[Math.floor(Math.random() * array.length)];
+// export const randomSelectFromList: <T>(array: T[]) => T = (array) => {
+//   return array[Math.floor(Math.random() * array.length)];
+// };
+
+export const randomSelectFromList = <T>(array: T[], x: number): T[] => {
+  if (x > array.length) {
+    throw new Error("x cannot be greater than the length of the array.");
+  }
+
+  const shuffledArray = array.slice();
+  for (let i = shuffledArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
+  }
+
+  return shuffledArray.slice(0, x);
 };
 
 export const randomSelectFromNumberRange = (

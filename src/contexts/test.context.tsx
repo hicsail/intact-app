@@ -27,8 +27,7 @@ export const TestProvider: React.FC<TestProviderProps> = ({ children }) => {
   );
 
   const memoryRecallSetup: string[] = useMemo(
-    () =>
-      Array.from({ length: memoryRecallConfig.options.length }, () => randomSelectFromList(memoryRecallConfig.options)),
+    () => randomSelectFromList(memoryRecallConfig.options, memoryRecallConfig.maxSelection),
     []
   );
 
@@ -42,7 +41,7 @@ export const TestProvider: React.FC<TestProviderProps> = ({ children }) => {
   );
   const spacialMemorySetup: number[] = useMemo(() => generalConfig.spacialMemory, []);
   const visualPairSetupImageList: string[] = useMemo(
-    () => Array.from({ length: generalConfig.visualPairs }, () => randomSelectFromList(visualPairsConfig.imageThemes)),
+    () => randomSelectFromList(visualPairsConfig.imageThemes, generalConfig.visualPairs),
     []
   );
   const visualPairSetupIdxPairs: number[][] = useMemo(

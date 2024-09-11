@@ -191,7 +191,7 @@ export const TestPage: FC = () => {
       {cxt?.testPhase === TestPhase.CHOICE_REACTION_TIME && (
         <ChoiceReactionTimeMain
           correctIndex={testCxt!.choiceReactionTimeSetup[choiceReactionTimeIdx]}
-          correctSymbol={randomSelectFromList(["<", ">"])}
+          correctSymbol={randomSelectFromList(["<", ">"], 1)[0]}
           handleSubmit={choiceReactionTimeSubmitHandler}
         />
       )}
