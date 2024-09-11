@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import { visualPairsConfig as testConfig } from "../config/testConfig";
-import { Box, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 
 interface ChoiceReactionTimeMemorizeProps {
   imageGroupList: string[];
@@ -33,9 +33,9 @@ export const VisualPairsMemorize: FC<ChoiceReactionTimeMemorizeProps> = ({
   }, [pairIdx]);
 
   return (
-    <Box>
+    <>
       {pairIdx >= 0 && pairIdx < imageGroupList.length && (
-        <Grid container spacing={5}>
+        <Grid container direction="column" spacing={3}>
           <Grid
             item
             component="img"
@@ -48,6 +48,6 @@ export const VisualPairsMemorize: FC<ChoiceReactionTimeMemorizeProps> = ({
           />
         </Grid>
       )}
-    </Box>
+    </>
   );
 };

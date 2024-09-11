@@ -58,7 +58,7 @@ export const SpacialMemoryMain: FC<SpacialMemoryMainProps> = ({ numNodes, handle
   };
 
   return (
-    <Box>
+    <>
       <Grid container direction="column">
         {grid.map((row: any[], rowIndex: number) => (
           <Grid container item key={rowIndex} justifyContent="center">
@@ -76,11 +76,23 @@ export const SpacialMemoryMain: FC<SpacialMemoryMainProps> = ({ numNodes, handle
             ))}
           </Grid>
         ))}
-        <Button variant="contained" disabled={!enabled} sx={{ width: 400, marginTop: 2 }} onClick={submitHandler}>
+      </Grid>
+      <Box
+        sx={{
+          position: "fixed",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          display: "flex",
+          justifyContent: "center",
+          p: 1,
+        }}
+      >
+        <Button variant="contained" fullWidth disabled={!enabled} onClick={submitHandler} sx={{ fontSize: 20 }}>
           Submit
         </Button>
-      </Grid>
-    </Box>
+      </Box>
+    </>
   );
 };
 

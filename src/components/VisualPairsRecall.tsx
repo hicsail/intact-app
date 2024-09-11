@@ -32,7 +32,17 @@ export const VisualPairsRecall: FC<VisualPairsRecallProps> = ({ imageTheme, refe
               border="3px solid red"
             />
           </Grid>
-          {options.slice(0, 2).map((option, idx) => (
+          <Grid item>
+            <Box
+              component="img"
+              height={uiConfig.imageHeight}
+              src={`../src/assets/visual-pair/${imageTheme}${options[0]}.jpg`}
+              onClick={() => submitHandler(options[0])}
+            />
+          </Grid>
+        </Grid>
+        <Grid container spacing={1}>
+          {options.slice(1, 3).map((option, idx) => (
             <Grid key={idx} item>
               <Box
                 component="img"
@@ -44,7 +54,7 @@ export const VisualPairsRecall: FC<VisualPairsRecallProps> = ({ imageTheme, refe
           ))}
         </Grid>
         <Grid container spacing={1}>
-          {options.slice(2).map((option, idx) => (
+          {options.slice(3).map((option, idx) => (
             <Grid key={idx} item>
               <Box
                 component="img"
