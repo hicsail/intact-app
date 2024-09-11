@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import { Box, Button, styled, Stepper, Typography, Step, StepLabel, StepConnector, StepConnectorProps} from "@mui/material";
+import { Box, styled, Stepper, Typography, Step, StepLabel, StepConnector, StepConnectorProps} from "@mui/material";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 
@@ -33,7 +33,6 @@ const MemoryTestsLabels = [
 
 interface ProgressPageProps  {  
     id:number
-    onClick: (event: React.MouseEvent<HTMLButtonElement>) => void
 }
 
 interface CustomConnectorProps extends StepConnectorProps {
@@ -68,13 +67,6 @@ export const ProgressPage: FC<ProgressPageProps> = (props) => {
                 ))
                }
             </Stepper>
-            <Box sx={{width:'100%', paddingTop: '3vh'}}>
-                <Button variant="contained" sx={{textAlign: 'center', minWidth: '50%', width:'100%'}} onClick={props.onClick}>
-                    <Typography>
-                        Continue
-                    </Typography>
-                </Button>
-            </Box>
         </Box>
     )
 }

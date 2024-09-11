@@ -35,12 +35,12 @@ export const Transition: FC<TransitionProps> = ({ handleTransition }) => {
 
   return (
     <>
-      {cxt?.testPhase === TestPhase.MEMORY_RECALL_IMMEDIATE && <ProgressPage id={1} onClick={handleTransition}/>}
-      {cxt?.testPhase === TestPhase.VISUAL_PAIRS_MEMORIZE && <ProgressPage id={2} onClick={handleTransition}/>}
-      {cxt?.testPhase === TestPhase.VISUAL_PAIRS_RECALL && <ProgressPage id={3} onClick={handleTransition}/>}
-      {cxt?.testPhase === TestPhase.DIGIT_SYMBOL_MATCHING && <ProgressPage id={4} onClick={handleTransition}/>}
-      {cxt?.testPhase === TestPhase.CHOICE_REACTION_TIME && <ProgressPage id={5} onClick={handleTransition}/>}
-      {cxt?.testPhase === TestPhase.SPACIAL_MEMORY && <ProgressPage id={6} onClick={handleTransition}/>}
+      {cxt?.testPhase === TestPhase.MEMORY_RECALL_IMMEDIATE && <ProgressPage id={1}/>}
+      {cxt?.testPhase === TestPhase.VISUAL_PAIRS_MEMORIZE && <ProgressPage id={2}/>}
+      {cxt?.testPhase === TestPhase.VISUAL_PAIRS_RECALL && <ProgressPage id={3}/>}
+      {cxt?.testPhase === TestPhase.DIGIT_SYMBOL_MATCHING && <ProgressPage id={4}/>}
+      {cxt?.testPhase === TestPhase.CHOICE_REACTION_TIME && <ProgressPage id={5}/>}
+      {cxt?.testPhase === TestPhase.SPACIAL_MEMORY && <ProgressPage id={6}/>}
 
       <Box display="flex" flexDirection="column" gap={2}>
         {showPlayButton && cxt?.testPhase === TestPhase.MEMORY_RECALL_IMMEDIATE && (
