@@ -1,4 +1,4 @@
-import { createContext, FC, ReactNode, useState } from "react";
+import { createContext, Dispatch, FC, ReactNode, SetStateAction, useState } from "react";
 
 export enum Stage {
   NULL = 0,
@@ -20,6 +20,8 @@ export enum TestPhase {
 }
 
 interface GeneralContextType {
+  soundCheckNumber: number;
+  setSoundCheckNumber: Dispatch<SetStateAction<number>>;
   testPhase: TestPhase;
   stage: Stage;
   setTestPhase: (phase: TestPhase) => void;
@@ -33,10 +35,15 @@ export interface GeneralProviderProps {
 }
 
 export const GeneralProvider: FC<GeneralProviderProps> = ({ children }) => {
+  const [soundCheckNumber, setSoundCheckNumber] = useState<number>(Math.floor(Math.random() * 9));
   const [testPhase, setTestPhase] = useState<TestPhase>(TestPhase.NULL);
   const [stage, setStage] = useState<Stage>(Stage.NULL);
 
   return (
-    <GeneralContext.Provider value={{ testPhase, setTestPhase, stage, setStage }}>{children}</GeneralContext.Provider>
+    <GeneralContext.Provider
+      value={{ soundCheckNumber, setSoundCheckNumber, testPhase, setTestPhase, stage, setStage }}
+    >
+      {children}
+    </GeneralContext.Provider>
   );
 };

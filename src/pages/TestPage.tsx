@@ -191,7 +191,7 @@ export const TestPage: FC = () => {
       {cxt?.testPhase === TestPhase.CHOICE_REACTION_TIME && (
         <ChoiceReactionTimeMain
           correctIndex={testCxt!.choiceReactionTimeSetup[choiceReactionTimeIdx]}
-          correctSymbol={randomSelectFromList(["<", ">"])}
+          correctSymbol={randomSelectFromList(["<", ">"], 1)[0]}
           handleSubmit={choiceReactionTimeSubmitHandler}
         />
       )}
@@ -209,9 +209,7 @@ export const TestPage: FC = () => {
 
   return (
     <>
-      {cxt?.stage === Stage.GENERAL_DIRECTION && (
-        <GeneralDirection handleDirection={() => cxt!.setStage(Stage.SOUND_CHECK)} />
-      )}
+      {cxt?.stage === Stage.GENERAL_DIRECTION && <GeneralDirection />}
       {cxt?.stage === Stage.SOUND_CHECK && <SoundCheck />}
       {cxt?.stage === Stage.TRANSITION && <Transition handleTransition={() => cxt!.setStage(Stage.TEST)} />}
       {cxt?.stage === Stage.TEST && <TestComponent />}
