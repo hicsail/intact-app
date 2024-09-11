@@ -41,7 +41,7 @@ interface CustomConnectorProps extends StepConnectorProps {
 
 const CustomConnector = styled(StepConnector)<CustomConnectorProps>(({ numsteps }) => ({
     '& .MuiStepConnector-line': {
-      minHeight: `calc(100vh / ${numsteps} - 20px)`,  // 72px accounts approximately for the height of the step button and label
+      minHeight: `calc(200px / ${numsteps})`,  // 72px accounts approximately for the height of the step button and label
     },
   }));
 
@@ -52,14 +52,23 @@ export const ProgressPage: FC<ProgressPageProps> = (props) => {
         setActiveStep(props.id)
     }, [])
 
+    //check for Dark/Light Mode
+    const  dark_light_color = () => {
+        if(window.matchMedia('(prefers-color-scheme: dark').matches){
+            return "#ffffff"
+        }else{
+            return "#000000"
+        }
+    }
+
     return (
-        <Box alignContent={'center'} sx={{width: '100%', height: '100vh', overflow:'auto', padding: '5vh', display:'flex', flexDirection:'column', alignItems:'center'}}>
-            <Stepper activeStep={activeStep} orientation="vertical" connector={<CustomConnector numsteps={MemoryTestsLabels.length} sx={{paddingLeft:0.5}}/>}>
+        <Box alignContent={'center'} sx={{width: '100%', height: '90%', overflow:'auto', display:'flex', flexDirection:'column', alignItems:'center'}}>
+            <Stepper activeStep={activeStep} orientation="vertical" connector={<CustomConnector numsteps={MemoryTestsLabels.length}/>}>
                {
                 MemoryTestsLabels.map((step, index) => (
                     <Step key={index}>
-                        <StepLabel icon={activeStep > index ? <CheckCircleIcon fontSize="large"/> : <RadioButtonUncheckedIcon fontSize="large" color={activeStep === index? "inherit" : "disabled"}/>} sx={{color:activeStep <= index ? '#ffffff' : '#009933'}}>
-                            <Typography sx={{fontSize: 24}} color={activeStep <= index ? activeStep === index ? "#ffffff" : "#808080" : "#009933"}>
+                        <StepLabel icon={activeStep > index ? <CheckCircleIcon fontSize="inherit"/> : <RadioButtonUncheckedIcon fontSize="inherit" color={activeStep === index ? "action" : "disabled"}/>} sx={{color:activeStep <= index ? '#ffffff' : '#009933'}}>
+                            <Typography sx={{fontSize: 18}} color={activeStep <= index ? activeStep === index ? dark_light_color : "#808080" : "#009933"} overflow={"hidden"}>
                                 {step.name}
                             </Typography>
                         </StepLabel>
