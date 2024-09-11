@@ -1,9 +1,10 @@
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Grid, IconButton, Typography } from "@mui/material";
 import { FC, useContext, useEffect, useState } from "react";
 import { soundCheckConfig as uiConfig } from "../config/uiConfig";
 import { GeneralContext, Stage } from "../contexts/general.context";
 import { styled } from "@mui/system";
 import { playAudioFromS3 } from "../utils/awsUtils";
+import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 
 const AnimatedBox = styled(Box)(() => ({
   "&.fadeOut": {
@@ -22,6 +23,25 @@ const AnimatedBox = styled(Box)(() => ({
   },
 }));
 
+const OverlayWrapper = styled(Box)(() => ({
+  position: "relative",
+  width: "100%",
+  height: "100%",
+}));
+
+const Overlay = styled(Box)(() => ({
+  position: "absolute",
+  top: 0,
+  left: 0,
+  width: "100%",
+  height: "100%",
+  backgroundColor: "rgba(255, 255, 255, 0.6)",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  zIndex: 10,
+}));
+
 export const SoundCheck: FC = () => {
   const cxt = useContext(GeneralContext);
 
@@ -29,6 +49,7 @@ export const SoundCheck: FC = () => {
   const [hasSelected, setHasSelected] = useState(false);
   const [animationClass, setAnimationClass] = useState("");
   const [disabled, setDisabled] = useState(true);
+  const [hide, setHide] = useState(false);
 
   useEffect(() => {
     setTimeout(() => {
@@ -42,6 +63,14 @@ export const SoundCheck: FC = () => {
       setDisabled(false);
     }, 10500);
   }, [hasSelected]);
+
+  const playHandler = () => {
+    setHide(true);
+    playAudioFromS3("soundcheck/instructions");
+    setTimeout(() => {
+      playAudioFromS3(`soundcheck/number-${cxt!.soundCheckNumber + 1}`);
+    }, 6500);
+  };
 
   const clickHandler = (index: number) => {
     if (disabled) {
@@ -99,37 +128,46 @@ export const SoundCheck: FC = () => {
       <Typography variant="body1" fontSize={20} textAlign="initial" width="80vw">
         Otherwise, please increase your speaks volume.
       </Typography>
-      <Grid container direction="column" spacing={1} marginTop={1}>
-        {Array.from({ length: 3 }).map((_, rowIndex) => (
-          <Grid container item spacing={1} key={rowIndex}>
-            {Array.from({ length: 3 }).map((_, colIndex) => {
-              const index = rowIndex * 3 + colIndex + 1;
-              return (
-                <Grid item key={colIndex}>
-                  <AnimatedBox
-                    width={uiConfig.buttonWidth}
-                    height={uiConfig.buttonHeight}
-                    fontSize={uiConfig.fontSize}
-                    fontWeight="bold"
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="center"
-                    borderRadius={1}
-                    className={animationClass}
-                    sx={{
-                      color: uiConfig.textColor[values[index - 1] as keyof typeof uiConfig.textColor],
-                      backgroundColor: uiConfig.buttonColor[values[index - 1] as keyof typeof uiConfig.buttonColor],
-                    }}
-                    onClick={() => clickHandler(index - 1)}
-                  >
-                    {index}
-                  </AnimatedBox>
-                </Grid>
-              );
-            })}
-          </Grid>
-        ))}
-      </Grid>
+      <OverlayWrapper>
+        <Grid container direction="column" spacing={1} marginTop={1}>
+          {Array.from({ length: 3 }).map((_, rowIndex) => (
+            <Grid container item spacing={1} key={rowIndex}>
+              {Array.from({ length: 3 }).map((_, colIndex) => {
+                const index = rowIndex * 3 + colIndex + 1;
+                return (
+                  <Grid item key={colIndex}>
+                    <AnimatedBox
+                      width={uiConfig.buttonWidth}
+                      height={uiConfig.buttonHeight}
+                      fontSize={uiConfig.fontSize}
+                      fontWeight="bold"
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                      borderRadius={1}
+                      className={animationClass}
+                      sx={{
+                        color: uiConfig.textColor[values[index - 1] as keyof typeof uiConfig.textColor],
+                        backgroundColor: uiConfig.buttonColor[values[index - 1] as keyof typeof uiConfig.buttonColor],
+                      }}
+                      onClick={() => clickHandler(index - 1)}
+                    >
+                      {index}
+                    </AnimatedBox>
+                  </Grid>
+                );
+              })}
+            </Grid>
+          ))}
+        </Grid>
+        {!hide && (
+          <Overlay className={animationClass}>
+            <IconButton onClick={playHandler}>
+              <PlayCircleIcon sx={{ fontSize: 90 }} />
+            </IconButton>
+          </Overlay>
+        )}
+      </OverlayWrapper>
     </Box>
   );
 };
