@@ -28,7 +28,7 @@ export const VisualPairsRecall: FC<VisualPairsRecallProps> = ({ imageTheme, refe
             <Box
               component="img"
               height={uiConfig.imageHeight - 2 * 3}
-              src={`../src/assets/visual-pair/${imageTheme}${reference}.jpg`}
+              src={`/assets/visual-pair/${imageTheme}${reference}.jpg`}
               border="3px solid red"
             />
           </Grid>
@@ -36,7 +36,7 @@ export const VisualPairsRecall: FC<VisualPairsRecallProps> = ({ imageTheme, refe
             <Box
               component="img"
               height={uiConfig.imageHeight}
-              src={`../src/assets/visual-pair/${imageTheme}${options[0]}.jpg`}
+              src={`/assets/visual-pair/${imageTheme}${options[0]}.jpg`}
               onClick={() => submitHandler(options[0])}
             />
           </Grid>
@@ -47,7 +47,7 @@ export const VisualPairsRecall: FC<VisualPairsRecallProps> = ({ imageTheme, refe
               <Box
                 component="img"
                 height={uiConfig.imageHeight}
-                src={`../src/assets/visual-pair/${imageTheme}${option}.jpg`}
+                src={`/assets/visual-pair/${imageTheme}${option}.jpg`}
                 onClick={() => submitHandler(option)}
               />
             </Grid>
@@ -59,7 +59,7 @@ export const VisualPairsRecall: FC<VisualPairsRecallProps> = ({ imageTheme, refe
               <Box
                 component="img"
                 height={uiConfig.imageHeight}
-                src={`../src/assets/visual-pair/${imageTheme}${option}.jpg`}
+                src={`/assets/visual-pair/${imageTheme}${option}.jpg`}
                 onClick={() => submitHandler(option)}
               />
             </Grid>
