@@ -1,12 +1,12 @@
-import symbol1 from "../assets/digit-symbol/1.gif";
-import symbol2 from "../assets/digit-symbol/2.gif";
-import symbol3 from "../assets/digit-symbol/3.gif";
-import symbol4 from "../assets/digit-symbol/4.gif";
-import symbol5 from "../assets/digit-symbol/5.gif";
-import symbol6 from "../assets/digit-symbol/6.gif";
-import symbol7 from "../assets/digit-symbol/7.gif";
-import symbol8 from "../assets/digit-symbol/8.gif";
-import symbol9 from "../assets/digit-symbol/9.gif";
+import symbol1 from "/assets/digit-symbol/1.gif";
+import symbol2 from "/assets/digit-symbol/2.gif";
+import symbol3 from "/assets/digit-symbol/3.gif";
+import symbol4 from "/assets/digit-symbol/4.gif";
+import symbol5 from "/assets/digit-symbol/5.gif";
+import symbol6 from "/assets/digit-symbol/6.gif";
+import symbol7 from "/assets/digit-symbol/7.gif";
+import symbol8 from "/assets/digit-symbol/8.gif";
+import symbol9 from "/assets/digit-symbol/9.gif";
 
 export const generalConfig = {
   digitSymbolConfig: 5, // Number of questions

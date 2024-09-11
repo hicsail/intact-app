@@ -39,12 +39,12 @@ export const VisualPairsMemorize: FC<ChoiceReactionTimeMemorizeProps> = ({
           <Grid
             item
             component="img"
-            src={`../src/assets/visual-pair/${imageGroupList[pairIdx]}${idxPairs[pairIdx][0]}.jpg`}
+            src={`/assets/visual-pair/${imageGroupList[pairIdx]}${idxPairs[pairIdx][0]}.jpg`}
           />
           <Grid
             item
             component="img"
-            src={`../src/assets/visual-pair/${imageGroupList[pairIdx]}${idxPairs[pairIdx][1]}.jpg`}
+            src={`/assets/visual-pair/${imageGroupList[pairIdx]}${idxPairs[pairIdx][1]}.jpg`}
           />
         </Grid>
       )}
