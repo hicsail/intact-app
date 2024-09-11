@@ -9,8 +9,6 @@ const s3 = new S3Client({
 });
 
 export const playAudioFromS3 = async (prefix: string) => {
-  console.log(import.meta.env.VITE_S3_REGION);
-
   try {
     const params = {
       Bucket: import.meta.env.VITE_S3_BUCKET_NAME,

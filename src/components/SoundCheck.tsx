@@ -26,53 +26,40 @@ export const SoundCheck: FC = () => {
   const cxt = useContext(GeneralContext);
 
   const [values, setValues] = useState(Array.from({ length: 10 }).map(() => "unselected"));
-  const [randomNum, setRandomNum] = useState(-1);
   const [hasSelected, setHasSelected] = useState(false);
   const [animationClass, setAnimationClass] = useState("");
+  const [disabled, setDisabled] = useState(true);
 
   useEffect(() => {
-    setRandomNum(Math.floor(Math.random() * 9));
+    setTimeout(() => {
+      setDisabled(false);
+    }, 8500);
   }, []);
 
   useEffect(() => {
-    if (randomNum === -1) {
-      return;
-    }
-
-    console.log(randomNum + 1);
-    // TODO: Add audio here
+    setDisabled(true);
     setTimeout(() => {
-      playAudioFromS3("soundcheck/instructions");
-    }, 2500);
-    setTimeout(() => {
-      playAudioFromS3(`soundcheck/number-${randomNum + 1}`);
-    }, 9000);
-  }, [randomNum]);
-
-  useEffect(() => {
-    if (hasSelected) {
-      setTimeout(() => {
-        setValues(Array.from({ length: 10 }).map(() => "unselected"));
-        setRandomNum(Math.floor(Math.random() * 10));
-        setHasSelected(false);
-        setAnimationClass("fadeIn");
-      }, 2000);
-    }
+      setDisabled(false);
+    }, 10500);
   }, [hasSelected]);
 
   const clickHandler = (index: number) => {
+    if (disabled) {
+      return;
+    }
+
     if (hasSelected) {
       return;
     }
 
     setValues((prev) => {
       const newValues = [...prev];
-      newValues[index] = index === randomNum ? "correct" : "incorrect";
+      newValues[index] = index === cxt?.soundCheckNumber ? "correct" : "incorrect";
       return newValues;
     });
     setHasSelected(true);
 
-    if (index === randomNum) {
+    if (index === cxt?.soundCheckNumber) {
       setTimeout(() => {
         cxt?.setStage(Stage.TRANSITION);
       }, 2000);
@@ -80,6 +67,24 @@ export const SoundCheck: FC = () => {
       setTimeout(() => {
         setAnimationClass("fadeOut");
       }, 1000);
+
+      setTimeout(() => {
+        setValues(Array.from({ length: 10 }).map(() => "unselected"));
+        setHasSelected(false);
+        setAnimationClass("fadeIn");
+      }, 2000);
+
+      setTimeout(() => {
+        playAudioFromS3("soundcheck/instructions");
+      }, 2500);
+      setTimeout(() => {
+        cxt?.setSoundCheckNumber(() => {
+          const randomNum = Math.floor(Math.random() * 9);
+          playAudioFromS3(`soundcheck/number-${randomNum + 1}`);
+
+          return randomNum;
+        });
+      }, 9000);
     }
   };
 
