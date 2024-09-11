@@ -1,23 +1,17 @@
 import "./App.css";
-/*
-import { randomSelectFromList } from "./utils/generalUtils";
-import { ChoiceReactionTimeMain } from "./components/ChoiceReactionTimeMain";
-import { DigitSymbolCodingMain } from "./components/DigitSymbolCodingMain";
-import { MemoryRecallMain } from "./components/MemoryRecallMain";
-import { SpacialMemoryMain } from "./components/SpacialMemoryMain";
-*/
+import { createHashRouter, RouterProvider } from "react-router-dom";
+import { TestPage } from "./pages/TestPage";
+import { AuthPage } from "./pages/AuthPage";
+
 function App() {
-  return (
-    <>
-      {/* <SpacialMemoryMain numNodes={5} /> */}
-      {/* <MemoryRecallMain selected={["Octopus", "Elephant", "Cat", "Lion", "Squirrel"]} /> */}
-      {/* <DigitSymbolCodingMain correctIndex={Math.floor(Math.random() * 10) + 1} /> */}
-      {/* <ChoiceReactionTimeMain
-        correctIndex={randomSelectFromList([0, 1, 2])}
-        correctSymbol={randomSelectFromList(["<", ">"])}
-      /> */}
-    </>
-  );
+  const router = createHashRouter([
+    { path: "assessments/:participantId", element: <TestPage /> },
+    { path: "assessments", element: <TestPage /> },
+    { path: "/:participantId", element: <AuthPage /> },
+    { path: "/", element: <AuthPage /> },
+  ]);
+
+  return <RouterProvider router={router} />;
 }
 
 export default App;

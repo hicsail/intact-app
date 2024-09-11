@@ -20,10 +20,12 @@ const Cell = styled(Box, {
 
 interface SpacialMemoryMainProps {
   numNodes: number;
+  handleSubmit: (result: boolean) => void;
 }
 
-export const SpacialMemoryMain: FC<SpacialMemoryMainProps> = ({ numNodes }) => {
+export const SpacialMemoryMain: FC<SpacialMemoryMainProps> = ({ numNodes, handleSubmit }) => {
   const [grid, setGrid] = useState(Array(testConfig.rows).fill(Array(testConfig.cols).fill(false)));
+  const [correct, setCorrect] = useState(Array(testConfig.rows).fill(Array(testConfig.cols).fill(false)));
   const [enabled, setEnabled] = useState(false);
 
   useEffect(() => {
@@ -32,11 +34,13 @@ export const SpacialMemoryMain: FC<SpacialMemoryMainProps> = ({ numNodes }) => {
       setEnabled(true);
     }, testConfig.timeToMemorize);
 
-    setGrid(generateRandomTreeOnGrid(testConfig.rows, testConfig.cols, numNodes));
+    const randomGrid = generateRandomTreeOnGrid(testConfig.rows, testConfig.cols, numNodes);
+    setCorrect(randomGrid);
+    setGrid(randomGrid);
     setEnabled(false);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [handleSubmit]);
 
   const toggleCell = (row: number, col: number) => {
     setGrid((grid) => {
@@ -46,8 +50,15 @@ export const SpacialMemoryMain: FC<SpacialMemoryMainProps> = ({ numNodes }) => {
     });
   };
 
+  const submitHandler = () => {
+    const result = grid.every((row: boolean[], rowIndex: number) =>
+      row.every((cell: boolean, colIndex: number) => cell === correct[rowIndex][colIndex])
+    );
+    handleSubmit(result);
+  };
+
   return (
-    <Box>
+    <>
       <Grid container direction="column">
         {grid.map((row: any[], rowIndex: number) => (
           <Grid container item key={rowIndex} justifyContent="center">
@@ -65,11 +76,23 @@ export const SpacialMemoryMain: FC<SpacialMemoryMainProps> = ({ numNodes }) => {
             ))}
           </Grid>
         ))}
-        <Button variant="contained" sx={{ width: 400, marginTop: 2 }} onClick={() => console.log()}>
+      </Grid>
+      <Box
+        sx={{
+          position: "fixed",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          display: "flex",
+          justifyContent: "center",
+          p: 1,
+        }}
+      >
+        <Button variant="contained" fullWidth disabled={!enabled} onClick={submitHandler} sx={{ fontSize: 20 }}>
           Submit
         </Button>
-      </Grid>
-    </Box>
+      </Box>
+    </>
   );
 };
 

@@ -6,9 +6,10 @@ import { memoryRecallConfig as uiConfig } from "../config/uiConfig";
 
 interface MemoryRecallMainProps {
   selected: string[];
+  handleSubmit: (result: boolean) => void;
 }
 
-export const MemoryRecallMain: FC<MemoryRecallMainProps> = ({ selected }) => {
+export const MemoryRecallMain: FC<MemoryRecallMainProps> = ({ selected, handleSubmit }) => {
   const [clickedNum, setClickedNum] = useState(0);
   const [values, setValues] = useState(Object.fromEntries(testConfig.options.map((key) => [key, "unselected"])));
   const [randomList, setRandomList] = useState<string[]>([]);
@@ -19,8 +20,21 @@ export const MemoryRecallMain: FC<MemoryRecallMainProps> = ({ selected }) => {
     setRandomList(shuffleList([...testConfig.options]));
   }, [testConfig.options]);
 
+  useEffect(() => {
+    if (clickedNum >= maxSelection) {
+      setTimeout(() => {
+        handleSubmit(Object.entries(values).filter(([, value]) => value === "correct").length === maxSelection);
+        return;
+      }, 2000);
+    }
+  }, [clickedNum]);
+
   const clickHandler = (index: number) => {
     if (clickedNum >= maxSelection) {
+      return;
+    }
+
+    if (values[randomList[index]] !== "unselected") {
       return;
     }
 
@@ -35,15 +49,15 @@ export const MemoryRecallMain: FC<MemoryRecallMainProps> = ({ selected }) => {
 
   return (
     <Grid container direction="column" spacing={1}>
-      {Array.from({ length: 4 }).map((_, rowIndex) => (
+      {Array.from({ length: 8 }).map((_, rowIndex) => (
         <Grid container item spacing={1} key={rowIndex}>
-          {Array.from({ length: 4 }).map((_, colIndex) => {
-            const index = rowIndex * 4 + colIndex;
+          {Array.from({ length: 2 }).map((_, colIndex) => {
+            const index = rowIndex * 2 + colIndex;
             return (
               <Grid item key={colIndex}>
                 <Box
-                  width={180}
-                  height={80}
+                  width={uiConfig.buttonWidth}
+                  height={uiConfig.buttonHeight}
                   display="flex"
                   alignItems="center"
                   justifyContent="center"
@@ -56,7 +70,7 @@ export const MemoryRecallMain: FC<MemoryRecallMainProps> = ({ selected }) => {
                   onClick={() => clickHandler(index)}
                 >
                   <Typography
-                    variant="h4"
+                    fontSize={uiConfig.fontSize}
                     fontWeight="bold"
                     color={uiConfig.textColor[values[randomList[index]] as keyof typeof uiConfig.textColor]}
                   >
