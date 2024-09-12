@@ -1,32 +1,45 @@
-import { FC, useEffect, useState } from "react";
-import { Box, styled, Stepper, Typography, Step, StepLabel, StepConnector, StepConnectorProps} from "@mui/material";
+import { FC } from "react";
+import { Box, Stepper, Typography, Step, StepLabel} from "@mui/material";
+import { TestPhase } from "../contexts/general.context";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
+
 
 const MemoryTestsLabels = [
     {
         "name": "BoCA - Memory (Immediate Recall)",
-        "desc": "BoCA description"
+        "desc": "BoCA description",
+        "index": TestPhase.MEMORY_RECALL_IMMEDIATE
     },
     {
-        "name": "Visual Paired Associates",
-        "desc": "VPA desc"
+        "name": "TestMyBrain - Visual Paired Associates (\"learn\" part)",
+        "desc": "VPA desc",
+        "index": TestPhase.VISUAL_PAIRS_MEMORIZE
     },
     {
-        "name": "Choice Reaction Time",
-        "desc": "CRT desc"
+        "name": "TestMyBrain - Choice Reaction Time (from Visual Paired Associates)",
+        "desc": "CRT desc",
+        "index": TestPhase.CHOICE_REACTION_TIME
     },
     {
-        "name": "Digit Symbol Matching",
-        "desc": "DSM desc"
+        "name": "TestMyBrain - Visual Paired Associates (\"test\" part)",
+        "desc": "DSM desc",
+        "index": TestPhase.VISUAL_PAIRS_RECALL
+    },
+    {
+        "name": "TestMyBrain - Digit Symbol Matching",
+        "desc": "Spatial Memory desc",
+        "index": TestPhase.DIGIT_SYMBOL_MATCHING
     },
     {
         "name": "NeurCare - Spatial Memory",
-        "desc": "Spatial Memory desc"
+        "desc": "BoCA delayed recall desc",
+        "index": TestPhase.SPACIAL_MEMORY
     },
     {
-        "name": "BoCA - Memory Recall (Delayed Recall)",
-        "desc": "BoCA delayed recall desc"
+        "name": "BoCA - Memory (Delayed recall)",
+        "desc": "BoCA delayed recall desc",
+        "index": TestPhase.MEMORY_RECALL_DELAYED
     }
 ];
 
@@ -35,22 +48,7 @@ interface ProgressPageProps  {
     id:number
 }
 
-interface CustomConnectorProps extends StepConnectorProps {
-    numsteps: number;
-  }
-
-const CustomConnector = styled(StepConnector)<CustomConnectorProps>(({ numsteps }) => ({
-    '& .MuiStepConnector-line': {
-      minHeight: `calc(200px / ${numsteps})`,  // 72px accounts approximately for the height of the step button and label
-    },
-  }));
-
 export const ProgressPage: FC<ProgressPageProps> = (props) => {
-    const [activeStep, setActiveStep] = useState(0);
-
-    useEffect(()=> {
-        setActiveStep(props.id)
-    }, [])
 
     //check for Dark/Light Mode
     const  dark_light_color = () => {
@@ -62,13 +60,24 @@ export const ProgressPage: FC<ProgressPageProps> = (props) => {
     }
 
     return (
-        <Box alignContent={'center'} sx={{width: '100%', height: '90%', overflow:'auto', display:'flex', flexDirection:'column', alignItems:'center'}}>
-            <Stepper activeStep={activeStep} orientation="vertical" connector={<CustomConnector numsteps={MemoryTestsLabels.length}/>}>
+        <Box 
+            sx={{width: '100%', display:'flex', justifyContent:'center', padding: 1}}
+        >
+            <Stepper activeStep={props.id} orientation="vertical">
                {
                 MemoryTestsLabels.map((step, index) => (
-                    <Step key={index}>
-                        <StepLabel icon={activeStep > index ? <CheckCircleIcon fontSize="inherit"/> : <RadioButtonUncheckedIcon fontSize="inherit" color={activeStep === index ? "action" : "disabled"}/>} sx={{color:activeStep <= index ? '#ffffff' : '#009933'}}>
-                            <Typography sx={{fontSize: 18}} color={activeStep <= index ? activeStep === index ? dark_light_color : "#808080" : "#009933"} overflow={"hidden"}>
+                    <Step 
+                        key={index}
+                    >
+                        <StepLabel 
+                            icon={props.id > index ? <CheckCircleIcon fontSize="inherit"/> : <RadioButtonUncheckedIcon fontSize="inherit" sx={{color:props.id >= index ? '#ffffff' : '#808080'}}/>} 
+                            sx={{color:props.id <= index ? '#ffffff' : '#009933'}}
+                        >
+                            <Typography 
+                                variant="subtitle1" 
+                                color={props.id <= index ? props.id === index ? dark_light_color : "#808080" : "#009933"} 
+                                overflow={"hidden"}
+                            >
                                 {step.name}
                             </Typography>
                         </StepLabel>
