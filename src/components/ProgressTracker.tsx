@@ -1,6 +1,5 @@
 import { FC } from "react";
 import { Stepper, Typography, Step, StepLabel } from "@mui/material";
-import { TestPhase } from "../contexts/general.context";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 
