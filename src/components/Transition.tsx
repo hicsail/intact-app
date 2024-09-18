@@ -1,5 +1,6 @@
 import { FC, useContext, useState } from "react";
 import { GeneralContext, TestPhase } from "../contexts/general.context";
+import { ProgressTracker } from "./ProgressTracker";
 import { Box, Button, IconButton } from "@mui/material";
 import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 import { playAudioFromS3 } from "../utils/awsUtils";
@@ -34,12 +35,13 @@ export const Transition: FC<TransitionProps> = ({ handleTransition }) => {
 
   return (
     <>
-      {cxt?.testPhase === TestPhase.MEMORY_RECALL_IMMEDIATE && <h2>Memory Recall Placeholder</h2>}
-      {cxt?.testPhase === TestPhase.VISUAL_PAIRS_MEMORIZE && <h2>Visual Pairs Memorize Placeholder</h2>}
-      {cxt?.testPhase === TestPhase.VISUAL_PAIRS_RECALL && <h2>Visual Pairs Recall Placeholder</h2>}
-      {cxt?.testPhase === TestPhase.DIGIT_SYMBOL_MATCHING && <h2>Digit Symbol Coding Placeholder</h2>}
-      {cxt?.testPhase === TestPhase.CHOICE_REACTION_TIME && <h2>Choice Reaction Time Placeholder</h2>}
-      {cxt?.testPhase === TestPhase.SPACIAL_MEMORY && <h2>Spacial Memory Placeholder</h2>}
+      {cxt?.testPhase === TestPhase.MEMORY_RECALL_IMMEDIATE && <ProgressTracker id={0}/>}
+      {cxt?.testPhase === TestPhase.VISUAL_PAIRS_MEMORIZE && <ProgressTracker id={1}/>}
+      {cxt?.testPhase === TestPhase.CHOICE_REACTION_TIME && <ProgressTracker id={2}/>}
+      {cxt?.testPhase === TestPhase.VISUAL_PAIRS_RECALL && <ProgressTracker id={3}/>}
+      {cxt?.testPhase === TestPhase.DIGIT_SYMBOL_MATCHING && <ProgressTracker id={4}/>}
+      {cxt?.testPhase === TestPhase.SPACIAL_MEMORY && <ProgressTracker id={5}/>}
+
       <Box display="flex" flexDirection="column" gap={2}>
         {showPlayButton && cxt?.testPhase === TestPhase.MEMORY_RECALL_IMMEDIATE && (
           <IconButton onClick={playHandler}>
