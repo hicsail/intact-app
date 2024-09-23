@@ -19,11 +19,11 @@ const Cell = styled(Box, {
 );
 
 interface SpacialMemoryMainProps {
-  numNodes: number;
+  questionGrid: boolean[][];
   handleSubmit: (result: boolean) => void;
 }
 
-export const SpacialMemoryMain: FC<SpacialMemoryMainProps> = ({ numNodes, handleSubmit }) => {
+export const SpacialMemoryMain: FC<SpacialMemoryMainProps> = ({ questionGrid, handleSubmit }) => {
   const [grid, setGrid] = useState(Array(testConfig.rows).fill(Array(testConfig.cols).fill(false)));
   const [correct, setCorrect] = useState(Array(testConfig.rows).fill(Array(testConfig.cols).fill(false)));
   const [enabled, setEnabled] = useState(false);
@@ -34,9 +34,8 @@ export const SpacialMemoryMain: FC<SpacialMemoryMainProps> = ({ numNodes, handle
       setEnabled(true);
     }, testConfig.timeToMemorize);
 
-    const randomGrid = generateRandomTreeOnGrid(testConfig.rows, testConfig.cols, numNodes);
-    setCorrect(randomGrid);
-    setGrid(randomGrid);
+    setCorrect(questionGrid);
+    setGrid(questionGrid);
     setEnabled(false);
 
     return () => clearTimeout(timer);
@@ -94,63 +93,4 @@ export const SpacialMemoryMain: FC<SpacialMemoryMainProps> = ({ numNodes, handle
       </Box>
     </>
   );
-};
-
-const directions = [
-  [-1, 0], // Up
-  [1, 0], // Down
-  [0, -1], // Left
-  [0, 1], // Right
-  [-1, -1], // Up-Left
-  [-1, 1], // Up-Right
-  [1, -1], // Down-Left
-  [1, 1], // Down-Right
-];
-
-const isValidMove = (grid: boolean[][], row: number, col: number) => {
-  return row >= 0 && row < grid.length && col >= 0 && col < grid[0].length && !grid[row][col];
-};
-
-const generateRandomTreeOnGrid = (numRows: number, numCols: number, numNodes: number) => {
-  const grid = Array.from({ length: numRows }, () => Array(numCols).fill(false));
-  let nodesLeft = numNodes;
-
-  // Randomly choose a starting position
-  const startRow = Math.floor(Math.random() * numRows);
-  const startCol = Math.floor(Math.random() * numCols);
-  grid[startRow][startCol] = true;
-  nodesLeft--;
-
-  const queue = [{ row: startRow, col: startCol }];
-
-  while (nodesLeft > 0 && queue.length > 0) {
-    const node = queue.shift();
-    if (!node) break; // Safeguard against undefined node
-
-    const { row, col } = node;
-
-    // Get available directions
-    const availableDirections = directions.filter(([dRow, dCol]) => isValidMove(grid, row + dRow, col + dCol));
-
-    if (availableDirections.length === 0) {
-      continue;
-    }
-
-    // Determine the number of children for this node
-    const numChildren = Math.min(nodesLeft, Math.floor(Math.random() * availableDirections.length) + 1);
-
-    for (let i = 0; i < numChildren; i++) {
-      const [dRow, dCol] = availableDirections.splice(Math.floor(Math.random() * availableDirections.length), 1)[0];
-      const newRow = row + dRow;
-      const newCol = col + dCol;
-
-      grid[newRow][newCol] = true;
-      queue.push({ row: newRow, col: newCol });
-      nodesLeft--;
-
-      if (nodesLeft === 0) break;
-    }
-  }
-
-  return grid;
 };

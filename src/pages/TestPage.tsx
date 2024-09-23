@@ -150,7 +150,7 @@ export const TestPage: FC = () => {
       return;
     }
 
-    if (visualPairsIdx + 1 >= testCxt!.visualPairSetupImageList.length) {
+    if (visualPairsIdx + 1 >= Object.values(testCxt!.visualPairSetupImageSetup).length) {
       sessionStorage.setItem("testPhase", String(TestPhase.DIGIT_SYMBOL_MATCHING));
       sessionStorage.setItem("stage", String(Stage.TRANSITION));
       sessionStorage.setItem("questionNumber", "0");
@@ -169,16 +169,16 @@ export const TestPage: FC = () => {
       )}
       {cxt?.testPhase === TestPhase.VISUAL_PAIRS_MEMORIZE && (
         <VisualPairsMemorize
-          imageGroupList={testCxt!.visualPairSetupImageList}
-          idxPairs={testCxt!.visualPairSetupIdxPairs}
+          imageGroupList={Object.keys(testCxt!.visualPairSetupImageSetup)}
+          idxPairs={Object.values(testCxt!.visualPairSetupImageSetup)}
           handleTransition={visualPairsTransitionHandler}
         />
       )}
       {cxt?.testPhase === TestPhase.VISUAL_PAIRS_RECALL && (
         <VisualPairsRecall
-          imageTheme={testCxt!.visualPairSetupImageList[visualPairsIdx]}
-          reference={testCxt!.visualPairSetupIdxPairs[visualPairsIdx][0]}
-          correct={testCxt!.visualPairSetupIdxPairs[visualPairsIdx][1]}
+          imageTheme={Object.keys(testCxt!.visualPairSetupImageSetup)[visualPairsIdx]}
+          reference={Object.values(testCxt!.visualPairSetupImageSetup)[visualPairsIdx][0]}
+          correct={Object.values(testCxt!.visualPairSetupImageSetup)[visualPairsIdx][1]}
           handleSubmit={visualPairsSubmitHandler}
         />
       )}
@@ -197,7 +197,7 @@ export const TestPage: FC = () => {
       )}
       {cxt?.testPhase === TestPhase.SPACIAL_MEMORY && (
         <SpacialMemoryMain
-          numNodes={testCxt!.spacialMemorySetup[spacialMemoryIdx]}
+          questionGrid={testCxt!.spacialMemorySetup[spacialMemoryIdx]}
           handleSubmit={spacialMemorySubmitHandler}
         />
       )}

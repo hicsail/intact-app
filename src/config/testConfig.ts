@@ -9,10 +9,48 @@ import symbol8 from "/assets/digit-symbol/8.gif";
 import symbol9 from "/assets/digit-symbol/9.gif";
 
 export const generalConfig = {
-  digitSymbolConfig: 5, // Number of questions
-  spacialMemory: [4, 5, 6, 7, 8], // Number of nodes in the grid
-  choiceReactionTime: 10, // Number of questions
-  visualPairs: 3, // Number of questions
+  digitSymbolAns: [3, 8, 4, 0, 7, 0, 3, 5, 8, 2],
+  choiceReactionTimeAns: [2, 2, 1, 1, 0, 2, 1, 0, 1, 0] as (0 | 1 | 2)[],
+  visualPairsAns: {
+    example: [3, 1],
+    lobby: [1, 2],
+    underwater: [8, 5],
+    temple: [4, 6],
+    entry: [2, 7],
+  },
+  memoryRecallAns: ["Cat", "Crocodile", "Elephant", "Chicken", "Eagle"],
+  spacialMemoryAns: [
+    [
+      [0, 0, 0, 1],
+      [0, 0, 0, 1],
+      [0, 0, 0, 1],
+      [0, 0, 0, 1],
+    ],
+    [
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [0, 1, 1, 0],
+      [1, 1, 1, 0],
+    ],
+    [
+      [0, 1, 0, 0],
+      [0, 1, 1, 0],
+      [0, 0, 1, 1],
+      [0, 0, 0, 1],
+    ],
+    [
+      [0, 1, 0, 0],
+      [1, 0, 1, 0],
+      [1, 0, 1, 0],
+      [0, 1, 1, 0],
+    ],
+    [
+      [0, 1, 1, 0],
+      [1, 0, 0, 0],
+      [0, 1, 1, 1],
+      [0, 1, 1, 0],
+    ],
+  ],
 };
 
 /**
