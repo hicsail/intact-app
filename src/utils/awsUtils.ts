@@ -30,6 +30,8 @@ export const playAudioFromS3 = async (prefix: string) => {
     audio.play().catch((error) => {
       console.error("Error playing audio", error);
     });
+
+    return audio;
   } catch (error) {
     console.error("Error fetching audio files from S3", error);
   }
