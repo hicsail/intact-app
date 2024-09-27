@@ -1,7 +1,7 @@
 import { FC, useContext, useEffect, useState } from "react";
 import { SpacialMemoryMain } from "../components/SpacialMemoryMain";
 import { ChoiceReactionTimeMain } from "../components/ChoiceReactionTimeMain";
-import { randomSelectFromList } from "../utils/generalUtils";
+import { randomSelectFromList } from "../utils/general.utils";
 import { DigitSymbolMatchingMain } from "../components/DigitSymbolMatchingMain";
 import { GeneralContext, Stage, TestPhase } from "../contexts/general.context";
 import { VisualPairsMemorize } from "../components/VisualPairsMemorize";

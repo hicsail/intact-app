@@ -1,5 +1,5 @@
 import { createContext, useMemo } from "react";
-import { generalConfig } from "../config/testConfig";
+import { generalConfig } from "../config/test.config";
 
 interface TestContextType {
   memoryRecallSetup: string[];

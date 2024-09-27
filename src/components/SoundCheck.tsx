@@ -1,9 +1,9 @@
 import { Box, Grid, IconButton, Typography } from "@mui/material";
 import { FC, useContext, useEffect, useState } from "react";
-import { soundCheckConfig as uiConfig } from "../config/uiConfig";
+import { soundCheckConfig as uiConfig } from "../config/ui.config";
 import { GeneralContext, Stage } from "../contexts/general.context";
 import { styled } from "@mui/system";
-import { playAudioFromS3 } from "../utils/awsUtils";
+import { playAudioFromS3 } from "../utils/aws.utils";
 import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 
 const AnimatedBox = styled(Box)(() => ({

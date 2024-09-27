@@ -1,7 +1,7 @@
 import { Box, Grid } from "@mui/material";
 import { FC } from "react";
-import { randomSelectFromNumberRange, shuffleList } from "../utils/generalUtils";
-import { visualPairsConfig as uiConfig } from "../config/uiConfig";
+import { randomSelectFromNumberRange, shuffleList } from "../utils/general.utils";
+import { visualPairsConfig as uiConfig } from "../config/ui.config";
 
 interface VisualPairsRecallProps {
   imageTheme: string;

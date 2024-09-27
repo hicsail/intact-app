@@ -1,8 +1,8 @@
 import { FC, useEffect, useState } from "react";
 import { Box, Grid, Typography } from "@mui/material";
-import { shuffleList } from "../utils/generalUtils";
-import { memoryRecallConfig as testConfig } from "../config/testConfig";
-import { memoryRecallConfig as uiConfig } from "../config/uiConfig";
+import { shuffleList } from "../utils/general.utils";
+import { memoryRecallConfig as testConfig } from "../config/test.config";
+import { memoryRecallConfig as uiConfig } from "../config/ui.config";
 
 interface MemoryRecallMainProps {
   selected: string[];

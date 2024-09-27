@@ -3,7 +3,7 @@ import { GeneralContext, TestPhase } from "../contexts/general.context";
 import { ProgressTracker } from "./ProgressTracker";
 import { Box, Button, IconButton } from "@mui/material";
 import PlayCircleIcon from "@mui/icons-material/PlayCircle";
-import { playAudioFromS3 } from "../utils/awsUtils";
+import { playAudioFromS3 } from "../utils/aws.utils";
 
 interface TransitionProps {
   handleTransition: () => void;

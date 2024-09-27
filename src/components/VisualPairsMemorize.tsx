@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import { visualPairsConfig as testConfig } from "../config/testConfig";
+import { visualPairsConfig as testConfig } from "../config/test.config";
 import { Grid } from "@mui/material";
 
 interface ChoiceReactionTimeMemorizeProps {

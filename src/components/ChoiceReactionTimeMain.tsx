@@ -1,8 +1,8 @@
 import { FC, useEffect, useState } from "react";
 import { Box, Button, Grid, Typography } from "@mui/material";
-import { shuffleList } from "../utils/generalUtils";
-import { choiceReactionTimeConfig as uiConfig } from "../config/uiConfig";
-import { choiceReactionTimeConfig as testConfig } from "../config/testConfig";
+import { shuffleList } from "../utils/general.utils";
+import { choiceReactionTimeConfig as uiConfig } from "../config/ui.config";
+import { choiceReactionTimeConfig as testConfig } from "../config/test.config";
 
 interface ChoiceReactionTimeMainProps {
   correctIndex: 0 | 1 | 2;

@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { Box, Button, Divider, Grid, Typography } from "@mui/material";
-import { digitSymbolConfig as testConfig } from "../config/testConfig";
-import { digitSymbolConfig as uiConfig } from "../config/uiConfig";
+import { digitSymbolConfig as testConfig } from "../config/test.config";
+import { digitSymbolConfig as uiConfig } from "../config/ui.config";
 import styled from "@emotion/styled";
 
 const Cell = styled(Box, {
