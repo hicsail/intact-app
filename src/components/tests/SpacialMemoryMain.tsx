@@ -1,9 +1,9 @@
 import { FC, useContext, useEffect, useState } from "react";
 import { Box, Button, Grid, styled } from "@mui/material";
-import { spacialMemoryConfig as testConfig } from "../config/test.config";
-import { spacialMemoryConfig as uiConfig } from "../config/ui.config";
-import { TestContext } from "../contexts/test.context";
-import { TestPhase } from "../contexts/general.context";
+import { spacialMemoryConfig as testConfig } from "../../config/test.config";
+import { spacialMemoryConfig as uiConfig } from "../../config/ui.config";
+import { TestContext } from "../../contexts/test.context";
+import { TestPhase } from "../../contexts/general.context";
 
 const Cell = styled(Box, {
   shouldForwardProp: (prop) => prop !== "topBox" && prop !== "bottomBox" && prop !== "leftBox" && prop !== "rightBox",

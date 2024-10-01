@@ -1,10 +1,10 @@
 import { FC, useContext, useEffect, useState } from "react";
 import { Box, Grid, Typography } from "@mui/material";
-import { getNextTestPhase, shuffleList } from "../utils/general.utils";
-import { memoryRecallConfig as testConfig } from "../config/test.config";
-import { memoryRecallConfig as uiConfig } from "../config/ui.config";
-import { TestPhase } from "../contexts/general.context";
-import { TestContext } from "../contexts/test.context";
+import { getNextTestPhase, shuffleList } from "../../utils/general.utils";
+import { memoryRecallConfig as testConfig } from "../../config/test.config";
+import { memoryRecallConfig as uiConfig } from "../../config/ui.config";
+import { TestPhase } from "../../contexts/general.context";
+import { TestContext } from "../../contexts/test.context";
 
 interface MemoryRecallMainProps {
   phase: TestPhase;

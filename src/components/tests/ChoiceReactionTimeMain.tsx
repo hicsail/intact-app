@@ -1,10 +1,10 @@
 import { FC, useContext, useEffect, useState } from "react";
 import { Box, Button, Grid, Typography } from "@mui/material";
-import { getNextTestPhase, randomSelectFromList, shuffleList } from "../utils/general.utils";
-import { choiceReactionTimeConfig as uiConfig } from "../config/ui.config";
-import { choiceReactionTimeConfig as testConfig } from "../config/test.config";
-import { TestContext } from "../contexts/test.context";
-import { TestPhase } from "../contexts/general.context";
+import { getNextTestPhase, randomSelectFromList, shuffleList } from "../../utils/general.utils";
+import { choiceReactionTimeConfig as uiConfig } from "../../config/ui.config";
+import { choiceReactionTimeConfig as testConfig } from "../../config/test.config";
+import { TestContext } from "../../contexts/test.context";
+import { TestPhase } from "../../contexts/general.context";
 
 interface ChoiceReactionTimeMainProps {
   toTestPhase: (testPhase: TestPhase) => void;

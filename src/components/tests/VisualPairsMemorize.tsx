@@ -1,9 +1,9 @@
 import { FC, useContext, useEffect, useState } from "react";
-import { visualPairsConfig as testConfig } from "../config/test.config";
+import { visualPairsConfig as testConfig } from "../../config/test.config";
 import { Grid } from "@mui/material";
-import { TestContext } from "../contexts/test.context";
-import { TestPhase } from "../contexts/general.context";
-import { getNextTestPhase } from "../utils/general.utils";
+import { TestContext } from "../../contexts/test.context";
+import { TestPhase } from "../../contexts/general.context";
+import { getNextTestPhase } from "../../utils/general.utils";
 
 interface ChoiceReactionTimeMemorizeProps {
   toTestPhase: (testPhase: TestPhase) => void;

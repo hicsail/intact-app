@@ -1,11 +1,11 @@
 import { FC, useContext, useEffect } from "react";
-import { SpacialMemoryMain } from "../components/SpacialMemoryMain";
-import { ChoiceReactionTimeMain } from "../components/ChoiceReactionTimeMain";
-import { DigitSymbolMatchingMain } from "../components/DigitSymbolMatchingMain";
+import { SpacialMemoryMain } from "../components/tests/SpacialMemoryMain";
+import { ChoiceReactionTimeMain } from "../components/tests/ChoiceReactionTimeMain";
+import { DigitSymbolMatchingMain } from "../components/tests/DigitSymbolMatchingMain";
 import { GeneralContext, Stage, TestPhase } from "../contexts/general.context";
-import { VisualPairsMemorize } from "../components/VisualPairsMemorize";
-import { VisualPairsRecall } from "../components/VisualPairsRecall";
-import { MemoryRecallMain } from "../components/MemoryRecallMain";
+import { VisualPairsMemorize } from "../components/tests/VisualPairsMemorize";
+import { VisualPairsRecall } from "../components/tests/VisualPairsRecall";
+import { MemoryRecallMain } from "../components/tests/MemoryRecallMain";
 import { Transition } from "../components/Transition";
 import { SoundCheck } from "../components/SoundCheck";
 import { GeneralDirection } from "../components/GeneralDirection";

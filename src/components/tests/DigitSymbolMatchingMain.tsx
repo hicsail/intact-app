@@ -1,11 +1,11 @@
 import { FC, useContext, useEffect, useState } from "react";
 import { Box, Button, Divider, Grid, Typography } from "@mui/material";
-import { digitSymbolConfig as testConfig } from "../config/test.config";
-import { digitSymbolConfig as uiConfig } from "../config/ui.config";
+import { digitSymbolConfig as testConfig } from "../../config/test.config";
+import { digitSymbolConfig as uiConfig } from "../../config/ui.config";
 import styled from "@emotion/styled";
-import { TestPhase } from "../contexts/general.context";
-import { TestContext } from "../contexts/test.context";
-import { getNextTestPhase } from "../utils/general.utils";
+import { TestPhase } from "../../contexts/general.context";
+import { TestContext } from "../../contexts/test.context";
+import { getNextTestPhase } from "../../utils/general.utils";
 
 const Cell = styled(Box, {
   shouldForwardProp: (prop) => prop !== "leftBox" && prop !== "rightBox" && prop !== "middleBox",

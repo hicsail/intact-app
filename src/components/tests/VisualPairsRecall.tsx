@@ -1,9 +1,9 @@
 import { Box, Grid } from "@mui/material";
 import { FC, useContext, useEffect, useState } from "react";
-import { getNextTestPhase, randomSelectFromNumberRange, shuffleList } from "../utils/general.utils";
-import { visualPairsConfig as uiConfig } from "../config/ui.config";
-import { TestContext } from "../contexts/test.context";
-import { TestPhase } from "../contexts/general.context";
+import { getNextTestPhase, randomSelectFromNumberRange, shuffleList } from "../../utils/general.utils";
+import { visualPairsConfig as uiConfig } from "../../config/ui.config";
+import { TestContext } from "../../contexts/test.context";
+import { TestPhase } from "../../contexts/general.context";
 
 interface VisualPairsRecallProps {
   toTestPhase: (testPhase: TestPhase) => void;
