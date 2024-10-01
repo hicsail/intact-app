@@ -1,8 +1,11 @@
-import { FC } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import { Box, Button, Divider, Grid, Typography } from "@mui/material";
 import { digitSymbolConfig as testConfig } from "../config/test.config";
 import { digitSymbolConfig as uiConfig } from "../config/ui.config";
 import styled from "@emotion/styled";
+import { TestPhase } from "../contexts/general.context";
+import { TestContext } from "../contexts/test.context";
+import { getNextTestPhase } from "../utils/general.utils";
 
 const Cell = styled(Box, {
   shouldForwardProp: (prop) => prop !== "leftBox" && prop !== "rightBox" && prop !== "middleBox",
@@ -14,19 +17,47 @@ const Cell = styled(Box, {
 }));
 
 interface DigitSymbolMatchingMainProps {
-  correctIndex: number;
-  handleSubmit: (result: boolean) => void;
+  toTestPhase: (testPhase: TestPhase) => void;
 }
 
-export const DigitSymbolMatchingMain: FC<DigitSymbolMatchingMainProps> = ({ correctIndex, handleSubmit }) => {
+export const DigitSymbolMatchingMain: FC<DigitSymbolMatchingMainProps> = ({ toTestPhase }) => {
+  const testCxt = useContext(TestContext);
+
+  const [questionIdx, setQuestionIdx] = useState(0);
+
+  const [correctIndex, setCorrectIndex] = useState(-1);
+
   const submitHandler = (input: number) => {
     const result = testConfig.symbolPairs[correctIndex].num === input;
-    handleSubmit(result);
+    console.log(result);
+
+    if (questionIdx + 1 >= testCxt!.digitSymbolMatchingSetup.length) {
+      toTestPhase(getNextTestPhase(TestPhase.DIGIT_SYMBOL_MATCHING));
+    } else {
+      sessionStorage.setItem("questionNumber", String(questionIdx + 1));
+      setQuestionIdx(questionIdx + 1);
+    }
   };
+
+  useEffect(() => {
+    if (Number(sessionStorage.getItem("testPhase")) === TestPhase.DIGIT_SYMBOL_MATCHING) {
+      setQuestionIdx(Number(sessionStorage.getItem("questionNumber")));
+    }
+
+    const correctIndex = testCxt!.digitSymbolMatchingSetup[questionIdx];
+    setCorrectIndex(correctIndex);
+  }, []);
+
+  useEffect(() => {
+    const correctIndex = testCxt!.digitSymbolMatchingSetup[questionIdx];
+    setCorrectIndex(correctIndex);
+  }, [questionIdx]);
 
   return (
     <Box>
-      <img src={testConfig.symbolPairs[correctIndex].image} style={{ marginBottom: 8, height: "calc(100vw / 6)" }} />
+      {correctIndex >= 0 && (
+        <img src={testConfig.symbolPairs[correctIndex].image} style={{ marginBottom: 8, height: "calc(100vw / 6)" }} />
+      )}
       <Grid container spacing={0} marginBottom={8}>
         {testConfig.symbolPairs.map((symbol, index) => (
           <Grid item key={index}>

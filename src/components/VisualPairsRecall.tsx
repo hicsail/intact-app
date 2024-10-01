@@ -1,23 +1,54 @@
 import { Box, Grid } from "@mui/material";
-import { FC } from "react";
-import { randomSelectFromNumberRange, shuffleList } from "../utils/general.utils";
+import { FC, useContext, useEffect, useState } from "react";
+import { getNextTestPhase, randomSelectFromNumberRange, shuffleList } from "../utils/general.utils";
 import { visualPairsConfig as uiConfig } from "../config/ui.config";
+import { TestContext } from "../contexts/test.context";
+import { TestPhase } from "../contexts/general.context";
 
 interface VisualPairsRecallProps {
-  imageTheme: string;
-  reference: number;
-  correct: number;
-  handleSubmit: (result: boolean) => void;
+  toTestPhase: (testPhase: TestPhase) => void;
 }
 
-export const VisualPairsRecall: FC<VisualPairsRecallProps> = ({ imageTheme, reference, correct, handleSubmit }) => {
-  const options =
-    imageTheme === "example"
-      ? shuffleList([...randomSelectFromNumberRange(1, 6, 4, false, [reference, correct]), correct])
-      : shuffleList([...randomSelectFromNumberRange(1, 8, 4, false, [reference, correct]), correct]);
+export const VisualPairsRecall: FC<VisualPairsRecallProps> = ({ toTestPhase }) => {
+  const testCxt = useContext(TestContext);
+
+  const [questionIdx, setQuestionIdx] = useState(0);
+
+  const [options, setOptions] = useState<number[]>([]);
+  let imageTheme = Object.keys(testCxt!.visualPairSetupImageSetup)[questionIdx];
+  let reference = Object.values(testCxt!.visualPairSetupImageSetup)[questionIdx][0];
+  let correct = Object.values(testCxt!.visualPairSetupImageSetup)[questionIdx][1];
+
+  useEffect(() => {
+    if (Number(sessionStorage.getItem("testPhase")) === TestPhase.VISUAL_PAIRS_RECALL) {
+      setQuestionIdx(Number(sessionStorage.getItem("questionNumber")));
+    }
+
+    setOptions(
+      imageTheme === "example"
+        ? shuffleList([...randomSelectFromNumberRange(1, 6, 4, false, [reference, correct]), correct])
+        : shuffleList([...randomSelectFromNumberRange(1, 8, 4, false, [reference, correct]), correct])
+    );
+  }, []);
+
+  useEffect(() => {
+    setOptions(
+      imageTheme === "example"
+        ? shuffleList([...randomSelectFromNumberRange(1, 6, 4, false, [reference, correct]), correct])
+        : shuffleList([...randomSelectFromNumberRange(1, 8, 4, false, [reference, correct]), correct])
+    );
+  }, [questionIdx]);
 
   const submitHandler = (selected: number) => {
-    handleSubmit(selected === correct);
+    const result = selected === correct;
+    console.log(result);
+
+    if (questionIdx + 1 >= Object.values(testCxt!.visualPairSetupImageSetup).length) {
+      toTestPhase(getNextTestPhase(TestPhase.VISUAL_PAIRS_RECALL));
+    } else {
+      sessionStorage.setItem("questionNumber", String(questionIdx + 1));
+      setQuestionIdx((idx) => idx + 1);
+    }
   };
 
   return (

@@ -17,6 +17,7 @@ export enum TestPhase {
   DIGIT_SYMBOL_MATCHING = 5,
   VISUAL_PAIRS_MEMORIZE = 6,
   VISUAL_PAIRS_RECALL = 7,
+  FINISHED = 8,
 }
 
 interface GeneralContextType {

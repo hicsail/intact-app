@@ -1,3 +1,4 @@
+import { TestPhase } from "../contexts/general.context";
 import symbol1 from "/assets/digit-symbol/1.gif";
 import symbol2 from "/assets/digit-symbol/2.gif";
 import symbol3 from "/assets/digit-symbol/3.gif";
@@ -9,6 +10,16 @@ import symbol8 from "/assets/digit-symbol/8.gif";
 import symbol9 from "/assets/digit-symbol/9.gif";
 
 export const generalConfig = {
+  testOrder: [
+    TestPhase.MEMORY_RECALL_IMMEDIATE,
+    TestPhase.VISUAL_PAIRS_MEMORIZE,
+    TestPhase.CHOICE_REACTION_TIME,
+    TestPhase.VISUAL_PAIRS_RECALL,
+    TestPhase.DIGIT_SYMBOL_MATCHING,
+    TestPhase.SPACIAL_MEMORY,
+    TestPhase.MEMORY_RECALL_DELAYED,
+    TestPhase.FINISHED,
+  ],
   digitSymbolAns: [3, 8, 4, 0, 7, 0, 3, 5, 8, 2],
   choiceReactionTimeAns: [2, 2, 1, 1, 0, 2, 1, 0, 1, 0] as (0 | 1 | 2)[],
   visualPairsAns: {

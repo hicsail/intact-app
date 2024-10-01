@@ -1,15 +1,19 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import { Box, Grid, Typography } from "@mui/material";
-import { shuffleList } from "../utils/general.utils";
+import { getNextTestPhase, shuffleList } from "../utils/general.utils";
 import { memoryRecallConfig as testConfig } from "../config/test.config";
 import { memoryRecallConfig as uiConfig } from "../config/ui.config";
+import { TestPhase } from "../contexts/general.context";
+import { TestContext } from "../contexts/test.context";
 
 interface MemoryRecallMainProps {
-  selected: string[];
-  handleSubmit: (result: boolean) => void;
+  phase: TestPhase;
+  toTestPhase: (testPhase: TestPhase) => void;
 }
 
-export const MemoryRecallMain: FC<MemoryRecallMainProps> = ({ selected, handleSubmit }) => {
+export const MemoryRecallMain: FC<MemoryRecallMainProps> = ({ phase, toTestPhase }) => {
+  const testCxt = useContext(TestContext);
+
   const [clickedNum, setClickedNum] = useState(0);
   const [values, setValues] = useState(Object.fromEntries(testConfig.options.map((key) => [key, "unselected"])));
   const [randomList, setRandomList] = useState<string[]>([]);
@@ -23,7 +27,7 @@ export const MemoryRecallMain: FC<MemoryRecallMainProps> = ({ selected, handleSu
   useEffect(() => {
     if (clickedNum >= maxSelection) {
       setTimeout(() => {
-        handleSubmit(Object.entries(values).filter(([, value]) => value === "correct").length === maxSelection);
+        submitHandler();
         return;
       }, 2000);
     }
@@ -38,6 +42,7 @@ export const MemoryRecallMain: FC<MemoryRecallMainProps> = ({ selected, handleSu
       return;
     }
 
+    const selected = testCxt!.memoryRecallSetup;
     setClickedNum((num) => num + 1);
     setValues((prev) => {
       const newValues = { ...prev };
@@ -45,6 +50,13 @@ export const MemoryRecallMain: FC<MemoryRecallMainProps> = ({ selected, handleSu
       newValues[key] = selected.includes(key) ? "correct" : "incorrect";
       return newValues;
     });
+  };
+
+  const submitHandler = () => {
+    const result = Object.entries(values).filter(([, value]) => value === "correct").length === maxSelection;
+    console.log(result);
+
+    toTestPhase(getNextTestPhase(phase));
   };
 
   return (

@@ -1,40 +1,81 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import { Box, Button, Grid, Typography } from "@mui/material";
-import { shuffleList } from "../utils/general.utils";
+import { getNextTestPhase, randomSelectFromList, shuffleList } from "../utils/general.utils";
 import { choiceReactionTimeConfig as uiConfig } from "../config/ui.config";
 import { choiceReactionTimeConfig as testConfig } from "../config/test.config";
+import { TestContext } from "../contexts/test.context";
+import { TestPhase } from "../contexts/general.context";
 
 interface ChoiceReactionTimeMainProps {
-  correctIndex: 0 | 1 | 2;
-  correctSymbol: string;
-  handleSubmit: (result: boolean) => void;
+  toTestPhase: (testPhase: TestPhase) => void;
 }
 
-export const ChoiceReactionTimeMain: FC<ChoiceReactionTimeMainProps> = ({
-  correctIndex,
-  correctSymbol,
-  handleSubmit,
-}) => {
+export const ChoiceReactionTimeMain: FC<ChoiceReactionTimeMainProps> = ({ toTestPhase }) => {
+  const testCxt = useContext(TestContext);
+
+  const [questionIdx, setQuestionIdx] = useState(0);
+
   const [hide, setHide] = useState(true);
-
-  const waitTime =
-    Math.floor(Math.random() * (testConfig.waitTimeMax - testConfig.waitTimeMin)) + testConfig.waitTimeMin;
-  const symbols = shuffleList(["<", ">"]);
-  const colors = shuffleList([uiConfig.choiceColor.color0, uiConfig.choiceColor.color1]);
-
-  const submitHandler = (input: string) => {
-    const result = correctSymbol === input;
-    setHide(true);
-    handleSubmit(result);
-  };
+  const [symbols, setSymbols] = useState<string[]>([]);
+  const [correctSymbol, setCorrectSymbol] = useState<string>("");
+  const [colors, setColors] = useState<string[]>([]);
 
   useEffect(() => {
+    if (Number(sessionStorage.getItem("testPhase")) === TestPhase.CHOICE_REACTION_TIME) {
+      setQuestionIdx(Number(sessionStorage.getItem("questionNumber")));
+    }
+
+    const correctSymbol = randomSelectFromList(["<", ">"], 1)[0];
+    setCorrectSymbol(correctSymbol);
+
+    let otherSymbols = shuffleList(["<", ">"]);
+    otherSymbols.splice(testCxt!.choiceReactionTimeSetup[questionIdx], 0, correctSymbol);
+    setSymbols(otherSymbols);
+    setColors(shuffleList([uiConfig.choiceColor.color0, uiConfig.choiceColor.color1]));
+
+    const waitTime =
+      Math.floor(Math.random() * (testConfig.waitTimeMax - testConfig.waitTimeMin)) + testConfig.waitTimeMin;
     const timer = setTimeout(() => {
       setHide(false);
     }, waitTime);
 
-    return () => clearTimeout(timer);
-  }, [handleSubmit]);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
+
+  useEffect(() => {
+    const correctSymbol = randomSelectFromList(["<", ">"], 1)[0];
+    setCorrectSymbol(correctSymbol);
+
+    let otherSymbols = shuffleList(["<", ">"]);
+    otherSymbols.splice(testCxt!.choiceReactionTimeSetup[questionIdx], 0, correctSymbol);
+    setSymbols(otherSymbols);
+    setColors(shuffleList([uiConfig.choiceColor.color0, uiConfig.choiceColor.color1]));
+
+    const waitTime =
+      Math.floor(Math.random() * (testConfig.waitTimeMax - testConfig.waitTimeMin)) + testConfig.waitTimeMin;
+    const timer = setTimeout(() => {
+      setHide(false);
+    }, waitTime);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [questionIdx]);
+
+  const submitHandler = (input: string) => {
+    const result = correctSymbol === input;
+    console.log(result);
+
+    setHide(true);
+    if (questionIdx + 1 >= testCxt!.choiceReactionTimeSetup.length) {
+      toTestPhase(getNextTestPhase(TestPhase.CHOICE_REACTION_TIME));
+    } else {
+      sessionStorage.setItem("questionNumber", String(questionIdx + 1));
+      setQuestionIdx(questionIdx + 1);
+    }
+  };
 
   return (
     <Box display="flex" flexDirection="column" alignItems="center" gap={5}>
@@ -43,7 +84,7 @@ export const ChoiceReactionTimeMain: FC<ChoiceReactionTimeMainProps> = ({
           {hide ? (
             <Box width={82} />
           ) : (
-            Array.from({ length: 3 }).map((_, index) => (
+            symbols.map((symbol, index) => (
               <Box
                 key={index}
                 width={80}
@@ -54,11 +95,11 @@ export const ChoiceReactionTimeMain: FC<ChoiceReactionTimeMainProps> = ({
                 border={1}
                 marginY={2}
                 sx={{
-                  backgroundColor: index === correctIndex ? colors[0] : colors[1],
+                  backgroundColor: index === testCxt!.choiceReactionTimeSetup[questionIdx] ? colors[0] : colors[1],
                 }}
               >
-                <Typography variant="h2" fontWeight="bold">
-                  {index === correctIndex ? correctSymbol : symbols.pop()}
+                <Typography variant="h2" fontWeight="bold" color="black">
+                  {symbol}
                 </Typography>
               </Box>
             ))

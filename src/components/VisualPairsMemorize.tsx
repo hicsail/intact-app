@@ -1,19 +1,20 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import { visualPairsConfig as testConfig } from "../config/test.config";
 import { Grid } from "@mui/material";
+import { TestContext } from "../contexts/test.context";
+import { TestPhase } from "../contexts/general.context";
+import { getNextTestPhase } from "../utils/general.utils";
 
 interface ChoiceReactionTimeMemorizeProps {
-  imageGroupList: string[];
-  idxPairs: number[][];
-  handleTransition: () => void;
+  toTestPhase: (testPhase: TestPhase) => void;
 }
 
-export const VisualPairsMemorize: FC<ChoiceReactionTimeMemorizeProps> = ({
-  imageGroupList,
-  idxPairs,
-  handleTransition,
-}) => {
+export const VisualPairsMemorize: FC<ChoiceReactionTimeMemorizeProps> = ({ toTestPhase }) => {
+  const testCxt = useContext(TestContext);
+
   const [pairIdx, setPairIdx] = useState(-1);
+  const imageGroupList = Object.keys(testCxt!.visualPairSetupImageSetup);
+  const idxPairs = Object.values(testCxt!.visualPairSetupImageSetup);
 
   useEffect(() => {
     setPairIdx(0);
@@ -21,7 +22,7 @@ export const VisualPairsMemorize: FC<ChoiceReactionTimeMemorizeProps> = ({
 
   useEffect(() => {
     if (pairIdx >= imageGroupList.length) {
-      handleTransition();
+      submitHandler();
     }
 
     const timer = setTimeout(() => {
@@ -31,6 +32,10 @@ export const VisualPairsMemorize: FC<ChoiceReactionTimeMemorizeProps> = ({
       clearTimeout(timer);
     };
   }, [pairIdx]);
+
+  const submitHandler = () => {
+    toTestPhase(getNextTestPhase(TestPhase.VISUAL_PAIRS_MEMORIZE));
+  };
 
   return (
     <>
