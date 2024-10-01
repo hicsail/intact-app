@@ -1,5 +1,6 @@
-import { createContext, useMemo } from "react";
+import { createContext, Dispatch, SetStateAction, useMemo, useState } from "react";
 import { generalConfig } from "../config/test.config";
+import { Result } from "./types/result.type";
 
 interface TestContextType {
   memoryRecallSetup: string[];
@@ -7,6 +8,9 @@ interface TestContextType {
   choiceReactionTimeSetup: (0 | 1 | 2)[];
   spacialMemorySetup: boolean[][][];
   visualPairSetupImageSetup: { [key: string]: number[] };
+
+  currentResult: Result[];
+  setCurrentResult: Dispatch<SetStateAction<Result[]>>;
 }
 
 export const TestContext = createContext<TestContextType | undefined>(undefined);
@@ -26,6 +30,8 @@ export const TestProvider: React.FC<TestProviderProps> = ({ children }) => {
   );
   const visualPairSetupImageSetup: { [key: string]: number[] } = useMemo(() => generalConfig.visualPairsAns, []);
 
+  const [currentResult, setCurrentResult] = useState<Result[]>([]);
+
   return (
     <TestContext.Provider
       value={{
@@ -34,6 +40,8 @@ export const TestProvider: React.FC<TestProviderProps> = ({ children }) => {
         choiceReactionTimeSetup,
         spacialMemorySetup,
         visualPairSetupImageSetup,
+        currentResult,
+        setCurrentResult,
       }}
     >
       {children}
