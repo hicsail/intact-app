@@ -7,6 +7,7 @@ import { TestPhase } from "../../contexts/general.context";
 import { TestContext } from "../../contexts/test.context";
 import { playAudioFromS3 } from "../../utils/aws.utils";
 import PlayCircleIcon from "@mui/icons-material/PlayCircle";
+import { DelayedRecallResult, ImmediateRecallResult } from "../../contexts/types/result.type";
 
 interface MemoryRecallMainProps {
   phase: TestPhase;
@@ -15,6 +16,9 @@ interface MemoryRecallMainProps {
 
 export const MemoryRecallMain: FC<MemoryRecallMainProps> = ({ phase, toTestPhase }) => {
   const testCxt = useContext(TestContext);
+
+  const [startTime, setStartTime] = useState<number>(0);
+  const [trail, setTrail] = useState<number>(0);
 
   const [showPlayButton, setShowPlayButton] = useState<boolean>(true);
   const [showInstruction, setShowInstruction] = useState<boolean>(false);
@@ -27,6 +31,17 @@ export const MemoryRecallMain: FC<MemoryRecallMainProps> = ({ phase, toTestPhase
   const [randomList, setRandomList] = useState<string[]>([]);
 
   const maxSelection = testConfig.maxSelection;
+
+  useEffect(() => {
+    if (phase === TestPhase.MEMORY_RECALL_DELAYED) {
+      return;
+    }
+
+    if (!sessionStorage.getItem("immediateRecallTrial")) {
+      sessionStorage.setItem("immediateRecallTrial", "0");
+    }
+    setTrail(Number(sessionStorage.getItem("immediateRecallTrial")));
+  }, []);
 
   useEffect(() => {
     setRandomList(shuffleList([...testConfig.options]));
@@ -46,9 +61,10 @@ export const MemoryRecallMain: FC<MemoryRecallMainProps> = ({ phase, toTestPhase
     playAudioFromS3("audios/memory-recall").then((audio) => {
       setTimeout(() => {
         setShowInstruction(true);
-      }, 17000);
+      }, 16500);
       audio!.onended = () => {
         setShowOptions(true);
+        setStartTime(Date.now());
       };
     });
   };
@@ -74,14 +90,54 @@ export const MemoryRecallMain: FC<MemoryRecallMainProps> = ({ phase, toTestPhase
 
   const submitHandler = () => {
     const result = Object.entries(values).filter(([, value]) => value === "correct").length === maxSelection;
-    if (result) {
+    if (phase === TestPhase.MEMORY_RECALL_DELAYED) {
+      const answer = {
+        dr_rt: Date.now() - startTime,
+        dr_score: Object.entries(values).filter(([, value]) => value === "correct").length,
+      } as DelayedRecallResult;
+
+      sessionStorage.setItem("results", JSON.stringify(answer));
       toTestPhase(getNextTestPhase(phase));
+      return;
     }
+
+    if (!sessionStorage.getItem("results")) {
+      sessionStorage.setItem("results", "{}");
+    }
+
+    const answer = JSON.parse(sessionStorage.getItem("results")!);
+    answer["ir_score"] = 0;
+    if (trail === 0) {
+      answer["ir_rt_first"] = Date.now() - startTime;
+      answer["ir_rt_second"] = null;
+    }
+
+    if (trail === 1) {
+      answer["ir_rt_second"] = Date.now() - startTime;
+    }
+
+    sessionStorage.setItem("results", JSON.stringify(answer as ImmediateRecallResult));
+
+    if (result) {
+      if (trail === 0) {
+        answer["ir_score"] = 2;
+      } else if (trail === 1) {
+        answer["ir_score"] = 1;
+      }
+
+      sessionStorage.setItem("results", JSON.stringify(answer as ImmediateRecallResult));
+      sessionStorage.removeItem("immediateRecallTrial");
+      toTestPhase(getNextTestPhase(phase));
+      return;
+    }
+
     setValues(Object.fromEntries(testConfig.options.map((key) => [key, "unselected"])));
     setClickedNum(0);
     setShowPlayButton(true);
     setShowInstruction(false);
     setShowOptions(false);
+    setTrail((trail) => trail + 1);
+    sessionStorage.setItem("immediateRecallTrial", String(trail + 1));
   };
 
   return (
@@ -89,10 +145,10 @@ export const MemoryRecallMain: FC<MemoryRecallMainProps> = ({ phase, toTestPhase
       <Box
         sx={{
           position: "absolute",
-          width: "80vw",
           top: 0,
           left: 0,
           right: 0,
+          width: "80vw",
           marginX: "auto",
           marginY: 4,
         }}

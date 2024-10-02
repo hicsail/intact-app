@@ -24,7 +24,6 @@ export const TestPage: FC = () => {
     const localParticipantId = sessionStorage.getItem("participantId");
     if (!localParticipantId || !participantId) {
       navigate(`/${participantId}`);
-      return;
     }
 
     if (!sessionStorage.getItem("testPhase") || !sessionStorage.getItem("stage")) {
