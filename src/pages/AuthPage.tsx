@@ -3,15 +3,15 @@ import { ChangeEvent, FC, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 export const AuthPage: FC = () => {
-  const { participantId } = useParams<{ participantId: string }>();
+  const { studyId } = useParams<{ studyId: string }>();
   const [input, setInput] = useState<string>("");
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (validateParticipantId(participantId)) {
-      sessionStorage.setItem("participantId", participantId!);
-      console.log(`Participant ${participantId} is validated`);
-      navigate(`/assessments/${participantId}`);
+    if (validateStudyId(studyId)) {
+      sessionStorage.setItem("studyId", studyId!);
+      console.log(`Study ID ${studyId} is validated`);
+      navigate(`/assessments/${studyId}`);
     }
   }, []);
 
@@ -20,28 +20,28 @@ export const AuthPage: FC = () => {
   };
 
   const submitHandler = () => {
-    if (!validateParticipantId(input)) {
+    if (!validateStudyId(input)) {
       return;
     }
 
-    sessionStorage.setItem("participantId", input);
+    sessionStorage.setItem("studyId", input);
     navigate(`/assessments/${input}`);
   };
 
-  const validateParticipantId = (id: string | undefined) => {
+  const validateStudyId = (id: string | undefined) => {
     if (!id || id === "undefined") {
       return false;
     }
-    // TODO: validate participant ID
+    // TODO: validate study ID
 
     return true;
   };
 
   return (
     <Card>
-      <CardHeader title="Enter Participant ID" sx={{ paddingBottom: 0 }} />
+      <CardHeader title="Enter Study ID" sx={{ paddingBottom: 0 }} />
       <CardContent sx={{ paddingTop: 0 }}>
-        <TextField label="Participant ID" variant="outlined" fullWidth margin="normal" onChange={inputChangeHandler} />
+        <TextField label="Study ID" variant="outlined" fullWidth margin="normal" onChange={inputChangeHandler} />
         <Button variant="contained" color="primary" onClick={submitHandler}>
           Submit
         </Button>

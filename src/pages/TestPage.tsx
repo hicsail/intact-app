@@ -13,7 +13,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { generalConfig } from "../config/test.config";
 
 export const TestPage: FC = () => {
-  const { participantId } = useParams<{ participantId: string }>();
+  const { studyId } = useParams<{ studyId: string }>();
 
   // Routing hooks
   const cxt = useContext(GeneralContext);
@@ -21,9 +21,9 @@ export const TestPage: FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const localParticipantId = sessionStorage.getItem("participantId");
-    if (!localParticipantId || !participantId) {
-      navigate(`/${participantId}`);
+    const localStudyId = sessionStorage.getItem("studyId");
+    if (!localStudyId || !studyId) {
+      navigate(`/${studyId}`);
     }
 
     if (!sessionStorage.getItem("testPhase") || !sessionStorage.getItem("stage")) {
