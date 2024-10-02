@@ -1,9 +1,7 @@
-import { FC, useContext, useState } from "react";
+import { FC, useContext } from "react";
 import { GeneralContext, TestPhase } from "../contexts/general.context";
 import { ProgressTracker } from "./ProgressTracker";
-import { Box, Button, IconButton } from "@mui/material";
-import PlayCircleIcon from "@mui/icons-material/PlayCircle";
-import { playAudioFromS3 } from "../utils/aws.utils";
+import { Button } from "@mui/material";
 
 interface TransitionProps {
   handleTransition: () => void;
@@ -11,18 +9,6 @@ interface TransitionProps {
 
 export const Transition: FC<TransitionProps> = ({ handleTransition }) => {
   const cxt = useContext(GeneralContext);
-
-  const [showPlayButton, setShowPlayButton] = useState(true);
-  const [disableContinue, setDisableContinue] = useState(true);
-
-  const playHandler = () => {
-    setShowPlayButton(false);
-    playAudioFromS3("audios/memory-recall").then((audio) => {
-      audio!.onended = () => {
-        setDisableContinue(false);
-      };
-    });
-  };
 
   return (
     <>
@@ -33,20 +19,9 @@ export const Transition: FC<TransitionProps> = ({ handleTransition }) => {
       {cxt?.testPhase === TestPhase.DIGIT_SYMBOL_MATCHING && <ProgressTracker id={4} />}
       {cxt?.testPhase === TestPhase.SPATIAL_MEMORY && <ProgressTracker id={5} />}
 
-      <Box display="flex" flexDirection="column" gap={2}>
-        {showPlayButton && cxt?.testPhase === TestPhase.MEMORY_RECALL_IMMEDIATE && (
-          <IconButton onClick={playHandler}>
-            <PlayCircleIcon sx={{ fontSize: 70 }} />
-          </IconButton>
-        )}
-        <Button
-          variant="contained"
-          onClick={handleTransition}
-          disabled={disableContinue && cxt?.testPhase === TestPhase.MEMORY_RECALL_IMMEDIATE}
-        >
-          Continue
-        </Button>
-      </Box>
+      <Button variant="contained" onClick={handleTransition}>
+        Continue
+      </Button>
     </>
   );
 };
