@@ -42,7 +42,7 @@ export const digitSymbolConfig = {
 /**
  * @property cellSize - Size of each cell in pixels
  */
-export const spacialMemoryConfig = {
+export const spatialMemoryConfig = {
   cellSize: "20vw",
 };
 

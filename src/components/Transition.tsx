@@ -31,7 +31,7 @@ export const Transition: FC<TransitionProps> = ({ handleTransition }) => {
       {cxt?.testPhase === TestPhase.CHOICE_REACTION_TIME && <ProgressTracker id={2} />}
       {cxt?.testPhase === TestPhase.VISUAL_PAIRS_RECALL && <ProgressTracker id={3} />}
       {cxt?.testPhase === TestPhase.DIGIT_SYMBOL_MATCHING && <ProgressTracker id={4} />}
-      {cxt?.testPhase === TestPhase.SPACIAL_MEMORY && <ProgressTracker id={5} />}
+      {cxt?.testPhase === TestPhase.SPATIAL_MEMORY && <ProgressTracker id={5} />}
 
       <Box display="flex" flexDirection="column" gap={2}>
         {showPlayButton && cxt?.testPhase === TestPhase.MEMORY_RECALL_IMMEDIATE && (

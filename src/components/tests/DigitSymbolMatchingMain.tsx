@@ -6,6 +6,7 @@ import styled from "@emotion/styled";
 import { TestPhase } from "../../contexts/general.context";
 import { TestContext } from "../../contexts/test.context";
 import { getNextTestPhase } from "../../utils/general.utils";
+import { DigitSymbolMatchingResult } from "../../contexts/types/result.type";
 
 const Cell = styled(Box, {
   shouldForwardProp: (prop) => prop !== "leftBox" && prop !== "rightBox" && prop !== "middleBox",
@@ -24,20 +25,9 @@ export const DigitSymbolMatchingMain: FC<DigitSymbolMatchingMainProps> = ({ toTe
   const testCxt = useContext(TestContext);
 
   const [questionIdx, setQuestionIdx] = useState(0);
+  const [startTime, setStartTime] = useState<number>(0);
 
   const [correctIndex, setCorrectIndex] = useState(-1);
-
-  const submitHandler = (input: number) => {
-    const result = testConfig.symbolPairs[correctIndex].num === input;
-    console.log(result);
-
-    if (questionIdx + 1 >= testCxt!.digitSymbolMatchingSetup.length) {
-      toTestPhase(getNextTestPhase(TestPhase.DIGIT_SYMBOL_MATCHING));
-    } else {
-      sessionStorage.setItem("questionNumber", String(questionIdx + 1));
-      setQuestionIdx(questionIdx + 1);
-    }
-  };
 
   useEffect(() => {
     if (Number(sessionStorage.getItem("testPhase")) === TestPhase.DIGIT_SYMBOL_MATCHING) {
@@ -46,12 +36,35 @@ export const DigitSymbolMatchingMain: FC<DigitSymbolMatchingMainProps> = ({ toTe
 
     const correctIndex = testCxt!.digitSymbolMatchingSetup[questionIdx];
     setCorrectIndex(correctIndex);
+    setStartTime(Date.now());
   }, []);
 
   useEffect(() => {
     const correctIndex = testCxt!.digitSymbolMatchingSetup[questionIdx];
     setCorrectIndex(correctIndex);
+    setStartTime(Date.now());
   }, [questionIdx]);
+
+  const submitHandler = (input: number) => {
+    const answer: DigitSymbolMatchingResult = {
+      dsm_rt: Date.now() - startTime,
+      dsm_correct: testConfig.symbolPairs[correctIndex].num === input,
+      dsm_response: input,
+    };
+
+    if (!sessionStorage.getItem("results")) {
+      sessionStorage.setItem("results", "[]");
+    }
+    const resultList = JSON.parse(sessionStorage.getItem("results")!);
+    sessionStorage.setItem("results", JSON.stringify([...resultList, answer]));
+
+    if (questionIdx + 1 >= testCxt!.digitSymbolMatchingSetup.length) {
+      toTestPhase(getNextTestPhase(TestPhase.DIGIT_SYMBOL_MATCHING));
+    } else {
+      sessionStorage.setItem("questionNumber", String(questionIdx + 1));
+      setQuestionIdx(questionIdx + 1);
+    }
+  };
 
   return (
     <Box>

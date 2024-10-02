@@ -4,6 +4,7 @@ import { getNextTestPhase, randomSelectFromNumberRange, shuffleList } from "../.
 import { visualPairsConfig as uiConfig } from "../../config/ui.config";
 import { TestContext } from "../../contexts/test.context";
 import { TestPhase } from "../../contexts/general.context";
+import { VisualPairedAssociatesResult } from "../../contexts/types/result.type";
 
 interface VisualPairsRecallProps {
   toTestPhase: (testPhase: TestPhase) => void;
@@ -13,6 +14,7 @@ export const VisualPairsRecall: FC<VisualPairsRecallProps> = ({ toTestPhase }) =
   const testCxt = useContext(TestContext);
 
   const [questionIdx, setQuestionIdx] = useState(0);
+  const [startTime, setStartTime] = useState<number>(0);
 
   const [options, setOptions] = useState<number[]>([]);
   let imageTheme = Object.keys(testCxt!.visualPairSetupImageSetup)[questionIdx];
@@ -29,6 +31,7 @@ export const VisualPairsRecall: FC<VisualPairsRecallProps> = ({ toTestPhase }) =
         ? shuffleList([...randomSelectFromNumberRange(1, 6, 4, false, [reference, correct]), correct])
         : shuffleList([...randomSelectFromNumberRange(1, 8, 4, false, [reference, correct]), correct])
     );
+    setStartTime(Date.now());
   }, []);
 
   useEffect(() => {
@@ -37,11 +40,21 @@ export const VisualPairsRecall: FC<VisualPairsRecallProps> = ({ toTestPhase }) =
         ? shuffleList([...randomSelectFromNumberRange(1, 6, 4, false, [reference, correct]), correct])
         : shuffleList([...randomSelectFromNumberRange(1, 8, 4, false, [reference, correct]), correct])
     );
+    setStartTime(Date.now());
   }, [questionIdx]);
 
   const submitHandler = (selected: number) => {
-    const result = selected === correct;
-    console.log(result);
+    const answer: VisualPairedAssociatesResult = {
+      vpa_rt: Date.now() - startTime,
+      vpa_correct: selected === correct,
+      vpa_response: `${imageTheme}${selected}.jpg`,
+    };
+
+    if (!sessionStorage.getItem("results")) {
+      sessionStorage.setItem("results", "[]");
+    }
+    const resultList = JSON.parse(sessionStorage.getItem("results")!);
+    sessionStorage.setItem("results", JSON.stringify([...resultList, answer]));
 
     if (questionIdx + 1 >= Object.values(testCxt!.visualPairSetupImageSetup).length) {
       toTestPhase(getNextTestPhase(TestPhase.VISUAL_PAIRS_RECALL));

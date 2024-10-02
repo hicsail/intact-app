@@ -5,6 +5,7 @@ import { choiceReactionTimeConfig as uiConfig } from "../../config/ui.config";
 import { choiceReactionTimeConfig as testConfig } from "../../config/test.config";
 import { TestContext } from "../../contexts/test.context";
 import { TestPhase } from "../../contexts/general.context";
+import { ChoiceReactionTimeResult } from "../../contexts/types/result.type";
 
 interface ChoiceReactionTimeMainProps {
   toTestPhase: (testPhase: TestPhase) => void;
@@ -14,11 +15,14 @@ export const ChoiceReactionTimeMain: FC<ChoiceReactionTimeMainProps> = ({ toTest
   const testCxt = useContext(TestContext);
 
   const [questionIdx, setQuestionIdx] = useState(0);
+  const [startTime, setStartTime] = useState<number>(0);
+  const [pressTime, setPressTime] = useState<number>(0);
 
   const [hide, setHide] = useState(true);
   const [symbols, setSymbols] = useState<string[]>([]);
   const [correctSymbol, setCorrectSymbol] = useState<string>("");
   const [colors, setColors] = useState<string[]>([]);
+  const [disable, setDisable] = useState(true);
 
   useEffect(() => {
     if (Number(sessionStorage.getItem("testPhase")) === TestPhase.CHOICE_REACTION_TIME) {
@@ -35,8 +39,10 @@ export const ChoiceReactionTimeMain: FC<ChoiceReactionTimeMainProps> = ({ toTest
 
     const waitTime =
       Math.floor(Math.random() * (testConfig.waitTimeMax - testConfig.waitTimeMin)) + testConfig.waitTimeMin;
+    setStartTime(Date.now() + waitTime);
     const timer = setTimeout(() => {
       setHide(false);
+      setDisable(false);
     }, waitTime);
 
     return () => {
@@ -55,8 +61,10 @@ export const ChoiceReactionTimeMain: FC<ChoiceReactionTimeMainProps> = ({ toTest
 
     const waitTime =
       Math.floor(Math.random() * (testConfig.waitTimeMax - testConfig.waitTimeMin)) + testConfig.waitTimeMin;
+    setStartTime(Date.now() + waitTime);
     const timer = setTimeout(() => {
       setHide(false);
+      setDisable(false);
     }, waitTime);
 
     return () => {
@@ -64,11 +72,26 @@ export const ChoiceReactionTimeMain: FC<ChoiceReactionTimeMainProps> = ({ toTest
     };
   }, [questionIdx]);
 
+  const touchHandler = () => {
+    setPressTime(Date.now());
+  };
+
   const submitHandler = (input: string) => {
-    const result = correctSymbol === input;
-    console.log(result);
+    const anwser: ChoiceReactionTimeResult = {
+      crt_rt: pressTime - startTime,
+      crt_dwell: Date.now() - pressTime,
+      crt_correct: correctSymbol === input,
+      crt_response: input === "<" ? "left" : "right",
+    };
+
+    if (!sessionStorage.getItem("results")) {
+      sessionStorage.setItem("results", "[]");
+    }
+    const resultList = JSON.parse(sessionStorage.getItem("results")!);
+    sessionStorage.setItem("results", JSON.stringify([...resultList, anwser]));
 
     setHide(true);
+    setDisable(true);
     if (questionIdx + 1 >= testCxt!.choiceReactionTimeSetup.length) {
       toTestPhase(getNextTestPhase(TestPhase.CHOICE_REACTION_TIME));
     } else {
@@ -112,7 +135,9 @@ export const ChoiceReactionTimeMain: FC<ChoiceReactionTimeMainProps> = ({ toTest
             <Button
               fullWidth
               variant="contained"
-              onClick={() => submitHandler("<")}
+              onTouchStart={touchHandler}
+              onTouchEnd={() => submitHandler("<")}
+              disabled={disable}
               sx={{
                 backgroundColor: uiConfig.buttonColor,
                 "&:hover": {
@@ -131,7 +156,9 @@ export const ChoiceReactionTimeMain: FC<ChoiceReactionTimeMainProps> = ({ toTest
             <Button
               fullWidth
               variant="contained"
-              onClick={() => submitHandler(">")}
+              onTouchStart={touchHandler}
+              onTouchEnd={() => submitHandler(">")}
+              disabled={disable}
               sx={{
                 backgroundColor: uiConfig.buttonColor,
                 "&:hover": {

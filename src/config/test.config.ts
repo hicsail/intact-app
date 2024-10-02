@@ -16,7 +16,7 @@ export const generalConfig = {
     TestPhase.CHOICE_REACTION_TIME,
     TestPhase.VISUAL_PAIRS_RECALL,
     TestPhase.DIGIT_SYMBOL_MATCHING,
-    TestPhase.SPACIAL_MEMORY,
+    TestPhase.SPATIAL_MEMORY,
     TestPhase.MEMORY_RECALL_DELAYED,
     TestPhase.FINISHED,
   ],
@@ -30,7 +30,7 @@ export const generalConfig = {
     entry: [2, 7],
   },
   memoryRecallAns: ["Cat", "Crocodile", "Elephant", "Chicken", "Eagle"],
-  spacialMemoryAns: [
+  spatialMemoryAns: [
     [
       [0, 0, 0, 1],
       [0, 0, 0, 1],
@@ -69,7 +69,7 @@ export const generalConfig = {
  * @property cols - Number of columns in the grid
  * @property timeToMemorize - Time in milliseconds to memorize the grid
  */
-export const spacialMemoryConfig = {
+export const spatialMemoryConfig = {
   rows: 4,
   cols: 4,
   timeToMemorize: 5000,

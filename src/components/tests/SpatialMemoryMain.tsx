@@ -1,9 +1,10 @@
 import { FC, useContext, useEffect, useState } from "react";
 import { Box, Button, Grid, styled } from "@mui/material";
-import { spacialMemoryConfig as testConfig } from "../../config/test.config";
-import { spacialMemoryConfig as uiConfig } from "../../config/ui.config";
+import { spatialMemoryConfig as testConfig } from "../../config/test.config";
+import { spatialMemoryConfig as uiConfig } from "../../config/ui.config";
 import { TestContext } from "../../contexts/test.context";
 import { TestPhase } from "../../contexts/general.context";
+import { SpatialMemoryResult } from "../../contexts/types/result.type";
 
 const Cell = styled(Box, {
   shouldForwardProp: (prop) => prop !== "topBox" && prop !== "bottomBox" && prop !== "leftBox" && prop !== "rightBox",
@@ -20,21 +21,22 @@ const Cell = styled(Box, {
   })
 );
 
-interface SpacialMemoryMainProps {
+interface SpatialMemoryMainProps {
   toTestPhase: (testPhase: TestPhase) => void;
 }
 
-export const SpacialMemoryMain: FC<SpacialMemoryMainProps> = ({ toTestPhase }) => {
+export const SpatialMemoryMain: FC<SpatialMemoryMainProps> = ({ toTestPhase }) => {
   const testCxt = useContext(TestContext);
 
   const [questionIdx, setQuestionIdx] = useState(0);
+  const [startTime, setStartTime] = useState<number>(0);
 
   const [grid, setGrid] = useState(Array(testConfig.rows).fill(Array(testConfig.cols).fill(false)));
   const [correct, setCorrect] = useState(Array(testConfig.rows).fill(Array(testConfig.cols).fill(false)));
   const [enabled, setEnabled] = useState(false);
 
   useEffect(() => {
-    if (Number(sessionStorage.getItem("testPhase")) === TestPhase.SPACIAL_MEMORY) {
+    if (Number(sessionStorage.getItem("testPhase")) === TestPhase.SPATIAL_MEMORY) {
       setQuestionIdx(Number(sessionStorage.getItem("questionNumber")));
     }
 
@@ -43,10 +45,11 @@ export const SpacialMemoryMain: FC<SpacialMemoryMainProps> = ({ toTestPhase }) =
       setEnabled(true);
     }, testConfig.timeToMemorize);
 
-    const questionGrid = testCxt!.spacialMemorySetup[questionIdx];
+    const questionGrid = testCxt!.spatialMemorySetup[questionIdx];
     setCorrect(questionGrid);
     setGrid(questionGrid);
     setEnabled(false);
+    setStartTime(Date.now() + testConfig.timeToMemorize);
 
     return () => clearTimeout(timer);
   }, []);
@@ -57,10 +60,11 @@ export const SpacialMemoryMain: FC<SpacialMemoryMainProps> = ({ toTestPhase }) =
       setEnabled(true);
     }, testConfig.timeToMemorize);
 
-    const questionGrid = testCxt!.spacialMemorySetup[questionIdx];
+    const questionGrid = testCxt!.spatialMemorySetup[questionIdx];
     setCorrect(questionGrid);
     setGrid(questionGrid);
     setEnabled(false);
+    setStartTime(Date.now() + testConfig.timeToMemorize);
 
     return () => clearTimeout(timer);
   }, [questionIdx]);
@@ -74,12 +78,20 @@ export const SpacialMemoryMain: FC<SpacialMemoryMainProps> = ({ toTestPhase }) =
   };
 
   const submitHandler = () => {
-    const result = grid.every((row: boolean[], rowIndex: number) =>
-      row.every((cell: boolean, colIndex: number) => cell === correct[rowIndex][colIndex])
-    );
-    console.log(result);
+    const answer: SpatialMemoryResult = {
+      sm_rt: Date.now() - startTime,
+      sm_correct: grid.every((row: boolean[], rowIndex: number) =>
+        row.every((cell: boolean, colIndex: number) => cell === correct[rowIndex][colIndex])
+      ),
+    };
 
-    if (questionIdx + 1 >= testCxt!.spacialMemorySetup.length) {
+    if (!sessionStorage.getItem("results")) {
+      sessionStorage.setItem("results", "[]");
+    }
+    const resultList = JSON.parse(sessionStorage.getItem("results")!);
+    sessionStorage.setItem("results", JSON.stringify([...resultList, answer]));
+
+    if (questionIdx + 1 >= testCxt!.spatialMemorySetup.length) {
       toTestPhase(TestPhase.MEMORY_RECALL_DELAYED);
     } else {
       sessionStorage.setItem("questionNumber", String(questionIdx + 1));

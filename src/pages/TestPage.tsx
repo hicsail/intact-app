@@ -1,5 +1,5 @@
 import { FC, useContext, useEffect } from "react";
-import { SpacialMemoryMain } from "../components/tests/SpacialMemoryMain";
+import { SpatialMemoryMain } from "../components/tests/SpatialMemoryMain";
 import { ChoiceReactionTimeMain } from "../components/tests/ChoiceReactionTimeMain";
 import { DigitSymbolMatchingMain } from "../components/tests/DigitSymbolMatchingMain";
 import { GeneralContext, Stage, TestPhase } from "../contexts/general.context";
@@ -40,11 +40,22 @@ export const TestPage: FC = () => {
   }, []);
 
   const testPhaseTransitionHandler = (target: TestPhase) => {
+    submitResults();
+
+    sessionStorage.setItem("results", "[]");
     sessionStorage.setItem("testPhase", String(target));
     sessionStorage.setItem("stage", String(Stage.TRANSITION));
     sessionStorage.setItem("questionNumber", "0");
     cxt!.setTestPhase(target);
     cxt!.setStage(Stage.TRANSITION);
+  };
+
+  const transitionToTestHandler = () => {
+    sessionStorage.setItem("stage", String(Stage.TEST));
+    cxt!.setStage(Stage.TEST);
+
+    const startTime = new Date().toISOString();
+    sessionStorage.setItem("startTime", startTime);
   };
 
   const TestComponent: FC = () => (
@@ -64,7 +75,7 @@ export const TestPage: FC = () => {
       {cxt?.testPhase === TestPhase.CHOICE_REACTION_TIME && (
         <ChoiceReactionTimeMain toTestPhase={testPhaseTransitionHandler} />
       )}
-      {cxt?.testPhase === TestPhase.SPACIAL_MEMORY && <SpacialMemoryMain toTestPhase={testPhaseTransitionHandler} />}
+      {cxt?.testPhase === TestPhase.SPATIAL_MEMORY && <SpatialMemoryMain toTestPhase={testPhaseTransitionHandler} />}
       {cxt?.testPhase === TestPhase.MEMORY_RECALL_DELAYED && (
         <MemoryRecallMain phase={TestPhase.MEMORY_RECALL_DELAYED} toTestPhase={testPhaseTransitionHandler} />
       )}
@@ -75,8 +86,27 @@ export const TestPage: FC = () => {
     <>
       {cxt?.stage === Stage.GENERAL_DIRECTION && <GeneralDirection />}
       {cxt?.stage === Stage.SOUND_CHECK && <SoundCheck />}
-      {cxt?.stage === Stage.TRANSITION && <Transition handleTransition={() => cxt!.setStage(Stage.TEST)} />}
+      {cxt?.stage === Stage.TRANSITION && <Transition handleTransition={transitionToTestHandler} />}
       {cxt?.stage === Stage.TEST && <TestComponent />}
     </>
   );
+};
+
+const submitResults = async () => {
+  const timeStarted = sessionStorage.getItem("startTime");
+  const results = sessionStorage.getItem("results");
+  if (!timeStarted || !results) {
+    throw new Error("Started time or results not found");
+  }
+
+  const timeElapsed = new Date().getTime() - new Date(timeStarted).getTime();
+  const body = {
+    study_id: "", // TODO: Add study ID
+    time_started: timeStarted,
+    time_elapsed_milliseconds: timeElapsed,
+    device_info: navigator.userAgent,
+    result: JSON.parse(results),
+  };
+
+  console.log(body);
 };
