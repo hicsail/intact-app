@@ -2,36 +2,24 @@ import { FC } from "react";
 import { Stepper, Typography, Step, StepLabel } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
+import { TestPhase } from "../contexts/general.context";
+import { generalConfig as testConfig } from "../config/test.config";
 
-const MemoryTestsLabels = [
-  {
-    name: "Memory - Immediate Recall"
-  },
-  {
-    name: 'Visual Paired Associates - Learn'
-  },
-  {
-    name: "Choice Reaction Time"
-  },
-  {
-    name: 'Visual Paired Associates - Test'
-  },
-  {
-    name: "Digit Symbol Matching"
-  },
-  {
-    name: "Spatial Memory"
-  },
-  {
-    name: "Memory - Delayed Recall"
-  }
-];
+const progressMapping: { [key in TestPhase]?: string } = {
+  [TestPhase.MEMORY_RECALL_IMMEDIATE]: "Memory - Immediate Recall",
+  [TestPhase.VISUAL_PAIRS_MEMORIZE]: "Visual Paired Associates - Learn",
+  [TestPhase.CHOICE_REACTION_TIME]: "Choice Reaction Time",
+  [TestPhase.VISUAL_PAIRS_RECALL]: "Visual Paired Associates - Test",
+  [TestPhase.DIGIT_SYMBOL_MATCHING]: "Digit Symbol Matching",
+  [TestPhase.SPATIAL_MEMORY]: "Spatial Memory",
+  [TestPhase.MEMORY_RECALL_DELAYED]: "Memory - Delayed Recall",
+};
 
 interface ProgressTrackerProps {
   id: number;
 }
 
-export const ProgressTracker: FC<ProgressTrackerProps> = (props) => {
+export const ProgressTracker: FC<ProgressTrackerProps> = ({ id }) => {
   //check for Dark/Light Mode
   const dark_light_color = () => {
     if (window.matchMedia("(prefers-color-scheme: dark").matches) {
@@ -42,39 +30,32 @@ export const ProgressTracker: FC<ProgressTrackerProps> = (props) => {
   };
 
   return (
-    <Stepper activeStep={props.id} orientation="vertical" sx={{ padding: 2 }}>
-      {MemoryTestsLabels.map((step, index) => (
-        <Step key={index}>
-          <StepLabel
-            icon={
-              props.id > index ? (
-                <CheckCircleIcon fontSize="inherit" />
-              ) : (
-                <RadioButtonUncheckedIcon
-                  fontSize="inherit"
-                  sx={{ color: props.id >= index ? "#ffffff" : "#808080" }}
-                />
-              )
-            }
-            sx={{ color: props.id <= index ? "#ffffff" : "#009933" }}
-          >
-            <Typography
-              variant="subtitle1"
-              color={
-                props.id <= index
-                  ? props.id === index
-                    ? dark_light_color
-                    : "#808080"
-                  : "#009933"
+    <Stepper activeStep={id} orientation="vertical" sx={{ padding: 2 }}>
+      {testConfig.testOrder
+        .filter((item) => item !== TestPhase.FINISHED)
+        .map((test: TestPhase, index) => (
+          <Step key={index}>
+            <StepLabel
+              icon={
+                id > index ? (
+                  <CheckCircleIcon fontSize="inherit" />
+                ) : (
+                  <RadioButtonUncheckedIcon fontSize="inherit" sx={{ color: id >= index ? "#ffffff" : "#808080" }} />
+                )
               }
-              overflow={"visible"}
-              sx={{ padding: 0.5 }}
+              sx={{ color: id <= index ? "#ffffff" : "#009933" }}
             >
-              {step.name}
-            </Typography>
-          </StepLabel>
-        </Step>
-      ))}
+              <Typography
+                variant="subtitle1"
+                color={id <= index ? (id === index ? dark_light_color : "#808080") : "#009933"}
+                overflow={"visible"}
+                sx={{ padding: 0.5 }}
+              >
+                {progressMapping[test]}
+              </Typography>
+            </StepLabel>
+          </Step>
+        ))}
     </Stepper>
   );
 };
