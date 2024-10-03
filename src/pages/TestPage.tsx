@@ -100,12 +100,26 @@ const submitResults = async () => {
 
   const timeElapsed = new Date().getTime() - new Date(timeStarted).getTime();
   const body = {
-    study_id: "", // TODO: Add study ID
+    study_id: sessionStorage.getItem("studyId"),
     time_started: timeStarted,
     time_elapsed_milliseconds: timeElapsed,
     device_info: navigator.userAgent,
+    notes: "",
     result: JSON.parse(results),
   };
 
-  console.log(body);
+  // send post request to server
+  const response = await fetch(import.meta.env.VITE_TEST_ENDPOINT, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  });
+
+  if (response.status !== 200) {
+    const erroeMessage = await response.text();
+    console.error(erroeMessage);
+    throw new Error("Failed to submit results");
+  }
 };
