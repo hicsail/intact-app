@@ -38,8 +38,10 @@ export const TestPage: FC = () => {
     }
   }, []);
 
-  const testPhaseTransitionHandler = (target: TestPhase) => {
-    submitResults();
+  const testPhaseTransitionHandler = (target: TestPhase, sendRequest: boolean = true) => {
+    if (sendRequest) {
+      submitResults();
+    }
 
     sessionStorage.setItem("results", "[]");
     sessionStorage.setItem("testPhase", String(target));

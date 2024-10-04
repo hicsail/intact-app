@@ -6,7 +6,7 @@ import { TestPhase } from "../../contexts/general.context";
 import { getNextTestPhase } from "../../utils/general.utils";
 
 interface ChoiceReactionTimeMemorizeProps {
-  toTestPhase: (testPhase: TestPhase) => void;
+  toTestPhase: (testPhase: TestPhase, sendRequest: boolean) => void;
 }
 
 export const VisualPairsMemorize: FC<ChoiceReactionTimeMemorizeProps> = ({ toTestPhase }) => {
@@ -34,7 +34,7 @@ export const VisualPairsMemorize: FC<ChoiceReactionTimeMemorizeProps> = ({ toTes
   }, [pairIdx]);
 
   const submitHandler = () => {
-    toTestPhase(getNextTestPhase(TestPhase.VISUAL_PAIRS_MEMORIZE));
+    toTestPhase(getNextTestPhase(TestPhase.VISUAL_PAIRS_MEMORIZE), false);
   };
 
   return (
