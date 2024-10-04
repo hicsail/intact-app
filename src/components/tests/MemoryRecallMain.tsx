@@ -34,6 +34,11 @@ export const MemoryRecallMain: FC<MemoryRecallMainProps> = ({ phase, toTestPhase
 
   useEffect(() => {
     if (phase === TestPhase.MEMORY_RECALL_DELAYED) {
+      setShowInstruction(true);
+      setTimeout(() => {
+        setShowOptions(true);
+      }, 2000);
+
       return;
     }
 
@@ -153,7 +158,7 @@ export const MemoryRecallMain: FC<MemoryRecallMainProps> = ({ phase, toTestPhase
           marginY: 4,
         }}
       >
-        {!showInstruction && (
+        {!showInstruction && phase === TestPhase.MEMORY_RECALL_IMMEDIATE && (
           <Typography variant="body1" align="left" width="80vw" gutterBottom>
             Please memorize these five animals until the end of the test.
           </Typography>
@@ -164,7 +169,7 @@ export const MemoryRecallMain: FC<MemoryRecallMainProps> = ({ phase, toTestPhase
           </Typography>
         )}
       </Box>
-      {showPlayButton && (
+      {showPlayButton && phase === TestPhase.MEMORY_RECALL_IMMEDIATE && (
         <IconButton onClick={playHandler}>
           <PlayCircleIcon sx={{ fontSize: 100 }} />
         </IconButton>
