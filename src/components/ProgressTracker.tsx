@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import { Stepper, Typography, Step, StepLabel } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
@@ -20,14 +20,22 @@ interface ProgressTrackerProps {
 }
 
 export const ProgressTracker: FC<ProgressTrackerProps> = ({ id }) => {
-  //check for Dark/Light Mode
-  const dark_light_color = () => {
-    if (window.matchMedia("(prefers-color-scheme: dark").matches) {
-      return "#ffffff";
-    } else {
-      return "#000000";
-    }
-  };
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(window.matchMedia("(prefers-color-scheme: dark)").matches);
+
+  const primaryColor = isDarkMode ? "#ffffff" : "#000000";
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    const changeHandler = (e: MediaQueryListEvent) => {
+      setIsDarkMode(e.matches);
+    };
+
+    mediaQuery.addEventListener("change", changeHandler);
+
+    return () => {
+      mediaQuery.removeEventListener("change", changeHandler);
+    };
+  }, []);
 
   return (
     <Stepper activeStep={id} orientation="vertical" sx={{ padding: 2 }}>
@@ -40,14 +48,17 @@ export const ProgressTracker: FC<ProgressTrackerProps> = ({ id }) => {
                 id > index ? (
                   <CheckCircleIcon fontSize="inherit" />
                 ) : (
-                  <RadioButtonUncheckedIcon fontSize="inherit" sx={{ color: id >= index ? "#ffffff" : "#808080" }} />
+                  <RadioButtonUncheckedIcon
+                    fontSize="inherit"
+                    sx={{ color: id === index ? primaryColor : "#808080" }}
+                  />
                 )
               }
-              sx={{ color: id <= index ? "#ffffff" : "#009933" }}
+              sx={{ color: id === index ? primaryColor : id > index ? "#009933" : "#808080" }}
             >
               <Typography
                 variant="subtitle1"
-                color={id <= index ? (id === index ? dark_light_color : "#808080") : "#009933"}
+                color={id === index ? primaryColor : id > index ? "#009933" : "#808080"}
                 overflow={"visible"}
                 sx={{ padding: 0.5 }}
               >
