@@ -1,3 +1,15 @@
+import { TestPhase } from "../contexts/general.context";
+import { generalConfig as testConfig } from "../config/test.config";
+
+export const getNextTestPhase = (currentPhase: TestPhase) => {
+  const currentIndex = testConfig.testOrder.indexOf(currentPhase);
+  if (currentIndex === -1) {
+    throw new Error("Invalid test phase");
+  }
+
+  return testConfig.testOrder[currentIndex + 1];
+};
+
 export const shuffleList: <T>(array: T[]) => T[] = (array) => {
   let currentIndex = array.length,
     randomIndex;
@@ -11,10 +23,6 @@ export const shuffleList: <T>(array: T[]) => T[] = (array) => {
 
   return array;
 };
-
-// export const randomSelectFromList: <T>(array: T[]) => T = (array) => {
-//   return array[Math.floor(Math.random() * array.length)];
-// };
 
 export const randomSelectFromList = <T>(array: T[], x: number): T[] => {
   if (x > array.length) {

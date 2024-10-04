@@ -1,208 +1,84 @@
-import { FC, useContext, useEffect, useState } from "react";
-import { SpacialMemoryMain } from "../components/SpacialMemoryMain";
-import { ChoiceReactionTimeMain } from "../components/ChoiceReactionTimeMain";
-import { randomSelectFromList } from "../utils/generalUtils";
-import { DigitSymbolMatchingMain } from "../components/DigitSymbolMatchingMain";
+import { FC, useContext, useEffect } from "react";
+import { SpatialMemoryMain } from "../components/tests/SpatialMemoryMain";
+import { ChoiceReactionTimeMain } from "../components/tests/ChoiceReactionTimeMain";
+import { DigitSymbolMatchingMain } from "../components/tests/DigitSymbolMatchingMain";
 import { GeneralContext, Stage, TestPhase } from "../contexts/general.context";
-import { VisualPairsMemorize } from "../components/VisualPairsMemorize";
-import { TestContext } from "../contexts/test.context";
-import { VisualPairsRecall } from "../components/VisualPairsRecall";
-import { MemoryRecallMain } from "../components/MemoryRecallMain";
+import { VisualPairsMemorize } from "../components/tests/VisualPairsMemorize";
+import { VisualPairsRecall } from "../components/tests/VisualPairsRecall";
+import { MemoryRecallMain } from "../components/tests/MemoryRecallMain";
 import { Transition } from "../components/Transition";
 import { SoundCheck } from "../components/SoundCheck";
 import { GeneralDirection } from "../components/GeneralDirection";
 import { useNavigate, useParams } from "react-router-dom";
+import { generalConfig } from "../config/test.config";
 
 export const TestPage: FC = () => {
-  const { participantId } = useParams<{ participantId: string }>();
+  const { studyId } = useParams<{ studyId: string }>();
 
   // Routing hooks
   const cxt = useContext(GeneralContext);
 
-  // Test setup
-  const testCxt = useContext(TestContext);
-
   const navigate = useNavigate();
 
-  const [digitSymbolMatchingIdx, setDigitSymbolMatchingIdx] = useState(0);
-  const [choiceReactionTimeIdx, setChoiceReactionTimeIdx] = useState(0);
-  const [spacialMemoryIdx, setSpacialMemoryIdx] = useState(0);
-  const [visualPairsIdx, setVisualPairsIdx] = useState(0);
-
   useEffect(() => {
-    const localParticipantId = sessionStorage.getItem("participantId");
-    if (!localParticipantId || !participantId) {
-      navigate(`/${participantId}`);
-      return;
+    const localStudyId = sessionStorage.getItem("studyId");
+    if (!localStudyId || !studyId) {
+      navigate(`/${studyId}`);
     }
 
     if (!sessionStorage.getItem("testPhase") || !sessionStorage.getItem("stage")) {
-      sessionStorage.setItem("testPhase", String(TestPhase.MEMORY_RECALL_IMMEDIATE));
+      sessionStorage.setItem("testPhase", String(generalConfig.testOrder[0]));
       sessionStorage.setItem("stage", String(Stage.GENERAL_DIRECTION));
       sessionStorage.setItem("questionNumber", "0");
-      cxt!.setTestPhase(TestPhase.MEMORY_RECALL_IMMEDIATE);
+      cxt!.setTestPhase(generalConfig.testOrder[0]);
       cxt!.setStage(Stage.GENERAL_DIRECTION);
     } else {
       cxt!.setTestPhase(Number(sessionStorage.getItem("testPhase")) as TestPhase);
       cxt!.setStage(Number(sessionStorage.getItem("stage")) as Stage);
-
-      switch (Number(sessionStorage.getItem("testPhase"))) {
-        case TestPhase.DIGIT_SYMBOL_MATCHING:
-          setDigitSymbolMatchingIdx(Number(sessionStorage.getItem("questionNumber")));
-          break;
-        case TestPhase.CHOICE_REACTION_TIME:
-          setChoiceReactionTimeIdx(Number(sessionStorage.getItem("questionNumber")));
-          break;
-        case TestPhase.SPACIAL_MEMORY:
-          setSpacialMemoryIdx(Number(sessionStorage.getItem("questionNumber")));
-          break;
-        case TestPhase.VISUAL_PAIRS_RECALL:
-          setVisualPairsIdx(Number(sessionStorage.getItem("questionNumber")));
-          break;
-        default:
-          break;
-      }
     }
   }, []);
 
-  // Transition from Memory Recall Test
-  const memoryRecallSubmitHandler = (result: boolean) => {
-    console.log(result);
-    if (cxt!.testPhase !== TestPhase.MEMORY_RECALL_IMMEDIATE) {
-      return;
+  const testPhaseTransitionHandler = (target: TestPhase, sendRequest: boolean = true) => {
+    if (sendRequest) {
+      submitResults();
     }
 
-    sessionStorage.setItem("testPhase", String(TestPhase.VISUAL_PAIRS_MEMORIZE));
+    sessionStorage.setItem("results", "[]");
+    sessionStorage.setItem("testPhase", String(target));
     sessionStorage.setItem("stage", String(Stage.TRANSITION));
-    cxt!.setTestPhase(TestPhase.VISUAL_PAIRS_MEMORIZE);
+    sessionStorage.setItem("questionNumber", "0");
+    cxt!.setTestPhase(target);
     cxt!.setStage(Stage.TRANSITION);
   };
 
-  // Transition from Digit Symbol Matching Test
-  const digitSymbolMatchingSubmitHandler = (result: boolean) => {
-    console.log(result);
-    if (cxt!.testPhase !== TestPhase.DIGIT_SYMBOL_MATCHING) {
-      return;
-    }
+  const transitionToTestHandler = () => {
+    sessionStorage.setItem("stage", String(Stage.TEST));
+    cxt!.setStage(Stage.TEST);
 
-    if (digitSymbolMatchingIdx + 1 >= testCxt!.digitSymbolMatchingSetup.length) {
-      sessionStorage.setItem("testPhase", String(TestPhase.SPACIAL_MEMORY));
-      sessionStorage.setItem("stage", String(Stage.TRANSITION));
-      sessionStorage.setItem("questionNumber", "0");
-      cxt!.setTestPhase(TestPhase.SPACIAL_MEMORY);
-      cxt!.setStage(Stage.TRANSITION);
-    } else {
-      sessionStorage.setItem("questionNumber", String(digitSymbolMatchingIdx + 1));
-      setDigitSymbolMatchingIdx((idx) => idx + 1);
-    }
-  };
-
-  // Transition from Choice Reaction Time Test
-  const choiceReactionTimeSubmitHandler = (result: boolean) => {
-    console.log(result);
-    if (cxt!.testPhase !== TestPhase.CHOICE_REACTION_TIME) {
-      return;
-    }
-
-    if (choiceReactionTimeIdx + 1 >= testCxt!.choiceReactionTimeSetup.length) {
-      sessionStorage.setItem("testPhase", String(TestPhase.VISUAL_PAIRS_RECALL));
-      sessionStorage.setItem("stage", String(Stage.TRANSITION));
-      sessionStorage.setItem("questionNumber", "0");
-      cxt!.setTestPhase(TestPhase.VISUAL_PAIRS_RECALL);
-      cxt!.setStage(Stage.TRANSITION);
-    } else {
-      sessionStorage.setItem("questionNumber", String(choiceReactionTimeIdx + 1));
-      setChoiceReactionTimeIdx((idx) => idx + 1);
-    }
-  };
-
-  // Transition from Spacial Memory Test
-  const spacialMemorySubmitHandler = (result: boolean) => {
-    console.log(result);
-    if (cxt!.testPhase !== TestPhase.SPACIAL_MEMORY) {
-      return;
-    }
-
-    if (spacialMemoryIdx + 1 >= testCxt!.spacialMemorySetup.length) {
-      sessionStorage.setItem("testPhase", String(TestPhase.MEMORY_RECALL_DELAYED));
-      sessionStorage.setItem("stage", String(Stage.TRANSITION));
-      sessionStorage.setItem("questionNumber", "0");
-      cxt!.setTestPhase(TestPhase.MEMORY_RECALL_DELAYED);
-      cxt!.setStage(Stage.TRANSITION);
-    } else {
-      sessionStorage.setItem("questionNumber", String(spacialMemoryIdx + 1));
-      setSpacialMemoryIdx((idx) => idx + 1);
-    }
-  };
-
-  // Transition from Visual Paired Associates Test - Memorize
-  const visualPairsTransitionHandler = () => {
-    sessionStorage.setItem("testPhase", String(TestPhase.CHOICE_REACTION_TIME));
-    sessionStorage.setItem("stage", String(Stage.TRANSITION));
-    cxt!.setTestPhase(TestPhase.CHOICE_REACTION_TIME);
-    cxt!.setStage(Stage.TRANSITION);
-  };
-
-  // Transition from Visual Paired Associates Test - Recall
-  const visualPairsSubmitHandler = (result: boolean) => {
-    console.log(result);
-    if (cxt!.testPhase !== TestPhase.VISUAL_PAIRS_RECALL) {
-      return;
-    }
-
-    if (visualPairsIdx + 1 >= testCxt!.visualPairSetupImageList.length) {
-      sessionStorage.setItem("testPhase", String(TestPhase.DIGIT_SYMBOL_MATCHING));
-      sessionStorage.setItem("stage", String(Stage.TRANSITION));
-      sessionStorage.setItem("questionNumber", "0");
-      cxt!.setTestPhase(TestPhase.DIGIT_SYMBOL_MATCHING);
-      cxt!.setStage(Stage.TRANSITION);
-    } else {
-      sessionStorage.setItem("questionNumber", String(visualPairsIdx + 1));
-      setVisualPairsIdx((idx) => idx + 1);
-    }
+    const startTime = new Date().toISOString();
+    sessionStorage.setItem("startTime", startTime);
   };
 
   const TestComponent: FC = () => (
     <>
       {cxt?.testPhase === TestPhase.MEMORY_RECALL_IMMEDIATE && (
-        <MemoryRecallMain selected={testCxt!.memoryRecallSetup} handleSubmit={memoryRecallSubmitHandler} />
+        <MemoryRecallMain phase={TestPhase.MEMORY_RECALL_IMMEDIATE} toTestPhase={testPhaseTransitionHandler} />
       )}
       {cxt?.testPhase === TestPhase.VISUAL_PAIRS_MEMORIZE && (
-        <VisualPairsMemorize
-          imageGroupList={testCxt!.visualPairSetupImageList}
-          idxPairs={testCxt!.visualPairSetupIdxPairs}
-          handleTransition={visualPairsTransitionHandler}
-        />
+        <VisualPairsMemorize toTestPhase={testPhaseTransitionHandler} />
       )}
       {cxt?.testPhase === TestPhase.VISUAL_PAIRS_RECALL && (
-        <VisualPairsRecall
-          imageTheme={testCxt!.visualPairSetupImageList[visualPairsIdx]}
-          reference={testCxt!.visualPairSetupIdxPairs[visualPairsIdx][0]}
-          correct={testCxt!.visualPairSetupIdxPairs[visualPairsIdx][1]}
-          handleSubmit={visualPairsSubmitHandler}
-        />
+        <VisualPairsRecall toTestPhase={testPhaseTransitionHandler} />
       )}
       {cxt?.testPhase === TestPhase.DIGIT_SYMBOL_MATCHING && (
-        <DigitSymbolMatchingMain
-          correctIndex={testCxt!.digitSymbolMatchingSetup[digitSymbolMatchingIdx]}
-          handleSubmit={digitSymbolMatchingSubmitHandler}
-        />
+        <DigitSymbolMatchingMain toTestPhase={testPhaseTransitionHandler} />
       )}
       {cxt?.testPhase === TestPhase.CHOICE_REACTION_TIME && (
-        <ChoiceReactionTimeMain
-          correctIndex={testCxt!.choiceReactionTimeSetup[choiceReactionTimeIdx]}
-          correctSymbol={randomSelectFromList(["<", ">"], 1)[0]}
-          handleSubmit={choiceReactionTimeSubmitHandler}
-        />
+        <ChoiceReactionTimeMain toTestPhase={testPhaseTransitionHandler} />
       )}
-      {cxt?.testPhase === TestPhase.SPACIAL_MEMORY && (
-        <SpacialMemoryMain
-          numNodes={testCxt!.spacialMemorySetup[spacialMemoryIdx]}
-          handleSubmit={spacialMemorySubmitHandler}
-        />
-      )}
+      {cxt?.testPhase === TestPhase.SPATIAL_MEMORY && <SpatialMemoryMain toTestPhase={testPhaseTransitionHandler} />}
       {cxt?.testPhase === TestPhase.MEMORY_RECALL_DELAYED && (
-        <MemoryRecallMain selected={testCxt!.memoryRecallSetup} handleSubmit={memoryRecallSubmitHandler} />
+        <MemoryRecallMain phase={TestPhase.MEMORY_RECALL_DELAYED} toTestPhase={testPhaseTransitionHandler} />
       )}
     </>
   );
@@ -211,8 +87,41 @@ export const TestPage: FC = () => {
     <>
       {cxt?.stage === Stage.GENERAL_DIRECTION && <GeneralDirection />}
       {cxt?.stage === Stage.SOUND_CHECK && <SoundCheck />}
-      {cxt?.stage === Stage.TRANSITION && <Transition handleTransition={() => cxt!.setStage(Stage.TEST)} />}
+      {cxt?.stage === Stage.TRANSITION && <Transition handleTransition={transitionToTestHandler} />}
       {cxt?.stage === Stage.TEST && <TestComponent />}
     </>
   );
+};
+
+const submitResults = async () => {
+  const timeStarted = sessionStorage.getItem("startTime");
+  const results = sessionStorage.getItem("results");
+  if (!timeStarted || !results) {
+    throw new Error("Started time or results not found");
+  }
+
+  const timeElapsed = new Date().getTime() - new Date(timeStarted).getTime();
+  const body = {
+    study_id: sessionStorage.getItem("studyId"),
+    time_started: timeStarted,
+    time_elapsed_milliseconds: timeElapsed,
+    device_info: navigator.userAgent,
+    notes: "",
+    result: JSON.parse(results),
+  };
+
+  // send post request to server
+  const response = await fetch(import.meta.env.VITE_TEST_ENDPOINT, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  });
+
+  if (response.status !== 200) {
+    const erroeMessage = await response.text();
+    console.error(erroeMessage);
+    throw new Error("Failed to submit results");
+  }
 };

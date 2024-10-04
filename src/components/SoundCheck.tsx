@@ -1,9 +1,9 @@
 import { Box, Grid, IconButton, Typography } from "@mui/material";
 import { FC, useContext, useEffect, useState } from "react";
-import { soundCheckConfig as uiConfig } from "../config/uiConfig";
+import { soundCheckConfig as uiConfig } from "../config/ui.config";
 import { GeneralContext, Stage } from "../contexts/general.context";
 import { styled } from "@mui/system";
-import { playAudioFromS3 } from "../utils/awsUtils";
+import { playAudioFromS3 } from "../utils/aws.utils";
 import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 
 const AnimatedBox = styled(Box)(() => ({
@@ -52,24 +52,17 @@ export const SoundCheck: FC = () => {
   const [hide, setHide] = useState(false);
 
   useEffect(() => {
-    setTimeout(() => {
-      setDisabled(false);
-    }, 8500);
-  }, []);
-
-  useEffect(() => {
     setDisabled(true);
-    setTimeout(() => {
-      setDisabled(false);
-    }, 10500);
   }, [hasSelected]);
 
   const playHandler = () => {
     setHide(true);
-    playAudioFromS3("soundcheck/instructions");
-    setTimeout(() => {
-      playAudioFromS3(`soundcheck/number-${cxt!.soundCheckNumber + 1}`);
-    }, 6500);
+    playAudioFromS3(`audios/soundcheck-${cxt!.soundCheckNumber + 1}`).then(
+      (audio) =>
+        (audio!.onended = () => {
+          setDisabled(false);
+        })
+    );
   };
 
   const clickHandler = (index: number) => {
@@ -104,16 +97,17 @@ export const SoundCheck: FC = () => {
       }, 2000);
 
       setTimeout(() => {
-        playAudioFromS3("soundcheck/instructions");
-      }, 2500);
-      setTimeout(() => {
         cxt?.setSoundCheckNumber(() => {
           const randomNum = Math.floor(Math.random() * 9);
-          playAudioFromS3(`soundcheck/number-${randomNum + 1}`);
+          playAudioFromS3(`audios/soundcheck-${randomNum + 1}`).then((audio) => {
+            audio!.onended = () => {
+              setDisabled(false);
+            };
+          });
 
           return randomNum;
         });
-      }, 9000);
+      }, 2500);
     }
   };
 

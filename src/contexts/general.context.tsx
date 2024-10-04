@@ -11,12 +11,13 @@ export enum Stage {
 export enum TestPhase {
   NULL = 0,
   CHOICE_REACTION_TIME = 1,
-  SPACIAL_MEMORY = 2,
+  SPATIAL_MEMORY = 2,
   MEMORY_RECALL_IMMEDIATE = 3,
   MEMORY_RECALL_DELAYED = 4,
   DIGIT_SYMBOL_MATCHING = 5,
   VISUAL_PAIRS_MEMORIZE = 6,
   VISUAL_PAIRS_RECALL = 7,
+  FINISHED = 8,
 }
 
 interface GeneralContextType {

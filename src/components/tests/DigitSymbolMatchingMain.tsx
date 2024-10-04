@@ -1,8 +1,12 @@
-import { FC } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import { Box, Button, Divider, Grid, Typography } from "@mui/material";
-import { digitSymbolConfig as testConfig } from "../config/testConfig";
-import { digitSymbolConfig as uiConfig } from "../config/uiConfig";
+import { digitSymbolConfig as testConfig } from "../../config/test.config";
+import { digitSymbolConfig as uiConfig } from "../../config/ui.config";
 import styled from "@emotion/styled";
+import { TestPhase } from "../../contexts/general.context";
+import { TestContext } from "../../contexts/test.context";
+import { getNextTestPhase } from "../../utils/general.utils";
+import { DigitSymbolMatchingResult } from "../../contexts/types/result.type";
 
 const Cell = styled(Box, {
   shouldForwardProp: (prop) => prop !== "leftBox" && prop !== "rightBox" && prop !== "middleBox",
@@ -14,23 +18,59 @@ const Cell = styled(Box, {
 }));
 
 interface DigitSymbolMatchingMainProps {
-  correctIndex: number;
-  handleSubmit: (result: boolean) => void;
+  toTestPhase: (testPhase: TestPhase) => void;
 }
 
-export const DigitSymbolMatchingMain: FC<DigitSymbolMatchingMainProps> = ({ correctIndex, handleSubmit }) => {
+export const DigitSymbolMatchingMain: FC<DigitSymbolMatchingMainProps> = ({ toTestPhase }) => {
+  const testCxt = useContext(TestContext);
+
+  const [questionIdx, setQuestionIdx] = useState(0);
+  const [startTime, setStartTime] = useState<number>(0);
+
+  const [correctIndex, setCorrectIndex] = useState(-1);
+
+  useEffect(() => {
+    if (Number(sessionStorage.getItem("testPhase")) === TestPhase.DIGIT_SYMBOL_MATCHING) {
+      setQuestionIdx(Number(sessionStorage.getItem("questionNumber")));
+    }
+
+    const correctIndex = testCxt!.digitSymbolMatchingSetup[questionIdx];
+    setCorrectIndex(correctIndex);
+    setStartTime(Date.now());
+  }, []);
+
+  useEffect(() => {
+    const correctIndex = testCxt!.digitSymbolMatchingSetup[questionIdx];
+    setCorrectIndex(correctIndex);
+    setStartTime(Date.now());
+  }, [questionIdx]);
+
   const submitHandler = (input: number) => {
-    const result = testConfig.symbolPairs[correctIndex].num === input;
-    handleSubmit(result);
+    const answer: DigitSymbolMatchingResult = {
+      dsm_rt: Date.now() - startTime,
+      dsm_correct: testConfig.symbolPairs[correctIndex].num === input,
+      dsm_response: input,
+    };
+
+    if (!sessionStorage.getItem("results")) {
+      sessionStorage.setItem("results", "[]");
+    }
+    const resultList = JSON.parse(sessionStorage.getItem("results")!);
+    sessionStorage.setItem("results", JSON.stringify([...resultList, answer]));
+
+    if (questionIdx + 1 >= testCxt!.digitSymbolMatchingSetup.length) {
+      toTestPhase(getNextTestPhase(TestPhase.DIGIT_SYMBOL_MATCHING));
+    } else {
+      sessionStorage.setItem("questionNumber", String(questionIdx + 1));
+      setQuestionIdx(questionIdx + 1);
+    }
   };
 
   return (
     <Box>
-      <img
-        src={testConfig.symbolPairs[correctIndex].image}
-        width={uiConfig.topSymbolHeight}
-        style={{ marginBottom: 8 }}
-      />
+      {correctIndex >= 0 && (
+        <img src={testConfig.symbolPairs[correctIndex].image} style={{ marginBottom: 8, height: "calc(100vw / 6)" }} />
+      )}
       <Grid container spacing={0} marginBottom={8}>
         {testConfig.symbolPairs.map((symbol, index) => (
           <Grid item key={index}>
@@ -42,7 +82,16 @@ export const DigitSymbolMatchingMain: FC<DigitSymbolMatchingMainProps> = ({ corr
               justifyContent="center"
               alignItems="center"
             >
-              <img src={symbol.image} height={uiConfig.listSymbolHeight} style={{ margin: 5 }} />
+              <img
+                src={symbol.image}
+                style={{
+                  marginLeft: 1,
+                  marginRight: 1,
+                  marginTop: 2,
+                  marginBottom: 2,
+                  height: "calc(100vw / 10 - 1px)",
+                }}
+              />
               <Divider sx={{ width: "100%", borderBottom: "1px solid black" }} />
               <Typography variant="h3" margin="5px" fontSize={uiConfig.listFontSize}>
                 {symbol.num}

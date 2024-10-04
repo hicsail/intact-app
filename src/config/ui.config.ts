@@ -30,8 +30,6 @@ export const soundCheckConfig = {
  * @property textColor - Text color of the button
  */
 export const digitSymbolConfig = {
-  topSymbolHeight: "70vh",
-  listSymbolHeight: "30vh",
   listFontSize: 30,
   buttonHeight: 58,
   bubttonFontSize: 32,
@@ -44,7 +42,7 @@ export const digitSymbolConfig = {
 /**
  * @property cellSize - Size of each cell in pixels
  */
-export const spacialMemoryConfig = {
+export const spatialMemoryConfig = {
   cellSize: "20vw",
 };
 

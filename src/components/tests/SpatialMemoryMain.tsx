@@ -1,7 +1,10 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import { Box, Button, Grid, styled } from "@mui/material";
-import { spacialMemoryConfig as testConfig } from "../config/testConfig";
-import { spacialMemoryConfig as uiConfig } from "../config/uiConfig";
+import { spatialMemoryConfig as testConfig } from "../../config/test.config";
+import { spatialMemoryConfig as uiConfig } from "../../config/ui.config";
+import { TestContext } from "../../contexts/test.context";
+import { TestPhase } from "../../contexts/general.context";
+import { SpatialMemoryResult } from "../../contexts/types/result.type";
 
 const Cell = styled(Box, {
   shouldForwardProp: (prop) => prop !== "topBox" && prop !== "bottomBox" && prop !== "leftBox" && prop !== "rightBox",
@@ -18,15 +21,38 @@ const Cell = styled(Box, {
   })
 );
 
-interface SpacialMemoryMainProps {
-  numNodes: number;
-  handleSubmit: (result: boolean) => void;
+interface SpatialMemoryMainProps {
+  toTestPhase: (testPhase: TestPhase) => void;
 }
 
-export const SpacialMemoryMain: FC<SpacialMemoryMainProps> = ({ numNodes, handleSubmit }) => {
+export const SpatialMemoryMain: FC<SpatialMemoryMainProps> = ({ toTestPhase }) => {
+  const testCxt = useContext(TestContext);
+
+  const [questionIdx, setQuestionIdx] = useState(0);
+  const [startTime, setStartTime] = useState<number>(0);
+
   const [grid, setGrid] = useState(Array(testConfig.rows).fill(Array(testConfig.cols).fill(false)));
   const [correct, setCorrect] = useState(Array(testConfig.rows).fill(Array(testConfig.cols).fill(false)));
   const [enabled, setEnabled] = useState(false);
+
+  useEffect(() => {
+    if (Number(sessionStorage.getItem("testPhase")) === TestPhase.SPATIAL_MEMORY) {
+      setQuestionIdx(Number(sessionStorage.getItem("questionNumber")));
+    }
+
+    const timer = setTimeout(() => {
+      setGrid(Array(testConfig.rows).fill(Array(testConfig.cols).fill(false)));
+      setEnabled(true);
+    }, testConfig.timeToMemorize);
+
+    const questionGrid = testCxt!.spatialMemorySetup[questionIdx];
+    setCorrect(questionGrid);
+    setGrid(questionGrid);
+    setEnabled(false);
+    setStartTime(Date.now() + testConfig.timeToMemorize);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -34,13 +60,14 @@ export const SpacialMemoryMain: FC<SpacialMemoryMainProps> = ({ numNodes, handle
       setEnabled(true);
     }, testConfig.timeToMemorize);
 
-    const randomGrid = generateRandomTreeOnGrid(testConfig.rows, testConfig.cols, numNodes);
-    setCorrect(randomGrid);
-    setGrid(randomGrid);
+    const questionGrid = testCxt!.spatialMemorySetup[questionIdx];
+    setCorrect(questionGrid);
+    setGrid(questionGrid);
     setEnabled(false);
+    setStartTime(Date.now() + testConfig.timeToMemorize);
 
     return () => clearTimeout(timer);
-  }, [handleSubmit]);
+  }, [questionIdx]);
 
   const toggleCell = (row: number, col: number) => {
     setGrid((grid) => {
@@ -51,10 +78,25 @@ export const SpacialMemoryMain: FC<SpacialMemoryMainProps> = ({ numNodes, handle
   };
 
   const submitHandler = () => {
-    const result = grid.every((row: boolean[], rowIndex: number) =>
-      row.every((cell: boolean, colIndex: number) => cell === correct[rowIndex][colIndex])
-    );
-    handleSubmit(result);
+    const answer: SpatialMemoryResult = {
+      sm_rt: Date.now() - startTime,
+      sm_correct: grid.every((row: boolean[], rowIndex: number) =>
+        row.every((cell: boolean, colIndex: number) => cell === correct[rowIndex][colIndex])
+      ),
+    };
+
+    if (!sessionStorage.getItem("results")) {
+      sessionStorage.setItem("results", "[]");
+    }
+    const resultList = JSON.parse(sessionStorage.getItem("results")!);
+    sessionStorage.setItem("results", JSON.stringify([...resultList, answer]));
+
+    if (questionIdx + 1 >= testCxt!.spatialMemorySetup.length) {
+      toTestPhase(TestPhase.MEMORY_RECALL_DELAYED);
+    } else {
+      sessionStorage.setItem("questionNumber", String(questionIdx + 1));
+      setQuestionIdx(questionIdx + 1);
+    }
   };
 
   return (
@@ -94,63 +136,4 @@ export const SpacialMemoryMain: FC<SpacialMemoryMainProps> = ({ numNodes, handle
       </Box>
     </>
   );
-};
-
-const directions = [
-  [-1, 0], // Up
-  [1, 0], // Down
-  [0, -1], // Left
-  [0, 1], // Right
-  [-1, -1], // Up-Left
-  [-1, 1], // Up-Right
-  [1, -1], // Down-Left
-  [1, 1], // Down-Right
-];
-
-const isValidMove = (grid: boolean[][], row: number, col: number) => {
-  return row >= 0 && row < grid.length && col >= 0 && col < grid[0].length && !grid[row][col];
-};
-
-const generateRandomTreeOnGrid = (numRows: number, numCols: number, numNodes: number) => {
-  const grid = Array.from({ length: numRows }, () => Array(numCols).fill(false));
-  let nodesLeft = numNodes;
-
-  // Randomly choose a starting position
-  const startRow = Math.floor(Math.random() * numRows);
-  const startCol = Math.floor(Math.random() * numCols);
-  grid[startRow][startCol] = true;
-  nodesLeft--;
-
-  const queue = [{ row: startRow, col: startCol }];
-
-  while (nodesLeft > 0 && queue.length > 0) {
-    const node = queue.shift();
-    if (!node) break; // Safeguard against undefined node
-
-    const { row, col } = node;
-
-    // Get available directions
-    const availableDirections = directions.filter(([dRow, dCol]) => isValidMove(grid, row + dRow, col + dCol));
-
-    if (availableDirections.length === 0) {
-      continue;
-    }
-
-    // Determine the number of children for this node
-    const numChildren = Math.min(nodesLeft, Math.floor(Math.random() * availableDirections.length) + 1);
-
-    for (let i = 0; i < numChildren; i++) {
-      const [dRow, dCol] = availableDirections.splice(Math.floor(Math.random() * availableDirections.length), 1)[0];
-      const newRow = row + dRow;
-      const newCol = col + dCol;
-
-      grid[newRow][newCol] = true;
-      queue.push({ row: newRow, col: newCol });
-      nodesLeft--;
-
-      if (nodesLeft === 0) break;
-    }
-  }
-
-  return grid;
 };
