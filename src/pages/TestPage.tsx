@@ -111,6 +111,7 @@ const submitResults = async () => {
   };
 
   // send post request to server
+  console.log(`Submitting results to ${import.meta.env.VITE_TEST_ENDPOINT}`);
   const response = await fetch(import.meta.env.VITE_TEST_ENDPOINT, {
     method: "POST",
     headers: {
