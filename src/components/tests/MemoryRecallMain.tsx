@@ -124,7 +124,7 @@ export const MemoryRecallMain: FC<MemoryRecallMainProps> = ({ phase, toTestPhase
 
     sessionStorage.setItem("results", JSON.stringify(answer as ImmediateRecallResult));
 
-    if (result) {
+    if (result || trail >= testConfig.maxTrial - 1) {
       if (trail === 0) {
         answer["ir_score"] = 2;
       } else if (trail === 1) {

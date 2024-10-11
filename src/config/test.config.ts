@@ -80,6 +80,7 @@ export const spatialMemoryConfig = {
  * @property options - List of options to select from
  */
 export const memoryRecallConfig = {
+  maxTrial: 3,
   maxSelection: 5,
   options: [
     "Octopus",

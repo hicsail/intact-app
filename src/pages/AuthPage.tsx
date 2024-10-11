@@ -59,8 +59,6 @@ export const AuthPage: FC = () => {
       method: "GET",
     });
 
-    console.log(response);
-
     if (response.status !== 200) {
       return false;
     }
