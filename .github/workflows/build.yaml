@@ -43,10 +43,9 @@ jobs:
       - name: Build
         run: npm run build
         env:
-          VITE_S3_REGION: ${{ secrets.VITE_S3_REGION }}
-          VITE_S3_BUCKET_NAME: ${{ secrets.VITE_S3_BUCKET_NAME }}
-          VITE_S3_ACCESS_KEY: ${{ secrets.VITE_S3_ACCESS_KEY }}
-          VITE_S3_SECRET: ${{ secrets.VITE_S3_SECRET }}
+          VITE_SOUND_CHECK_AUDIO_URL: ${{ secrets.VITE_SOUND_CHECK_AUDIO_URL }}
+          VITE_RECALL_INST_AUDIO_URL: ${{ secrets.VITE_RECALL_INST_AUDIO_URL }}
+          VITE_VALIDATE_ENDPOINT: ${{ secrets.VITE_VALIDATE_ENDPOINT }}
           VITE_TEST_ENDPOINT: ${{ secrets.VITE_TEST_ENDPOINT }}
 
       - name: Upload Artifact

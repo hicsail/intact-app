@@ -3,7 +3,6 @@ import { FC, useContext, useEffect, useState } from "react";
 import { soundCheckConfig as uiConfig } from "../config/ui.config";
 import { GeneralContext, Stage } from "../contexts/general.context";
 import { styled } from "@mui/system";
-import { playAudioFromS3 } from "../utils/aws.utils";
 import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 
 const AnimatedBox = styled(Box)(() => ({
@@ -57,12 +56,19 @@ export const SoundCheck: FC = () => {
 
   const playHandler = () => {
     setHide(true);
-    playAudioFromS3(`audios/soundcheck-${cxt!.soundCheckNumber + 1}`).then(
-      (audio) =>
-        (audio!.onended = () => {
+    const audioUrl = import.meta.env.VITE_SOUND_CHECK_AUDIO_URL;
+    const audio = new Audio(audioUrl.replace("{number}", String(cxt!.soundCheckNumber + 1)));
+
+    audio
+      .play()
+      .then(() => {
+        audio.onended = () => {
           setDisabled(false);
-        })
-    );
+        };
+      })
+      .catch((error) => {
+        console.error("Error playing audio", error);
+      });
   };
 
   const clickHandler = (index: number) => {
@@ -99,11 +105,19 @@ export const SoundCheck: FC = () => {
       setTimeout(() => {
         cxt?.setSoundCheckNumber(() => {
           const randomNum = Math.floor(Math.random() * 9);
-          playAudioFromS3(`audios/soundcheck-${randomNum + 1}`).then((audio) => {
-            audio!.onended = () => {
-              setDisabled(false);
-            };
-          });
+          const newAudioUrl = import.meta.env.VITE_SOUND_CHECK_AUDIO_URL.replace("{number}", String(randomNum + 1));
+          const newAudio = new Audio(newAudioUrl);
+
+          newAudio
+            .play()
+            .then(() => {
+              newAudio.onended = () => {
+                setDisabled(false);
+              };
+            })
+            .catch((error) => {
+              console.error("Error playing audio", error);
+            });
 
           return randomNum;
         });

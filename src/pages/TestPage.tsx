@@ -21,8 +21,6 @@ export const TestPage: FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(`Submitting results to ${import.meta.env.VITE_TEST_ENDPOINT}`);
-
     const localStudyId = sessionStorage.getItem("studyId");
     if (!localStudyId || !studyId) {
       navigate(`/${studyId}`);

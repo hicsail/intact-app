@@ -5,7 +5,6 @@ import { memoryRecallConfig as testConfig } from "../../config/test.config";
 import { memoryRecallConfig as uiConfig } from "../../config/ui.config";
 import { TestPhase } from "../../contexts/general.context";
 import { TestContext } from "../../contexts/test.context";
-import { playAudioFromS3 } from "../../utils/aws.utils";
 import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 import { DelayedRecallResult, ImmediateRecallResult } from "../../contexts/types/result.type";
 
@@ -63,11 +62,13 @@ export const MemoryRecallMain: FC<MemoryRecallMainProps> = ({ phase, toTestPhase
 
   const playHandler = () => {
     setShowPlayButton(false);
-    playAudioFromS3("audios/memory-recall").then((audio) => {
+    const audioUrl = import.meta.env.VITE_RECALL_INST_AUDIO_URL;
+    const audio = new Audio(audioUrl);
+    audio.play().then(() => {
       setTimeout(() => {
         setShowInstruction(true);
       }, 16500);
-      audio!.onended = () => {
+      audio.onended = () => {
         setShowOptions(true);
         setStartTime(Date.now());
       };
@@ -123,7 +124,7 @@ export const MemoryRecallMain: FC<MemoryRecallMainProps> = ({ phase, toTestPhase
 
     sessionStorage.setItem("results", JSON.stringify(answer as ImmediateRecallResult));
 
-    if (result) {
+    if (result || trail >= testConfig.maxTrial - 1) {
       if (trail === 0) {
         answer["ir_score"] = 2;
       } else if (trail === 1) {
