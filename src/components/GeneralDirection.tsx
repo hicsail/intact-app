@@ -31,7 +31,7 @@ export const GeneralDirection: FC = () => {
           p: 1,
         }}
       >
-        <Button variant="contained" sx={{ fontSize: 20, padding: 1.5 }} fullWidth onClick={continueButtonHandler}>
+        <Button variant="contained" sx={{ fontSize: 18, padding: 1.5 }} fullWidth onClick={continueButtonHandler}>
           Begin Test
         </Button>
       </Box>

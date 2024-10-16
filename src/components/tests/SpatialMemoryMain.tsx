@@ -132,7 +132,7 @@ export const SpatialMemoryMain: FC<SpatialMemoryMainProps> = ({ toTestPhase }) =
       >
         <Button
           variant="contained"
-          sx={{ fontSize: 20, padding: 1.5 }}
+          sx={{ fontSize: 18, padding: 1.5 }}
           fullWidth
           disabled={!enabled}
           onClick={submitHandler}
