@@ -11,12 +11,12 @@ export const GeneralDirection: FC = () => {
 
   return (
     <>
-      <Box marginX="auto" position="absolute" top="10%" sx={{ transform: "translateX(-50%)" }}>
-        <Typography variant="h4" textAlign="initial" fontWeight="bold" marginBottom={1} width="80vw">
+      <Box marginX="auto" position="absolute" top="10%" width="85%" sx={{ transform: "translateX(-50%)" }}>
+        <Typography variant="h4" textAlign="initial" fontWeight="bold" marginBottom={1}>
           Directions
         </Typography>
         <Divider />
-        <Typography variant="body1" fontSize={20} textAlign="initial" width="80vw" marginY={2}>
+        <Typography variant="body1" fontSize={20} textAlign="initial" marginY={2}>
           Please do <strong>NOT</strong> use paper! Solve all questions in your mind. Click "Begin Test" to proceed.
         </Typography>
       </Box>
