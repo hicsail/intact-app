@@ -126,18 +126,18 @@ export const SoundCheck: FC = () => {
   };
 
   return (
-    <Box marginX="auto">
+    <Box marginX="auto" position="absolute" top="10%" width="85%" sx={{ transform: "translateX(-50%)" }}>
       <Typography variant="h4" textAlign="initial" fontWeight="bold" marginBottom={1}>
         Sound Check
       </Typography>
-      <Typography variant="body1" fontSize={20} textAlign="initial" width="80vw">
+      <Typography variant="body1" fontSize={20} textAlign="initial">
         If you can hear this message, click the announced number.
       </Typography>
-      <Typography variant="body1" fontSize={20} textAlign="initial" width="80vw">
+      <Typography variant="body1" fontSize={20} textAlign="initial">
         Otherwise, please increase your speaks volume.
       </Typography>
       <OverlayWrapper>
-        <Grid container direction="column" spacing={1} marginTop={1}>
+        <Grid container direction="column" spacing={1} marginTop={1} marginX="auto">
           {Array.from({ length: 3 }).map((_, rowIndex) => (
             <Grid container item spacing={1} key={rowIndex}>
               {Array.from({ length: 3 }).map((_, colIndex) => {
