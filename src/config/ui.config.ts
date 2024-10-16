@@ -51,7 +51,7 @@ export const spatialMemoryConfig = {
  * @property textColor - Text color configuration
  */
 export const memoryRecallConfig = {
-  buttonWidth: "40vw",
+  buttonWidth: "42vw",
   buttonHeight: "8vh",
   fontSize: 25,
   buttonColor: {

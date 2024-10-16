@@ -1,4 +1,4 @@
-import { Box, Grid, IconButton, Typography } from "@mui/material";
+import { Box, Divider, Grid, IconButton, Typography } from "@mui/material";
 import { FC, useContext, useEffect, useState } from "react";
 import { soundCheckConfig as uiConfig } from "../config/ui.config";
 import { GeneralContext, Stage } from "../contexts/general.context";
@@ -130,10 +130,11 @@ export const SoundCheck: FC = () => {
       <Typography variant="h4" textAlign="initial" fontWeight="bold" marginBottom={1}>
         Sound Check
       </Typography>
-      <Typography variant="body1" fontSize={20} textAlign="initial">
+      <Divider />
+      <Typography variant="body1" fontSize={18} textAlign="initial" marginTop={2}>
         If you can hear this message, click the announced number.
       </Typography>
-      <Typography variant="body1" fontSize={20} textAlign="initial">
+      <Typography variant="body1" fontSize={18} textAlign="initial" marginBottom={2}>
         Otherwise, please increase your speaks volume.
       </Typography>
       <OverlayWrapper>

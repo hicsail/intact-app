@@ -154,18 +154,18 @@ export const MemoryRecallMain: FC<MemoryRecallMainProps> = ({ phase, toTestPhase
           top: 0,
           left: 0,
           right: 0,
-          width: "80vw",
+          width: "85vw",
           marginX: "auto",
           marginY: 4,
         }}
       >
         {!showInstruction && phase === TestPhase.MEMORY_RECALL_IMMEDIATE && (
-          <Typography variant="body1" align="left" width="80vw" gutterBottom>
+          <Typography variant="body1" align="left" gutterBottom fontSize={18}>
             Please memorize these five animals until the end of the test.
           </Typography>
         )}
         {showInstruction && (
-          <Typography variant="body1" align="left" gutterBottom>
+          <Typography variant="body1" align="left" gutterBottom fontSize={18}>
             Select the five animals you have heard.
           </Typography>
         )}
@@ -176,7 +176,7 @@ export const MemoryRecallMain: FC<MemoryRecallMainProps> = ({ phase, toTestPhase
         </IconButton>
       )}
       {showOptions && (
-        <Grid container direction="column" spacing={1}>
+        <Grid container direction="column" spacing={1} paddingTop={4}>
           {Array.from({ length: 8 }).map((_, rowIndex) => (
             <Grid container item spacing={1} key={rowIndex}>
               {Array.from({ length: 2 }).map((_, colIndex) => {
