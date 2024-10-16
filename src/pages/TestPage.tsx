@@ -28,10 +28,10 @@ export const TestPage: FC = () => {
 
     if (!sessionStorage.getItem("testPhase") || !sessionStorage.getItem("stage")) {
       sessionStorage.setItem("testPhase", String(generalConfig.testOrder[0]));
-      sessionStorage.setItem("stage", String(Stage.GENERAL_DIRECTION));
+      sessionStorage.setItem("stage", String(Stage.SOUND_CHECK));
       sessionStorage.setItem("questionNumber", "0");
       cxt!.setTestPhase(generalConfig.testOrder[0]);
-      cxt!.setStage(Stage.GENERAL_DIRECTION);
+      cxt!.setStage(Stage.SOUND_CHECK);
     } else {
       cxt!.setTestPhase(Number(sessionStorage.getItem("testPhase")) as TestPhase);
       cxt!.setStage(Number(sessionStorage.getItem("stage")) as Stage);
@@ -85,8 +85,8 @@ export const TestPage: FC = () => {
 
   return (
     <>
-      {cxt?.stage === Stage.GENERAL_DIRECTION && <GeneralDirection />}
       {cxt?.stage === Stage.SOUND_CHECK && <SoundCheck />}
+      {cxt?.stage === Stage.GENERAL_DIRECTION && <GeneralDirection />}
       {cxt?.stage === Stage.TRANSITION && <Transition handleTransition={transitionToTestHandler} />}
       {cxt?.stage === Stage.TEST && <TestComponent />}
     </>

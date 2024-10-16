@@ -89,7 +89,7 @@ export const SoundCheck: FC = () => {
 
     if (index === cxt?.soundCheckNumber) {
       setTimeout(() => {
-        cxt?.setStage(Stage.TRANSITION);
+        cxt?.setStage(Stage.GENERAL_DIRECTION);
       }, 2000);
     } else {
       setTimeout(() => {
