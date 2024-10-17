@@ -1,6 +1,7 @@
 import { FC, useState } from "react";
 import { TestPhase } from "../../contexts/general.context";
 import { Box, Button, Divider, Typography } from "@mui/material";
+import { vpmInstructions } from "./VisualPairs";
 
 const titleMapping: { [key in TestPhase]?: string } = {
   [TestPhase.MEMORY_RECALL_IMMEDIATE]: "Memory - Immediate Recall",
@@ -14,7 +15,7 @@ const titleMapping: { [key in TestPhase]?: string } = {
 
 export const instructionComponents: { [key in TestPhase]?: JSX.Element[] } = {
   [TestPhase.MEMORY_RECALL_IMMEDIATE]: [],
-  [TestPhase.VISUAL_PAIRS_MEMORIZE]: [],
+  [TestPhase.VISUAL_PAIRS_MEMORIZE]: vpmInstructions,
   [TestPhase.CHOICE_REACTION_TIME]: [],
   [TestPhase.VISUAL_PAIRS_RECALL]: [],
   [TestPhase.DIGIT_SYMBOL_MATCHING]: [],
