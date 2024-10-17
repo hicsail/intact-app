@@ -8,7 +8,7 @@ import { TestContext } from "../../contexts/test.context";
 import { getNextTestPhase } from "../../utils/general.utils";
 import { DigitSymbolMatchingResult } from "../../contexts/types/result.type";
 
-const Cell = styled(Box, {
+export const Cell = styled(Box, {
   shouldForwardProp: (prop) => prop !== "leftBox" && prop !== "rightBox" && prop !== "middleBox",
 })<{ leftBox?: boolean; rightBox?: boolean; middleBox?: boolean }>(({ leftBox, rightBox }) => ({
   borderLeft: leftBox ? "2px solid black" : "1px solid black",
