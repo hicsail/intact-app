@@ -1,4 +1,4 @@
-import { Box, Grid, IconButton, Typography } from "@mui/material";
+import { Box, Divider, Grid, IconButton, Typography } from "@mui/material";
 import { FC, useContext, useEffect, useState } from "react";
 import { soundCheckConfig as uiConfig } from "../config/ui.config";
 import { GeneralContext, Stage } from "../contexts/general.context";
@@ -89,7 +89,7 @@ export const SoundCheck: FC = () => {
 
     if (index === cxt?.soundCheckNumber) {
       setTimeout(() => {
-        cxt?.setStage(Stage.TRANSITION);
+        cxt?.setStage(Stage.GENERAL_DIRECTION);
       }, 2000);
     } else {
       setTimeout(() => {
@@ -126,18 +126,19 @@ export const SoundCheck: FC = () => {
   };
 
   return (
-    <Box marginX="auto">
+    <Box marginX="auto" position="absolute" top="10%" width="85%" sx={{ transform: "translateX(-50%)" }}>
       <Typography variant="h4" textAlign="initial" fontWeight="bold" marginBottom={1}>
         Sound Check
       </Typography>
-      <Typography variant="body1" fontSize={20} textAlign="initial" width="80vw">
+      <Divider />
+      <Typography variant="body1" fontSize={18} textAlign="initial" marginTop={2}>
         If you can hear this message, click the announced number.
       </Typography>
-      <Typography variant="body1" fontSize={20} textAlign="initial" width="80vw">
+      <Typography variant="body1" fontSize={18} textAlign="initial" marginBottom={2}>
         Otherwise, please increase your speaks volume.
       </Typography>
       <OverlayWrapper>
-        <Grid container direction="column" spacing={1} marginTop={1}>
+        <Grid container direction="column" spacing={1} marginTop={1} marginX="auto">
           {Array.from({ length: 3 }).map((_, rowIndex) => (
             <Grid container item spacing={1} key={rowIndex}>
               {Array.from({ length: 3 }).map((_, colIndex) => {

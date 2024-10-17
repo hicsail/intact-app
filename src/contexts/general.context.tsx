@@ -2,10 +2,11 @@ import { createContext, Dispatch, FC, ReactNode, SetStateAction, useState } from
 
 export enum Stage {
   NULL = 0,
-  GENERAL_DIRECTION = 1,
-  SOUND_CHECK = 2,
+  SOUND_CHECK = 1,
+  GENERAL_DIRECTION = 2,
   TRANSITION = 3,
   TEST = 4,
+  ENDING = 5,
 }
 
 export enum TestPhase {

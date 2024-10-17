@@ -23,7 +23,7 @@ export const generalConfig = {
   digitSymbolAns: [3, 8, 4, 0, 7, 0, 3, 5, 8, 2],
   choiceReactionTimeAns: [2, 2, 1, 1, 0, 2, 1, 0, 1, 0] as (0 | 1 | 2)[],
   visualPairsAns: {
-    example: [3, 1],
+    bar: [3, 1],
     lobby: [1, 2],
     underwater: [8, 5],
     temple: [4, 6],
