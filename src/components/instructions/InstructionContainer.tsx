@@ -4,6 +4,7 @@ import { Box, Button, Divider, Typography } from "@mui/material";
 import { vpmInstructions, vprInstructions } from "./VisualPairs";
 import { crtInstructions } from "./ChoiceReactionTime";
 import { dsmInstructions } from "./DigitSymbolMatching";
+import { smInstructions } from "./SpatialMemory";
 
 const titleMapping: { [key in TestPhase]?: string } = {
   [TestPhase.MEMORY_RECALL_IMMEDIATE]: "Memory - Immediate Recall",
@@ -21,7 +22,7 @@ export const instructionComponents: { [key in TestPhase]?: JSX.Element[] } = {
   [TestPhase.CHOICE_REACTION_TIME]: crtInstructions,
   [TestPhase.VISUAL_PAIRS_RECALL]: vprInstructions,
   [TestPhase.DIGIT_SYMBOL_MATCHING]: dsmInstructions,
-  [TestPhase.SPATIAL_MEMORY]: [],
+  [TestPhase.SPATIAL_MEMORY]: smInstructions,
   [TestPhase.MEMORY_RECALL_DELAYED]: [],
 };
 

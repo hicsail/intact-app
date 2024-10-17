@@ -6,20 +6,25 @@ import { TestContext } from "../../contexts/test.context";
 import { TestPhase } from "../../contexts/general.context";
 import { SpatialMemoryResult } from "../../contexts/types/result.type";
 
-const Cell = styled(Box, {
+export const Cell = styled(Box, {
   shouldForwardProp: (prop) => prop !== "topBox" && prop !== "bottomBox" && prop !== "leftBox" && prop !== "rightBox",
-})<{ topBox?: boolean; bottomBox?: boolean; leftBox?: boolean; rightBox?: boolean }>(
-  ({ theme, topBox, bottomBox, leftBox, rightBox }) => ({
-    width: uiConfig.cellSize,
-    height: uiConfig.cellSize,
-    backgroundColor: theme.palette.background.paper,
-    borderTop: topBox ? "3px solid black" : "1px solid black",
-    borderBottom: bottomBox ? "3px solid black" : "1px solid black",
-    borderLeft: leftBox ? "3px solid black" : "1px solid black",
-    borderRight: rightBox ? "3px solid black" : "1px solid black",
-    transition: "background-color 0.2s ease",
-  })
-);
+})<{
+  topBox?: boolean;
+  bottomBox?: boolean;
+  leftBox?: boolean;
+  rightBox?: boolean;
+  cellwidth?: string;
+  cellheight?: string;
+}>(({ theme, topBox, bottomBox, leftBox, rightBox, cellwidth, cellheight }) => ({
+  width: cellwidth ?? uiConfig.cellSize,
+  height: cellheight ?? uiConfig.cellSize,
+  backgroundColor: theme.palette.background.paper,
+  borderTop: topBox ? "3px solid black" : "1px solid black",
+  borderBottom: bottomBox ? "3px solid black" : "1px solid black",
+  borderLeft: leftBox ? "3px solid black" : "1px solid black",
+  borderRight: rightBox ? "3px solid black" : "1px solid black",
+  transition: "background-color 0.2s ease",
+}));
 
 interface SpatialMemoryMainProps {
   toTestPhase: (testPhase: TestPhase) => void;
