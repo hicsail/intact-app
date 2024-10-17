@@ -11,6 +11,7 @@ import { SoundCheck } from "../components/SoundCheck";
 import { GeneralDirection } from "../components/GeneralDirection";
 import { useNavigate, useParams } from "react-router-dom";
 import { generalConfig } from "../config/test.config";
+import { Ending } from "../components/Ending";
 
 export const TestPage: FC = () => {
   const { studyId } = useParams<{ studyId: string }>();
@@ -45,8 +46,18 @@ export const TestPage: FC = () => {
 
     sessionStorage.setItem("results", "[]");
     sessionStorage.setItem("testPhase", String(target));
-    sessionStorage.setItem("stage", String(Stage.TRANSITION));
     sessionStorage.setItem("questionNumber", "0");
+
+    if (target === TestPhase.FINISHED) {
+      sessionStorage.setItem("stage", String(Stage.ENDING));
+      cxt!.setTestPhase(target);
+      cxt!.setStage(Stage.ENDING);
+
+      return;
+    }
+
+    sessionStorage.setItem("stage", String(Stage.TRANSITION));
+
     cxt!.setTestPhase(target);
     cxt!.setStage(Stage.TRANSITION);
   };
@@ -89,6 +100,7 @@ export const TestPage: FC = () => {
       {cxt?.stage === Stage.GENERAL_DIRECTION && <GeneralDirection />}
       {cxt?.stage === Stage.TRANSITION && <Transition handleTransition={transitionToTestHandler} />}
       {cxt?.stage === Stage.TEST && <TestComponent />}
+      {cxt?.stage === Stage.ENDING && <Ending />}
     </>
   );
 };

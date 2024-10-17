@@ -6,6 +6,7 @@ export enum Stage {
   GENERAL_DIRECTION = 2,
   TRANSITION = 3,
   TEST = 4,
+  ENDING = 5,
 }
 
 export enum TestPhase {
