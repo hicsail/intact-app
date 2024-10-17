@@ -35,7 +35,7 @@ export const Transition: FC<TransitionProps> = ({ handleTransition }) => {
       >
         {instructionComponents[cxt!.testPhase]!.length <= 0 ? (
           <Button variant="contained" sx={{ fontSize: 18, padding: 1.5 }} fullWidth onClick={handleTransition}>
-            Start the Test
+            Start
           </Button>
         ) : (
           <Button

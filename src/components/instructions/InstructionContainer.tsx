@@ -5,6 +5,7 @@ import { vpmInstructions, vprInstructions } from "./VisualPairs";
 import { crtInstructions } from "./ChoiceReactionTime";
 import { dsmInstructions } from "./DigitSymbolMatching";
 import { smInstructions } from "./SpatialMemory";
+import { mrdInstructions, mriInstructions } from "./MemoryRecall";
 
 const titleMapping: { [key in TestPhase]?: string } = {
   [TestPhase.MEMORY_RECALL_IMMEDIATE]: "Memory - Immediate Recall",
@@ -17,13 +18,13 @@ const titleMapping: { [key in TestPhase]?: string } = {
 };
 
 export const instructionComponents: { [key in TestPhase]?: JSX.Element[] } = {
-  [TestPhase.MEMORY_RECALL_IMMEDIATE]: [],
+  [TestPhase.MEMORY_RECALL_IMMEDIATE]: mriInstructions,
   [TestPhase.VISUAL_PAIRS_MEMORIZE]: vpmInstructions,
   [TestPhase.CHOICE_REACTION_TIME]: crtInstructions,
   [TestPhase.VISUAL_PAIRS_RECALL]: vprInstructions,
   [TestPhase.DIGIT_SYMBOL_MATCHING]: dsmInstructions,
   [TestPhase.SPATIAL_MEMORY]: smInstructions,
-  [TestPhase.MEMORY_RECALL_DELAYED]: [],
+  [TestPhase.MEMORY_RECALL_DELAYED]: mrdInstructions,
 };
 
 interface InstructionContainerProps {
@@ -73,7 +74,7 @@ export const InstructionContainer: FC<InstructionContainerProps> = ({ phase, han
             fullWidth
             onClick={handleTransition}
           >
-            Start the Test
+            Start
           </Button>
         )}
       </Box>
