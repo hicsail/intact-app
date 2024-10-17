@@ -16,7 +16,7 @@ export const GeneralDirection: FC = () => {
           Directions
         </Typography>
         <Divider />
-        <Typography variant="body1" fontSize={18} textAlign="initial" marginY={2}>
+        <Typography variant="body1" gutterBottom fontSize={18} textAlign="initial" marginY={2}>
           Please do <strong>NOT</strong> use paper! Solve all questions in your mind. Click "Begin Test" to proceed.
         </Typography>
       </Box>
