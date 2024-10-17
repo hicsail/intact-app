@@ -18,3 +18,21 @@ export const vpmInstructions: JSX.Element[] = [
     </Typography>
   </>,
 ];
+
+export const vprInstructions: JSX.Element[] = [
+  <>
+    <VPVisual />
+    <Typography variant="body1" gutterBottom fontSize={18} textAlign="initial" marginTop={2}>
+      Let's test your memory for the images you learned a few minutes ago.
+    </Typography>
+    <Typography variant="body1" gutterBottom fontSize={18} textAlign="initial" marginBottom={2}>
+      You will need to select the image that goes together with the image with <strong>red outline</strong> at the{" "}
+      <strong>top left</strong> corner.
+    </Typography>
+  </>,
+  <>
+    <Typography variant="body1" fontSize={18} textAlign="initial" marginY={2}>
+      You will be asked to recall all {Object.keys(testConfig.visualPairsAns).length} pairs. Let's start!
+    </Typography>
+  </>,
+];
