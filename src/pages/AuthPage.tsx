@@ -1,7 +1,8 @@
 import { Alert, Button, Card, CardContent, CardHeader, TextField, Typography } from "@mui/material";
-import { ChangeEvent, FC, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { ChangeEvent, FC, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { styled } from "@mui/system";
+import { validateStudyId } from "../utils/general.utils";
 
 const AnimatedAlert = styled(Alert)(() => ({
   "&.fadeOut": {
@@ -14,21 +15,10 @@ const AnimatedAlert = styled(Alert)(() => ({
 }));
 
 export const AuthPage: FC = () => {
-  const { studyId } = useParams<{ studyId: string }>();
   const [input, setInput] = useState<string>("");
   const [animationClass, setAnimationClass] = useState<string>("");
   const [showAlert, setShowAlert] = useState<boolean>(false);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    validateStudyId(studyId).then((result) => {
-      if (result) {
-        sessionStorage.setItem("studyId", studyId!);
-        console.log(`Study ID ${studyId} is validated`);
-        navigate(`/assessments/${studyId}`);
-      }
-    });
-  }, []);
 
   const inputChangeHandler = (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     setInput(event.target.value);
@@ -47,23 +37,7 @@ export const AuthPage: FC = () => {
     }
 
     sessionStorage.setItem("studyId", input);
-    navigate(`/assessments/${input}`);
-  };
-
-  const validateStudyId = async (id: string | undefined) => {
-    if (!id || id === "undefined") {
-      return false;
-    }
-
-    const response = await fetch(`${import.meta.env.VITE_VALIDATE_ENDPOINT}/${id}`, {
-      method: "GET",
-    });
-
-    if (response.status !== 200) {
-      return false;
-    }
-
-    return true;
+    navigate("/assessments/");
   };
 
   return (
@@ -87,7 +61,14 @@ export const AuthPage: FC = () => {
       <Card>
         <CardHeader title="Enter Study ID" sx={{ paddingBottom: 0 }} />
         <CardContent sx={{ paddingTop: 0 }}>
-          <TextField label="Study ID" variant="outlined" fullWidth margin="normal" onChange={inputChangeHandler} />
+          <TextField
+            label="Study ID"
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            value={input}
+            onChange={inputChangeHandler}
+          />
           <Button variant="contained" color="primary" onClick={submitHandler}>
             Submit
           </Button>
