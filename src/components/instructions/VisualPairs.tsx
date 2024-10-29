@@ -50,7 +50,7 @@ export const vprInstructions: JSX.Element[] = [
   <>
     <VPVisual0 />
     <Typography variant="body1" gutterBottom fontSize={18} textAlign="initial" marginTop={2}>
-      Let's test your memory for the images you learned a few minutes ago.
+      Let's test your memory from the images you learned a few minutes ago.
     </Typography>
   </>,
   <>

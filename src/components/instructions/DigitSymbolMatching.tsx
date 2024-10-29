@@ -57,7 +57,7 @@ export const dsmInstructions: JSX.Element[] = [
       You will see {Object.keys(generalConfig.digitSymbolAns).length} questions in this test.
     </Typography>
     <Typography variant="body1" gutterBottom fontSize={18} textAlign="initial" marginBottom={2}>
-      Your score will be how many correct responeses you make, so try to be <strong>accurate</strong> and{" "}
+      Your scores will be based on how many correct responeses you make, so try to be <strong>accurate</strong> and{" "}
       <strong>quick</strong>!
     </Typography>
   </>,
