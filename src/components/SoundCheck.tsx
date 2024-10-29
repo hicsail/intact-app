@@ -132,10 +132,10 @@ export const SoundCheck: FC = () => {
       </Typography>
       <Divider />
       <Typography variant="body1" fontSize={18} textAlign="initial" marginTop={2}>
-        If you can hear this message, click the announced number.
+        If you can hear this message, press the announced number.
       </Typography>
       <Typography variant="body1" fontSize={18} textAlign="initial" marginBottom={2}>
-        Otherwise, please increase your speaks volume.
+        Otherwise, please increase your speakers volume.
       </Typography>
       <OverlayWrapper>
         <Grid container direction="column" spacing={1} marginTop={1} marginX="auto">
