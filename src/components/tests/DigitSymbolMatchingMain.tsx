@@ -34,13 +34,13 @@ export const DigitSymbolMatchingMain: FC<DigitSymbolMatchingMainProps> = ({ toTe
       setQuestionIdx(Number(sessionStorage.getItem("questionNumber")));
     }
 
-    const correctIndex = testCxt!.digitSymbolMatchingSetup[questionIdx];
+    const correctIndex = testCxt!.digitSymbolMatchingSetup[testCxt!.studyType][questionIdx];
     setCorrectIndex(correctIndex);
     setStartTime(Date.now());
   }, []);
 
   useEffect(() => {
-    const correctIndex = testCxt!.digitSymbolMatchingSetup[questionIdx];
+    const correctIndex = testCxt!.digitSymbolMatchingSetup[testCxt!.studyType][questionIdx];
     setCorrectIndex(correctIndex);
     setStartTime(Date.now());
   }, [questionIdx]);
@@ -58,7 +58,7 @@ export const DigitSymbolMatchingMain: FC<DigitSymbolMatchingMainProps> = ({ toTe
     const resultList = JSON.parse(sessionStorage.getItem("results")!);
     sessionStorage.setItem("results", JSON.stringify([...resultList, answer]));
 
-    if (questionIdx + 1 >= testCxt!.digitSymbolMatchingSetup.length) {
+    if (questionIdx + 1 >= testCxt!.digitSymbolMatchingSetup[testCxt!.studyType].length) {
       toTestPhase(getNextTestPhase(TestPhase.DIGIT_SYMBOL_MATCHING));
     } else {
       sessionStorage.setItem("questionNumber", String(questionIdx + 1));

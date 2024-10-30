@@ -50,7 +50,7 @@ export const SpatialMemoryMain: FC<SpatialMemoryMainProps> = ({ toTestPhase }) =
       setEnabled(true);
     }, testConfig.timeToMemorize);
 
-    const questionGrid = testCxt!.spatialMemorySetup[questionIdx];
+    const questionGrid = testCxt!.spatialMemorySetup[testCxt!.studyType][questionIdx];
     setCorrect(questionGrid);
     setGrid(questionGrid);
     setEnabled(false);
@@ -65,7 +65,7 @@ export const SpatialMemoryMain: FC<SpatialMemoryMainProps> = ({ toTestPhase }) =
       setEnabled(true);
     }, testConfig.timeToMemorize);
 
-    const questionGrid = testCxt!.spatialMemorySetup[questionIdx];
+    const questionGrid = testCxt!.spatialMemorySetup[testCxt!.studyType][questionIdx];
     setCorrect(questionGrid);
     setGrid(questionGrid);
     setEnabled(false);
@@ -96,7 +96,7 @@ export const SpatialMemoryMain: FC<SpatialMemoryMainProps> = ({ toTestPhase }) =
     const resultList = JSON.parse(sessionStorage.getItem("results")!);
     sessionStorage.setItem("results", JSON.stringify([...resultList, answer]));
 
-    if (questionIdx + 1 >= testCxt!.spatialMemorySetup.length) {
+    if (questionIdx + 1 >= testCxt!.spatialMemorySetup[testCxt!.studyType].length) {
       toTestPhase(TestPhase.MEMORY_RECALL_DELAYED);
     } else {
       sessionStorage.setItem("questionNumber", String(questionIdx + 1));

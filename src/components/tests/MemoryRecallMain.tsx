@@ -63,7 +63,7 @@ export const MemoryRecallMain: FC<MemoryRecallMainProps> = ({ phase, toTestPhase
   const playHandler = () => {
     setShowPlayButton(false);
     const audioUrl = import.meta.env.VITE_RECALL_INST_AUDIO_URL;
-    const audio = new Audio(audioUrl);
+    const audio = new Audio(audioUrl.replace("{type}", testCxt!.studyType));
     audio.play().then(() => {
       setTimeout(() => {
         setShowInstruction(true);
@@ -84,7 +84,7 @@ export const MemoryRecallMain: FC<MemoryRecallMainProps> = ({ phase, toTestPhase
       return;
     }
 
-    const selected = testCxt!.memoryRecallSetup;
+    const selected = testCxt!.memoryRecallSetup[testCxt!.studyType];
     setClickedNum((num) => num + 1);
     setValues((prev) => {
       const newValues = { ...prev };

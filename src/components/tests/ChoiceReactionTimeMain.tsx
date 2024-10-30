@@ -33,7 +33,7 @@ export const ChoiceReactionTimeMain: FC<ChoiceReactionTimeMainProps> = ({ toTest
     setCorrectSymbol(correctSymbol);
 
     let otherSymbols = shuffleList(["<", ">"]);
-    otherSymbols.splice(testCxt!.choiceReactionTimeSetup[questionIdx], 0, correctSymbol);
+    otherSymbols.splice(testCxt!.choiceReactionTimeSetup[testCxt!.studyType][questionIdx], 0, correctSymbol);
     setSymbols(otherSymbols);
     setColors(shuffleList([uiConfig.choiceColor.color0, uiConfig.choiceColor.color1]));
 
@@ -55,7 +55,7 @@ export const ChoiceReactionTimeMain: FC<ChoiceReactionTimeMainProps> = ({ toTest
     setCorrectSymbol(correctSymbol);
 
     let otherSymbols = shuffleList(["<", ">"]);
-    otherSymbols.splice(testCxt!.choiceReactionTimeSetup[questionIdx], 0, correctSymbol);
+    otherSymbols.splice(testCxt!.choiceReactionTimeSetup[testCxt!.studyType][questionIdx], 0, correctSymbol);
     setSymbols(otherSymbols);
     setColors(shuffleList([uiConfig.choiceColor.color0, uiConfig.choiceColor.color1]));
 
@@ -92,7 +92,7 @@ export const ChoiceReactionTimeMain: FC<ChoiceReactionTimeMainProps> = ({ toTest
 
     setHide(true);
     setDisable(true);
-    if (questionIdx + 1 >= testCxt!.choiceReactionTimeSetup.length) {
+    if (questionIdx + 1 >= testCxt!.choiceReactionTimeSetup[testCxt!.studyType].length) {
       toTestPhase(getNextTestPhase(TestPhase.CHOICE_REACTION_TIME));
     } else {
       sessionStorage.setItem("questionNumber", String(questionIdx + 1));
@@ -118,7 +118,8 @@ export const ChoiceReactionTimeMain: FC<ChoiceReactionTimeMainProps> = ({ toTest
                 border={1}
                 marginY={2}
                 sx={{
-                  backgroundColor: index === testCxt!.choiceReactionTimeSetup[questionIdx] ? colors[0] : colors[1],
+                  backgroundColor:
+                    index === testCxt!.choiceReactionTimeSetup[testCxt!.studyType][questionIdx] ? colors[0] : colors[1],
                 }}
               >
                 <Typography variant="h2" fontWeight="bold" color="black">

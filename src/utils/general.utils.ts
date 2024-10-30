@@ -15,7 +15,7 @@ export const validateStudyId = async (id: string | undefined) => {
   }
 
   const data = await response.json();
-  console.log(data);
+  sessionStorage.setItem("studyType", data.study_type);
 
   return true;
 };

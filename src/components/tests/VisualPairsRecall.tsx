@@ -17,9 +17,9 @@ export const VisualPairsRecall: FC<VisualPairsRecallProps> = ({ toTestPhase }) =
   const [startTime, setStartTime] = useState<number>(0);
 
   const [options, setOptions] = useState<number[]>([]);
-  let imageTheme = Object.keys(testCxt!.visualPairSetupImageSetup)[questionIdx];
-  let reference = Object.values(testCxt!.visualPairSetupImageSetup)[questionIdx][0];
-  let correct = Object.values(testCxt!.visualPairSetupImageSetup)[questionIdx][1];
+  let imageTheme = Object.keys(testCxt!.visualPairSetupImageSetup[testCxt!.studyType])[questionIdx];
+  let reference = Object.values(testCxt!.visualPairSetupImageSetup[testCxt!.studyType])[questionIdx][0];
+  let correct = Object.values(testCxt!.visualPairSetupImageSetup[testCxt!.studyType])[questionIdx][1];
 
   useEffect(() => {
     if (Number(sessionStorage.getItem("testPhase")) === TestPhase.VISUAL_PAIRS_RECALL) {
@@ -56,7 +56,7 @@ export const VisualPairsRecall: FC<VisualPairsRecallProps> = ({ toTestPhase }) =
     const resultList = JSON.parse(sessionStorage.getItem("results")!);
     sessionStorage.setItem("results", JSON.stringify([...resultList, answer]));
 
-    if (questionIdx + 1 >= Object.values(testCxt!.visualPairSetupImageSetup).length) {
+    if (questionIdx + 1 >= Object.values(testCxt!.visualPairSetupImageSetup[testCxt!.studyType]).length) {
       toTestPhase(getNextTestPhase(TestPhase.VISUAL_PAIRS_RECALL));
     } else {
       sessionStorage.setItem("questionNumber", String(questionIdx + 1));

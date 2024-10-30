@@ -13,8 +13,8 @@ export const VisualPairsMemorize: FC<ChoiceReactionTimeMemorizeProps> = ({ toTes
   const testCxt = useContext(TestContext);
 
   const [pairIdx, setPairIdx] = useState(-1);
-  const imageGroupList = Object.keys(testCxt!.visualPairSetupImageSetup);
-  const idxPairs = Object.values(testCxt!.visualPairSetupImageSetup);
+  const imageGroupList = Object.keys(testCxt!.visualPairSetupImageSetup[testCxt!.studyType]);
+  const idxPairs = Object.values(testCxt!.visualPairSetupImageSetup[testCxt!.studyType]);
 
   useEffect(() => {
     setPairIdx(0);
