@@ -15,6 +15,8 @@ export const VisualPairsRecall: FC<VisualPairsRecallProps> = ({ toTestPhase }) =
 
   const [questionIdx, setQuestionIdx] = useState(0);
   const [startTime, setStartTime] = useState<number>(0);
+  // const [display, setDisplay] = useState<boolean>(false);
+  const [opacity, setOpacity] = useState<number>(0);
 
   const [options, setOptions] = useState<number[]>([]);
   let imageTheme = Object.keys(testCxt!.visualPairSetupImageSetup[testCxt!.studyType])[questionIdx];
@@ -26,24 +28,34 @@ export const VisualPairsRecall: FC<VisualPairsRecallProps> = ({ toTestPhase }) =
       setQuestionIdx(Number(sessionStorage.getItem("questionNumber")));
     }
 
-    setOptions(
-      imageTheme === "example"
-        ? shuffleList([...randomSelectFromNumberRange(1, 6, 4, false, [reference, correct]), correct])
-        : shuffleList([...randomSelectFromNumberRange(1, 8, 4, false, [reference, correct]), correct])
-    );
-    setStartTime(Date.now());
+    setOptions(shuffleList([...randomSelectFromNumberRange(1, 8, 4, false, [reference, correct]), correct]));
+
+    const displayOptions = setTimeout(() => {
+      setOpacity(1);
+      setStartTime(Date.now());
+    }, 500);
+
+    return () => {
+      clearTimeout(displayOptions);
+    };
   }, []);
 
   useEffect(() => {
-    setOptions(
-      imageTheme === "example"
-        ? shuffleList([...randomSelectFromNumberRange(1, 6, 4, false, [reference, correct]), correct])
-        : shuffleList([...randomSelectFromNumberRange(1, 8, 4, false, [reference, correct]), correct])
-    );
-    setStartTime(Date.now());
+    setOptions(shuffleList([...randomSelectFromNumberRange(1, 8, 4, false, [reference, correct]), correct]));
+
+    const displayOptions = setTimeout(() => {
+      setOpacity(1);
+      setStartTime(Date.now());
+    }, 500);
+
+    return () => {
+      clearTimeout(displayOptions);
+    };
   }, [questionIdx]);
 
   const submitHandler = (selected: number) => {
+    setOpacity(0);
+
     const answer: VisualPairedAssociatesResult = {
       vpa_rt: Date.now() - startTime,
       vpa_correct: selected === correct,
@@ -66,7 +78,7 @@ export const VisualPairsRecall: FC<VisualPairsRecallProps> = ({ toTestPhase }) =
 
   return (
     <Box>
-      <Grid container direction="column" gap={1}>
+      <Grid container direction="column" gap={1} sx={{ opacity: opacity }}>
         <Grid container spacing={1}>
           <Grid item>
             <Box
