@@ -117,7 +117,7 @@ export const SpatialMemoryMain: FC<SpatialMemoryMainProps> = ({ toTestPhase }) =
                   leftBox={colIndex === 0}
                   rightBox={colIndex === testConfig.cols - 1}
                   sx={{ backgroundColor: cell ? "black" : "white" }}
-                  onClick={() => enabled && toggleCell(rowIndex, colIndex)}
+                  onTouchStart={() => enabled && toggleCell(rowIndex, colIndex)}
                 />
               </Grid>
             ))}
