@@ -1,16 +1,10 @@
 import "./App.css";
-import { createHashRouter, RouterProvider } from "react-router-dom";
+import { HashRouter, Route, Routes } from "react-router-dom";
 import { TestPage } from "./pages/TestPage";
 import { AuthPage } from "./pages/AuthPage";
+import { LoadingPage } from "./pages/LoadingPage";
 
 function App() {
-  const router = createHashRouter([
-    { path: "assessments/:studyId", element: <TestPage /> },
-    { path: "assessments", element: <TestPage /> },
-    { path: "/:studyId", element: <AuthPage /> },
-    { path: "/", element: <AuthPage /> },
-  ]);
-
   const setDynamicHeight = () => {
     const vh = window.innerHeight * 0.01;
     document.documentElement.style.setProperty("--vh", `${vh}px`);
@@ -19,7 +13,15 @@ function App() {
   setDynamicHeight();
   window.addEventListener("resize", setDynamicHeight);
 
-  return <RouterProvider router={router} />;
+  return (
+    <HashRouter>
+      <Routes>
+        <Route path="/:studyId?" element={<LoadingPage />} />
+        <Route path="auth/:studyId?" element={<AuthPage />} />
+        <Route path="/assessments" element={<TestPage />} />
+      </Routes>
+    </HashRouter>
+  );
 }
 
 export default App;

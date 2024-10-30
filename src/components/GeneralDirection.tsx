@@ -13,7 +13,7 @@ export const GeneralDirection: FC = () => {
     <>
       <Box marginX="auto" position="absolute" top="10%" width="85%" sx={{ transform: "translateX(-50%)" }}>
         <Typography variant="h4" textAlign="initial" fontWeight="bold" marginBottom={1}>
-          Directions
+          General Directions
         </Typography>
         <Divider />
         <Typography variant="body1" gutterBottom fontSize={18} textAlign="initial" marginY={2}>

@@ -9,24 +9,25 @@ import { MemoryRecallMain } from "../components/tests/MemoryRecallMain";
 import { Transition } from "../components/Transition";
 import { SoundCheck } from "../components/SoundCheck";
 import { GeneralDirection } from "../components/GeneralDirection";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { generalConfig } from "../config/test.config";
 import { Ending } from "../components/Ending";
+import { TestContext } from "../contexts/test.context";
 
 export const TestPage: FC = () => {
-  const { studyId } = useParams<{ studyId: string }>();
-
   // Routing hooks
   const cxt = useContext(GeneralContext);
+  const testCxt = useContext(TestContext);
 
   const navigate = useNavigate();
 
   useEffect(() => {
     const localStudyId = sessionStorage.getItem("studyId");
-    if (!localStudyId || !studyId) {
-      navigate(`/${studyId}`);
+    if (!localStudyId) {
+      navigate("/auth");
     }
 
+    testCxt!.setStudyType(sessionStorage.getItem("studyType") as "baseline" | "followup");
     if (!sessionStorage.getItem("testPhase") || !sessionStorage.getItem("stage")) {
       sessionStorage.setItem("testPhase", String(generalConfig.testOrder[0]));
       sessionStorage.setItem("stage", String(Stage.SOUND_CHECK));

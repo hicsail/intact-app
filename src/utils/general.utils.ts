@@ -1,6 +1,25 @@
 import { TestPhase } from "../contexts/general.context";
 import { generalConfig as testConfig } from "../config/test.config";
 
+export const validateStudyId = async (id: string | undefined) => {
+  if (!id || id === "undefined") {
+    return false;
+  }
+
+  const response = await fetch(`${import.meta.env.VITE_VALIDATE_ENDPOINT}/${id}`, {
+    method: "GET",
+  });
+
+  if (response.status !== 200) {
+    return false;
+  }
+
+  const data = await response.json();
+  sessionStorage.setItem("studyType", data.study_type);
+
+  return true;
+};
+
 export const getNextTestPhase = (currentPhase: TestPhase) => {
   const currentIndex = testConfig.testOrder.indexOf(currentPhase);
   if (currentIndex === -1) {

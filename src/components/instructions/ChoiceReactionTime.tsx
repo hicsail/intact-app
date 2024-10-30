@@ -65,8 +65,8 @@ export const crtInstructions: JSX.Element[] = [
   <>
     <CRTVisual symbols={[">", "<", "<"]} colors={[color0, color0, color1]} />
     <Typography variant="body1" gutterBottom fontSize={18} textAlign="initial" marginY={2}>
-      You will see {Object.keys(testConfig.choiceReactionTimeAns).length} sets of ARROWs. Please response as fast as you
-      can.
+      You will see {Object.keys(testConfig.choiceReactionTimeAns.baseline).length} sets of ARROWS. Please respond as
+      fast as you can.
     </Typography>
   </>,
 ];

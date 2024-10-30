@@ -40,8 +40,8 @@ export const vpmInstructions: JSX.Element[] = [
   <>
     <VPVisual0 />
     <Typography variant="body1" gutterBottom fontSize={18} textAlign="initial" marginY={2}>
-      You will see {Object.keys(testConfig.visualPairsAns).length} image pairs, like above. Learn which images go
-      together. Later you will be tested on that.
+      You will see {Object.keys(testConfig.visualPairsAns.baseline).length} image pairs, like above. Learn which images
+      go together. Later you will be tested on that.
     </Typography>
   </>,
 ];
@@ -50,7 +50,7 @@ export const vprInstructions: JSX.Element[] = [
   <>
     <VPVisual0 />
     <Typography variant="body1" gutterBottom fontSize={18} textAlign="initial" marginTop={2}>
-      Let's test your memory for the images you learned a few minutes ago.
+      Let's test your memory from the images you learned a few minutes ago.
     </Typography>
   </>,
   <>
@@ -62,7 +62,8 @@ export const vprInstructions: JSX.Element[] = [
   </>,
   <>
     <Typography variant="body1" fontSize={18} textAlign="initial" marginY={2}>
-      You will be asked to recall all {Object.keys(testConfig.visualPairsAns).length} pairs of images. Let's start!
+      You will be asked to recall all {Object.keys(testConfig.visualPairsAns.baseline).length} pairs of images. Let's
+      start!
     </Typography>
   </>,
 ];
