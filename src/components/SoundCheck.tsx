@@ -135,7 +135,7 @@ export const SoundCheck: FC = () => {
         If you can hear this message, press the announced number.
       </Typography>
       <Typography variant="body1" fontSize={18} textAlign="initial" marginBottom={2}>
-        Otherwise, please increase your speakers volume.
+        Otherwise, please increase your speaker's volume.
       </Typography>
       <OverlayWrapper>
         <Grid container direction="column" spacing={1} marginTop={1} marginX="auto">
