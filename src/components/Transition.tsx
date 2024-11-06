@@ -14,12 +14,17 @@ export const Transition: FC<TransitionProps> = ({ handleTransition }) => {
 
   const [displayInstructions, setDisplayInstructions] = useState<boolean>(false);
 
+  const proceedToInstructionHandler = () => {
+    setDisplayInstructions(true);
+  };
+
   return (
     <>
       {!displayInstructions && (
-        <Box marginX="auto" position="absolute" top="5%" width="85%" sx={{ transform: "translateX(-50%)" }}>
-          <ProgressTracker id={testConfig.testOrder.findIndex((phase) => phase === cxt!.testPhase)} />
-        </Box>
+        <ProgressTracker
+          id={testConfig.testOrder.findIndex((phase) => phase === cxt!.testPhase)}
+          handleProceed={proceedToInstructionHandler}
+        />
       )}
       {displayInstructions && <InstructionContainer phase={cxt!.testPhase} handleTransition={handleTransition} />}
       <Box
@@ -33,18 +38,9 @@ export const Transition: FC<TransitionProps> = ({ handleTransition }) => {
           p: 1,
         }}
       >
-        {instructionComponents[cxt!.testPhase]!.length <= 0 ? (
+        {instructionComponents[cxt!.testPhase]!.length <= 0 && (
           <Button variant="contained" sx={{ fontSize: 18, padding: 1.5 }} fullWidth onClick={handleTransition}>
             Start
-          </Button>
-        ) : (
-          <Button
-            variant="contained"
-            sx={{ fontSize: 18, padding: 1.5 }}
-            fullWidth
-            onClick={() => setDisplayInstructions(true)}
-          >
-            Continue
           </Button>
         )}
       </Box>
