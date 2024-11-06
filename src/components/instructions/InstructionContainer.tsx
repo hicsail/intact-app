@@ -58,8 +58,8 @@ export const InstructionContainer: FC<InstructionContainerProps> = ({ phase, han
       >
         {instructionIdx + 1 < instructionComponents[phase]!.length ? (
           <Button
-            variant="contained"
-            color="inherit"
+            variant="outlined"
+            color="primary"
             sx={{ fontSize: 18, padding: 1.5 }}
             fullWidth
             onClick={() => setInstructionIdx((idx) => idx + 1)}
