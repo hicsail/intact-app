@@ -119,7 +119,6 @@ const submitResults = async () => {
     time_started: timeStarted,
     time_elapsed_milliseconds: timeElapsed,
     device_info: navigator.userAgent,
-    notes: "",
     result: JSON.parse(results),
   };
 
