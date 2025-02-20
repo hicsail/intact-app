@@ -95,7 +95,8 @@ export const MemoryRecallMain: FC<MemoryRecallMainProps> = ({ phase, toTestPhase
   };
 
   const submitHandler = () => {
-    const result = Object.entries(values).filter(([, value]) => value === "correct").length === maxSelection;
+    const result =
+      Object.entries(values).filter(([, value]) => value === "correct").length === maxSelection;
     if (phase === TestPhase.MEMORY_RECALL_DELAYED) {
       const answer = {
         dr_rt: Date.now() - startTime,
@@ -150,13 +151,8 @@ export const MemoryRecallMain: FC<MemoryRecallMainProps> = ({ phase, toTestPhase
     <>
       <Box
         sx={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
           width: "85vw",
           marginX: "auto",
-          marginY: 4,
         }}
       >
         {!showInstruction && phase === TestPhase.MEMORY_RECALL_IMMEDIATE && (
@@ -176,7 +172,7 @@ export const MemoryRecallMain: FC<MemoryRecallMainProps> = ({ phase, toTestPhase
         </IconButton>
       )}
       {showOptions && (
-        <Grid container direction="column" spacing={1} paddingTop={4}>
+        <Grid container direction="column" spacing={1} paddingX={2}>
           {Array.from({ length: 8 }).map((_, rowIndex) => (
             <Grid container item spacing={1} key={rowIndex}>
               {Array.from({ length: 2 }).map((_, colIndex) => {
@@ -192,7 +188,9 @@ export const MemoryRecallMain: FC<MemoryRecallMainProps> = ({ phase, toTestPhase
                       borderRadius={1}
                       sx={{
                         backgroundColor:
-                          uiConfig.buttonColor[values[randomList[index]] as keyof typeof uiConfig.buttonColor],
+                          uiConfig.buttonColor[
+                            values[randomList[index]] as keyof typeof uiConfig.buttonColor
+                          ],
                         cursor: "pointer",
                       }}
                       onClick={() => clickHandler(index)}
@@ -200,7 +198,11 @@ export const MemoryRecallMain: FC<MemoryRecallMainProps> = ({ phase, toTestPhase
                       <Typography
                         fontSize={uiConfig.fontSize}
                         fontWeight="bold"
-                        color={uiConfig.textColor[values[randomList[index]] as keyof typeof uiConfig.textColor]}
+                        color={
+                          uiConfig.textColor[
+                            values[randomList[index]] as keyof typeof uiConfig.textColor
+                          ]
+                        }
                       >
                         {randomList[index]}
                       </Typography>
